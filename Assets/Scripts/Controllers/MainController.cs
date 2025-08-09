@@ -131,7 +131,7 @@ namespace Controllers {
         public void Stand() {
             UpdateActionButtonsState(false);
             GetCurrentSideController().Stand();
-            HandlePlayersStand();
+            // HandlePlayersStand();
         }
     }
 }
