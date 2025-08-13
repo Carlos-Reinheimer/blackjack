@@ -1,11 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Controllers.Sides;
 using TMPro;
+using UI_Controllers;
 using UnityEngine;
 using UnityEngine.UI;
-using Utils;
 using Random = UnityEngine.Random;
 
 namespace Controllers {
@@ -13,6 +12,7 @@ namespace Controllers {
 
         public SideController dealersSide;
         public SideController playersSide;
+        public NextRoundTransitionCanvasUIController nextRoundCanvas;
 
         [Header("Data")]
         public DeckSo deck;
@@ -72,13 +72,12 @@ namespace Controllers {
             });
             UpdateCardsLeftCount();
             UpdateActionButtonsState(false);
+            HandleNewRound();
             
             StartCoroutine(DealCards());
         }
 
         private IEnumerator DealCards() {
-            HandleNewRound();
-
             for (var i = 0; i < initialCardsCount; i++) {
                 yield return new WaitForSeconds(delayBetweenDealing);
                 InstantiateNewCard();
@@ -100,8 +99,9 @@ namespace Controllers {
             GetCurrentSideController().ResetHand();
             UpdateCurrentPlayersSide(SideType.Player);
             GetCurrentSideController().ResetHand();
-            
-            StartCoroutine(DealCardsAgain());
+            HandleNewRound();
+
+            nextRoundCanvas.UpdateRoundValue(_currentRound, DealCardsAgain);
         }
 
         private void HandleNewRound() {
@@ -117,8 +117,7 @@ namespace Controllers {
             cardsLeftText.text = _availableCards.Count.ToString();
         }
 
-        private IEnumerator DealCardsAgain() {
-            yield return new WaitForSeconds(restartTimer);
+        private void DealCardsAgain() {
             StartCoroutine(DealCards());
         }
         
