@@ -1,4 +1,5 @@
 using Deck;
+using UnityEngine.Events;
 
 namespace Controllers.Sides {
     public class PlayersSideController : SideController {
@@ -6,6 +7,8 @@ namespace Controllers.Sides {
             HandleInstantiatedCard(cardController, card);
         }
 
-        protected override void OnStand() { }
+        protected override void OnFinishStand(UnityAction callback) {
+            callback?.Invoke();
+        }
     }
 }

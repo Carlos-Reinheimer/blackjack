@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Deck;
+using JetBrains.Annotations;
 using TMPEffects.Components;
 using TMPro;
 using UnityEngine;
@@ -29,6 +30,16 @@ namespace Controllers.Sides {
         public Operation operation;
     }
     
+    public class InitialParams {
+        public UnityAction standCallback;
+        
+        public InitialParams() { }
+
+        public InitialParams(InitialParams initialParams) {
+            standCallback = initialParams.standCallback;
+        }
+    }
+    
     public abstract class SideController : MonoBehaviour {
         
         private const int TargetValue = 21;
@@ -51,6 +62,7 @@ namespace Controllers.Sides {
         private int _currentOperationIndex;
         private bool _isDecreasingScore;
         private int _currentScore;
+        private InitialParams _initialParams;
         protected int CurrentCardSum;
         protected List<GameObject> ActiveCards;
 
@@ -62,15 +74,11 @@ namespace Controllers.Sides {
         };
 
         protected abstract void OnCardInstantiated(CardController cardController, Card card);
-        protected abstract void OnStand();
+        protected abstract void OnFinishStand(UnityAction callback);
 
         protected void HandleInstantiatedCard(CardController cardController, Card card, UnityAction callback = null) {
             cardController.PopulateData(card);
             UpdateTotalSum(card.value, callback);
-        }
-        
-        protected void HandleEndOfRound() {
-            MainController.Instance.RestartRound();
         }
 
         private void Start() {
@@ -127,8 +135,6 @@ namespace Controllers.Sides {
         private void HandleCrossTargetValue() {
             _isDecreasingScore = true;
             StartOperations();
-            
-            if (side == SideType.Player) MainController.Instance.HandlePlayersStand();
         }
         
         private void Operate(OperationData operationData) {
@@ -159,7 +165,7 @@ namespace Controllers.Sides {
                 _currentOperationIndex = 0;
                 _operations.Clear();
                 _isDecreasingScore = false;
-                OnStand();
+                OnFinishStand(_initialParams.standCallback);
                 return;
             }
 
@@ -186,6 +192,10 @@ namespace Controllers.Sides {
             }
             
             ActiveCards.Clear();
+        }
+
+        public void SetInitialParams(InitialParams initialParams) {
+            _initialParams = new InitialParams(initialParams);
         }
     }
 }

@@ -1,4 +1,5 @@
 using Deck;
+using UnityEngine.Events;
 
 namespace Controllers.Sides {
     public class DealersSideController : SideController {
@@ -19,8 +20,8 @@ namespace Controllers.Sides {
             HandleInstantiatedCard(cardController, card, activeCardCount == 2 ? null : HandleNewSum);
         }
 
-        protected override void OnStand() {
-            HandleEndOfRound();
+        protected override void OnFinishStand(UnityAction callback) {
+            callback?.Invoke();
         }
         
         private void HandleNewSum() {

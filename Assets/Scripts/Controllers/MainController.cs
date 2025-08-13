@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Controllers.Sides;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 using Random = UnityEngine.Random;
 
 namespace Controllers {
@@ -27,7 +29,7 @@ namespace Controllers {
         
         private int _currentRound;
         private List<Card> _availableCards;
-        private SideType _currentPlayingSide;
+        private SideType _currentPlayingSide = SideType.Dealer;
         
         #region Singleton
             public static MainController Instance {
@@ -37,14 +39,37 @@ namespace Controllers {
 
                     return _instance;
                 }
-                set => _instance = value;
             }
             private static MainController _instance;
         #endregion
+        
+        // private void OnEnable() {
+        //     SceneLoader.OnSceneLoadCompleteCallback += StartGame;
+        // }
+        //
+        // private void OnDisable() {
+        //     SceneLoader.OnSceneLoadCompleteCallback -= StartGame;
+        // }
 
         private void Start() {
+            StartGame();
+        }
+
+        private void StartGame() {
             _availableCards = new List<Card>(deck.cards);
+            
+            // set initial params for Dealer
+            GetCurrentSideController().SetInitialParams(new InitialParams {
+                standCallback = RestartRound
+            });
+            
+            // update to player
             UpdateCurrentPlayersSide(SideType.Player);
+            
+            // set initial params for Player
+            GetCurrentSideController().SetInitialParams(new InitialParams {
+                standCallback = HandlePlayersStand
+            });
             UpdateCardsLeftCount();
             UpdateActionButtonsState(false);
             
@@ -63,6 +88,21 @@ namespace Controllers {
             UpdateCurrentPlayersSide(SideType.Player);
             UpdateActionButtonsState(true);
         }
+        
+        private void HandlePlayersStand() {
+            UpdateCurrentPlayersSide(SideType.Dealer);
+            
+            var dealersSideController = (DealersSideController)GetCurrentSideController();
+            dealersSideController.ReleaseCurrentHoldCard();
+        }
+        
+        private void RestartRound() {
+            GetCurrentSideController().ResetHand();
+            UpdateCurrentPlayersSide(SideType.Player);
+            GetCurrentSideController().ResetHand();
+            
+            StartCoroutine(DealCardsAgain());
+        }
 
         private void HandleNewRound() {
             _currentRound += 1;
@@ -70,7 +110,7 @@ namespace Controllers {
         }
 
         private void UpdateRoundUI(int value) {
-            roundText.text = $"Round {value}";
+            roundText.text = $"Round {value}/21";
         }
 
         private void UpdateCardsLeftCount() {
@@ -99,13 +139,6 @@ namespace Controllers {
                 actionButton.interactable = newState;
             }
         }
-
-        public void HandlePlayersStand() {
-            UpdateCurrentPlayersSide(SideType.Dealer);
-            
-            var dealersSideController = (DealersSideController)GetCurrentSideController();
-            dealersSideController.ReleaseCurrentHoldCard();
-        }
         
         public void InstantiateNewCard() {
             var randomCard = Random.Range(0, _availableCards.Count);
@@ -116,14 +149,6 @@ namespace Controllers {
             UpdateCardsLeftCount();
         }
         
-        public void RestartRound() {
-            GetCurrentSideController().ResetHand();
-            UpdateCurrentPlayersSide(SideType.Player);
-            GetCurrentSideController().ResetHand();
-            
-            StartCoroutine(DealCardsAgain());
-        }
-        
         public void HitMe() {
             InstantiateNewCard();
         }
@@ -131,7 +156,6 @@ namespace Controllers {
         public void Stand() {
             UpdateActionButtonsState(false);
             GetCurrentSideController().Stand();
-            // HandlePlayersStand();
         }
     }
 }
