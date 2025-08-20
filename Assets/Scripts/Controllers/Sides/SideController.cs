@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Deck;
-using JetBrains.Annotations;
 using TMPEffects.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using Utils.UI_Animations;
 
 namespace Controllers.Sides {
@@ -49,6 +47,7 @@ namespace Controllers.Sides {
         
         [Header("Prefabs")]
         public GameObject cardPrefab;
+        public GameObject cardVisualPrefab;
 
         [Header("UI")]
         public Transform cardsContentTf;
@@ -76,8 +75,7 @@ namespace Controllers.Sides {
         protected abstract void OnCardInstantiated(CardController cardController, Card card);
         protected abstract void OnFinishStand(UnityAction callback);
 
-        protected void HandleInstantiatedCard(CardController cardController, Card card, UnityAction callback = null) {
-            cardController.PopulateData(card);
+        protected void HandleInstantiatedCard(Card card, UnityAction callback = null) {
             UpdateTotalSum(card.value, callback);
         }
 
@@ -172,12 +170,16 @@ namespace Controllers.Sides {
             Operate(_operations[_currentOperationIndex]);
         }
         
-        public void InstantiateNewCard(Card card) {
+        public void InstantiateNewCard(Card card, Transform visualHandlerTf) {
             var newCard = Instantiate(cardPrefab, cardsContentTf);
-            var component = newCard.GetComponent<CardController>();
+            var newCardVisual = Instantiate(cardVisualPrefab, visualHandlerTf);
+            var cardController = newCard.GetComponent<CardController>();
+            var cardVisual = newCardVisual.GetComponent<CardVisual>();
             
+            cardController.OnInstantiated(side);
+            cardVisual.StartVisual(cardController, card.value);
             ActiveCards.Add(newCard);
-            OnCardInstantiated(component, card);
+            OnCardInstantiated(cardController, card);
         }
         
         public void Stand() {

@@ -17,7 +17,7 @@ namespace Controllers.Sides {
                 return;
             }
             
-            HandleInstantiatedCard(cardController, card, activeCardCount == 2 ? null : HandleNewSum);
+            HandleInstantiatedCard(card, activeCardCount == 2 ? null : HandleNewSum);
         }
 
         protected override void OnFinishStand(UnityAction callback) {
@@ -31,7 +31,7 @@ namespace Controllers.Sides {
 
         public void ReleaseCurrentHoldCard() {
             // handling the "hold" card that is the first card of the dealer
-            HandleInstantiatedCard(_holdCardController, _holdCard, HandleNewSum);
+            HandleInstantiatedCard(_holdCard, HandleNewSum);
             _holdCardController = null;
             _holdCard = null;
         }
