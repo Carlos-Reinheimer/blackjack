@@ -10,9 +10,9 @@ namespace Deck {
         public Selectable selectable;
         public bool isDragging;
 
-        private Vector3 offset;
+        private Vector3 _offset;
+        private Vector3 _initialPosBeforeDrag;
         private bool _isPlayersSide;
-        private float _defaultZ;
 
         [HideInInspector] public UnityEvent<CardController> onPointerEnterEvent;
         [HideInInspector] public UnityEvent<CardController> onPointerExitEvent;
@@ -36,11 +36,7 @@ namespace Deck {
             
             OnBeginDragEvent?.Invoke(this);
             isDragging = true;
-
-            var tf = transform;
-            var pos = tf.position;
-            _defaultZ = pos.z;
-            tf.position = new Vector3(pos.x, pos.y, -10);
+            _initialPosBeforeDrag = transform.position;
         }
 
         public void OnEndDrag(PointerEventData eventData) {
@@ -48,10 +44,7 @@ namespace Deck {
             
             OnEndDragEvent?.Invoke(this);
             isDragging = false;
-
-            var tf = transform;
-            var pos = tf.position;
-            tf.position = new Vector3(pos.x, pos.y, _defaultZ);
+            transform.position = _initialPosBeforeDrag;
         }
 
         public void OnPointerEnter(PointerEventData eventData) {

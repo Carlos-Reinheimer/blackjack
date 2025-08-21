@@ -35,7 +35,7 @@ namespace Deck {
         private Vector3 _originalPos;
 
         private RectTransform _rt;
-        private float _defaultZ;
+        private int _defaultSiblingIndex;
 
         private void OnDisable() {
             card.onPointerEnterEvent.RemoveListener(OnPointerEnter);
@@ -97,9 +97,9 @@ namespace Deck {
             var pos = tf.position;
             var baseScale = _baseCardTf.localScale;
             var targetScale = new Vector3(baseScale.x * scaleMultiplier, baseScale.y * scaleMultiplier, baseScale.z * scaleMultiplier);
-            
-            _defaultZ = pos.z;
-            tf.position = new Vector3(pos.x, pos.y, -20);
+
+            _defaultSiblingIndex = tf.GetSiblingIndex();
+            tf.SetAsLastSibling();
             
             LeanTween.scale(gameObject, targetScale, scaleDuration).setEase(scaleEaseCurve);
         }
@@ -108,8 +108,7 @@ namespace Deck {
             var tf = transform;
             var pos = tf.position;
             
-            _defaultZ = pos.z;
-            tf.position = new Vector3(pos.x, pos.y, _defaultZ);
+            tf.SetSiblingIndex(_defaultSiblingIndex);
             LeanTween.scale(gameObject, _originalScale, scaleDuration).setEase(scaleEaseCurve);
         }
         
