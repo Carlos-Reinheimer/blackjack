@@ -48,6 +48,7 @@ namespace Deck {
         }
 
         public void OnPointerEnter(PointerEventData eventData) {
+            Debug.Log("OnPointerEnter");
             if (!_isPlayersSide || isDragging) return;
             
             onPointerEnterEvent?.Invoke(this);

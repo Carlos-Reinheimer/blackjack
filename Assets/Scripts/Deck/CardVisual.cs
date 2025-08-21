@@ -111,20 +111,27 @@ namespace Deck {
             tf.SetSiblingIndex(_defaultSiblingIndex);
             LeanTween.scale(gameObject, _originalScale, scaleDuration).setEase(scaleEaseCurve);
         }
-        
-        public void StartVisual(CardController parentCard, int cardValue) {
+
+        private void InitiateCardVisual(CardController parentCard) {
             var tf = transform;
             card = parentCard;
             _baseCardTf = card.transform;
             _originalScale = tf.localScale;
             _rt = (RectTransform)tf;
             
-            valueText.text = cardValue.ToString();
-
             card.onPointerEnterEvent.AddListener(OnPointerEnter);
             card.onPointerExitEvent.AddListener(OnPointerExit);
             card.OnBeginDragEvent.AddListener(OnBeginDrag);
             card.OnEndDragEvent.AddListener(OnEndDrag);
+        }
+        
+        public void StartVisual(CardController parentCard) {
+            InitiateCardVisual(parentCard);
+        }
+
+        public void StartVisual(CardController parentCard, int cardValue) {
+            valueText.text = cardValue.ToString();
+            InitiateCardVisual(parentCard);
         }
     }
 }

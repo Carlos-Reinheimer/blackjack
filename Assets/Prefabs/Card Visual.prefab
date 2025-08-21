@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -117,11 +117,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  rotationAmount: 20
-  rotationSpeed: 20
-  autoTiltAmount: 30
-  manualTiltAmount: 20
-  tiltSpeed: 20
   duration: 0.1
   strength: 10
   vibrato: 18
