@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Controllers.Sides;
 using UnityEngine;
@@ -25,8 +24,8 @@ namespace Deck {
             var newCard = Instantiate(cardPrefab, spawnPoint);
             var newCardVisual = Instantiate(cardVisualPrefab, spawnPoint);
             var cardController = newCard.GetComponent<CardController>();
-            var cardVisual = newCardVisual.GetComponent<CardVisual>();
-            cardController.OnInstantiated(SideType.Player);
+            var cardVisual = newCardVisual.GetComponent<GeneralCardVisual>();
+            cardController.OnInstantiated(SideType.Player, CardType.Joker);
             cardVisual.StartVisual(cardController);
             _handCards.Add(cardController);
             UpdateCardPositions();
@@ -42,12 +41,12 @@ namespace Deck {
             for (var i = 0; i < _handCards.Count; i++) {
                 var p = firstCardPosition + i * cardSpacing;
                 var splinePosition = spline.EvaluatePosition(p);
-                var forward = spline.EvaluateTangent(p);
-                var up = spline.EvaluateUpVector(p);
-                var rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized);
-
                 LeanTween.moveLocal(_handCards[i].gameObject, splinePosition, 0.25f);
-                LeanTween.rotateLocal(_handCards[i].gameObject, rotation.eulerAngles, 0.25f);
+
+                // var forward = spline.EvaluateTangent(p);
+                // var up = spline.EvaluateUpVector(p);
+                // var rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized);
+                // LeanTween.rotateLocal(_handCards[i].gameObject, rotation.eulerAngles, 0.25f);
             }
         }
 

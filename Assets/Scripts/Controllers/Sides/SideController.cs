@@ -174,7 +174,7 @@ namespace Controllers.Sides {
             var newCard = Instantiate(cardPrefab, cardsContentTf);
             var newCardVisual = Instantiate(cardVisualPrefab, visualHandlerTf);
             var cardController = newCard.GetComponent<CardController>();
-            var cardVisual = newCardVisual.GetComponent<CardVisual>();
+            var cardVisual = (DefaultCardVisual)newCardVisual.GetComponent<GeneralCardVisual>();
             
             cardController.OnInstantiated(side);
             cardVisual.StartVisual(cardController, card.value);

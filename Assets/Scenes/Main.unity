@@ -932,27 +932,27 @@ MonoBehaviour:
   - m_EditModeType: 1
     m_Knots:
     - Position:
-        x: -50
-        y: -5
+        x: -96.2
+        y: -5.0326843
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -5.001
+        z: -9.723296
       TangentOut:
         x: 0
         y: 0
-        z: 5.001
+        z: 9.723296
       Rotation:
         value:
-          x: 0.49497575
-          y: 0.50497425
-          z: 0.50497437
-          w: 0.49497575
+          x: 0.45911178
+          y: 0.532986
+          z: 0.5370472
+          w: 0.46553475
     - Position:
         x: 0
-        y: -4
-        z: 0
+        y: 9.067291
+        z: 1
       TangentIn:
         x: 0
         y: 0
@@ -968,23 +968,23 @@ MonoBehaviour:
           z: 0.70710665
           w: 0.7071069
     - Position:
-        x: 50
-        y: -5
+        x: 98
+        y: -5.0326843
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -5.001
+        z: -9.901419
       TangentOut:
         x: 0
         y: 0
-        z: 5.001
+        z: 9.901419
       Rotation:
         value:
-          x: 0.50497437
-          y: 0.49497575
-          z: 0.49497575
-          w: 0.50497425
+          x: 0.53638846
+          y: 0.4661943
+          z: 0.4598622
+          w: 0.5324255
     m_MetaData:
     - Mode: 0
       Tension: 0.5
@@ -1934,7 +1934,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHandSize: 3
   cardPrefab: {fileID: 2760218032604098404, guid: e9f876a3a386ec14cb37a3066635afbd, type: 3}
-  cardVisualPrefab: {fileID: 3666049675579439563, guid: 6f7a5afce622bf14abb1a4e8aa7af0c9, type: 3}
+  cardVisualPrefab: {fileID: 2248159105353123652, guid: 577769f58554b8c4ebb0c18de6743ddf, type: 3}
   splineContainer: {fileID: 497655734}
   spawnPoint: {fileID: 863526694}
 --- !u!4 &824569434
@@ -2366,8 +2366,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 733211278}
-  - {fileID: 404987797}
   - {fileID: 861752948}
+  - {fileID: 404987797}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
