@@ -49,12 +49,7 @@ namespace Utils {
                 Debug.LogWarning($"Sprite not found for card: {spriteName}");
             }
 
-            var card = new Card {
-                value = value,
-                type = type,
-                suit = suit,
-                sprite = sprite
-            };
+            var card = new Card(value: value, type: type, suit: suit, sprite: sprite);
 
             deck.cards.Add(card);
         }

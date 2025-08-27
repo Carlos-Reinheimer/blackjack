@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Deck;
 using TMPEffects.Components;
 using TMPro;
@@ -40,9 +41,8 @@ namespace Controllers.Sides {
     
     public abstract class SideController : MonoBehaviour {
         
-        private const int TargetValue = 21;
-
         [Header("Settings")]
+        public int targetValue = 21;
         public SideType side;
         
         [Header("Prefabs")]
@@ -63,7 +63,8 @@ namespace Controllers.Sides {
         private int _currentScore;
         private InitialParams _initialParams;
         protected int CurrentCardSum;
-        protected List<GameObject> ActiveCards;
+        protected List<Card> ActiveCards;
+        protected List<GameObject> ActiveCardsGo;
 
         private readonly Dictionary<Operation, string> _operationsToString = new() {
             { Operation.Add, "+" },
@@ -80,17 +81,38 @@ namespace Controllers.Sides {
         }
 
         private void Start() {
-            ActiveCards = new List<GameObject>();
+            ActiveCards = new List<Card>();
+            ActiveCardsGo = new List<GameObject>();
+        }
+
+        private int GetBestPossibleSum(int newTempTotal) {
+            var aces = ActiveCards.Where(card => card.type == CardType.Ace).ToList();
+            var acesCount = aces.Count;
+            if (acesCount == 0) return newTempTotal;
+            
+            var totalWithoutAces = ActiveCards.Where(card => card.type != CardType.Ace && card.type != CardType.Joker).Sum(card => card.value);
+            var totalAllAcesSecondValue = ActiveCards.Where(card => card.type == CardType.Ace).Sum(card => card.secondValue);
+            var virtualTotal = totalWithoutAces + totalAllAcesSecondValue;
+                
+            while (virtualTotal > targetValue && acesCount > 0) {
+                acesCount--;
+                virtualTotal -= 10;
+            }
+            
+            return virtualTotal;
         }
         
         private void UpdateTotalSum(int value , UnityAction callback = null) {
             var previousCardSum = CurrentCardSum;
-            CurrentCardSum += value;
+            
+            // verify Aces here
+            var tempTotal = CurrentCardSum + value;
+            CurrentCardSum = GetBestPossibleSum(tempTotal);
 
             currentSumText.UpdateTargetValues(previousCardSum, CurrentCardSum);
             currentSumText.StartTween();
 
-            if (CurrentCardSum > TargetValue) HandleCrossTargetValue();
+            if (CurrentCardSum > targetValue) HandleCrossTargetValue();
             else callback?.Invoke();
         }
 
@@ -178,7 +200,8 @@ namespace Controllers.Sides {
             
             cardController.OnInstantiated(side);
             cardVisual.StartVisual(cardController, card.value);
-            ActiveCards.Add(newCard);
+            ActiveCards.Add(card);
+            ActiveCardsGo.Add(newCard);
             OnCardInstantiated(cardController, card);
         }
         
@@ -189,11 +212,12 @@ namespace Controllers.Sides {
         public void ResetHand() {
             CurrentCardSum = 0;
             UpdateTotalSum(CurrentCardSum);
-            foreach (var activeCard in ActiveCards) {
+            foreach (var activeCard in ActiveCardsGo) {
                 Destroy(activeCard);
             }
             
             ActiveCards.Clear();
+            ActiveCardsGo.Clear();
         }
 
         public void SetInitialParams(InitialParams initialParams) {

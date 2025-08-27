@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Controllers.Sides;
 using TMPro;
 using UI_Controllers;
@@ -17,7 +18,6 @@ namespace Controllers {
         [Header("Data")]
         public DeckSo deck;
         public Transform visualHandlerTransform;
-        // public DeckPile2D deckPile2D;
 
         [Header("Settings")]
         public int initialCardsCount = 4;
@@ -59,7 +59,6 @@ namespace Controllers {
 
         private void StartGame() {
             _availableCards = new List<Card>(deck.cards);
-            // deckPile2D.Initialize(_availableCards.Count);
             
             // set initial params for Dealer
             GetCurrentSideController().SetInitialParams(new InitialParams {
@@ -145,6 +144,7 @@ namespace Controllers {
         public void InstantiateNewCard() {
             var randomCard = Random.Range(0, _availableCards.Count);
             var deckCard = _availableCards[randomCard];
+            // var findAce = _availableCards.FirstOrDefault(card => card.type == CardType.Ace);
                 
             GetCurrentSideController().InstantiateNewCard(deckCard, visualHandlerTransform);
             _availableCards.Remove(deckCard);

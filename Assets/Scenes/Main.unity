@@ -3925,64 +3925,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1292779719
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1292779721}
-  - component: {fileID: 1292779720}
-  m_Layer: 0
-  m_Name: Deck Pile
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1292779720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1292779719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfd0b14468f302e4889d847ef9860495, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  origin: {fileID: 0}
-  cardBack: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
-  spriteMaterial: {fileID: 0}
-  sortingLayerBase: 100
-  xOffsetPerCard: 0.1
-  yOffsetPerCard: 0.1
-  zOffsetPerCard: 0.001
-  maxVisible: 52
-  popDuration: 0.18
-  popWorldDirection: {x: 1.2, y: 1}
-  popRotation: 12
-  popScale: 0.95
-  fullDeckSize: 52
-  deckCount: 52
---- !u!4 &1292779721
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1292779719}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1321839101
 GameObject:
   m_ObjectHideFlags: 0
@@ -4367,6 +4309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a849f5fd9a39fb449c03c4dc0c1fcc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetValue: 21
   side: 1
   cardPrefab: {fileID: 2760218032604098404, guid: e9f876a3a386ec14cb37a3066635afbd, type: 3}
   cardVisualPrefab: {fileID: 3666049675579439563, guid: 6f7a5afce622bf14abb1a4e8aa7af0c9, type: 3}
@@ -5969,6 +5912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b89bcf598ccb6f4dbe0da09ea2f0e32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetValue: 21
   side: 0
   cardPrefab: {fileID: 2760218032604098404, guid: e9f876a3a386ec14cb37a3066635afbd, type: 3}
   cardVisualPrefab: {fileID: 3666049675579439563, guid: 6f7a5afce622bf14abb1a4e8aa7af0c9, type: 3}
@@ -6097,7 +6041,6 @@ SceneRoots:
   - {fileID: 1786766252}
   - {fileID: 969432344}
   - {fileID: 824569434}
-  - {fileID: 1292779721}
   - {fileID: 427891609}
   - {fileID: 525319312}
   - {fileID: 933159197}
