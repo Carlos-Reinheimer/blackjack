@@ -57,6 +57,7 @@ namespace Controllers.Sides {
         protected InitialParams initialParams;
         
         private List<GameObject> _activeCardsGo;
+        private List<GameObject> _activeCardsVisuals;
 
         protected abstract void OnCardInstantiated(GeneralCardVisual cardController, Card card);
         protected abstract void OnStand();
@@ -68,6 +69,7 @@ namespace Controllers.Sides {
         private void Start() {
             activeCards = new List<Card>();
             _activeCardsGo = new List<GameObject>();
+            _activeCardsVisuals = new List<GameObject>();
         }
 
         private int GetBestPossibleSum(int newTempTotal) {
@@ -113,12 +115,14 @@ namespace Controllers.Sides {
             var cardVisual = (DefaultCardVisual)newCardVisual.GetComponent<GeneralCardVisual>();
             
             activeCards.Add(card);
+            _activeCardsGo.Add(newCard);
+            _activeCardsVisuals.Add(newCardVisual);
+            
             cardController.OnInstantiated(side);
             
             var shouldFlip = side == SideType.Player || side == SideType.Dealer && activeCards.Count > 1;
             cardVisual.StartVisual(cardController, card.value, shouldFlip);
             
-            _activeCardsGo.Add(newCard);
             OnCardInstantiated(cardVisual, card);
         }
         
@@ -129,8 +133,9 @@ namespace Controllers.Sides {
         public void ResetHand() {
             currentCardSum = 0;
             UpdateTotalSum(currentCardSum);
-            foreach (var activeCard in _activeCardsGo) {
-                Destroy(activeCard);
+            for (var i = 0; i < _activeCardsGo.Count; i++) {
+                    Destroy(_activeCardsGo[i]);
+                    Destroy(_activeCardsVisuals[i]);
             }
             
             activeCards.Clear();
