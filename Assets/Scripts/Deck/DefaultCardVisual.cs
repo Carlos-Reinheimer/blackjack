@@ -79,9 +79,9 @@ namespace Deck {
             seq.append(() => rt.anchoredPosition = origin);
         }
         
-        public void StartVisual(CardController parentCard, int cardValue) {
+        public void StartVisual(CardController parentCard, int cardValue, bool autoFlip = true) {
             valueText.text = cardValue.ToString();
-            InitiateCardVisual(parentCard);
+            InitiateCardVisual(parentCard, autoFlip);
         }
     }
 }

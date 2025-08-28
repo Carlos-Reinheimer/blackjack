@@ -26,12 +26,8 @@ namespace Controllers.Sides {
             { Operation.Divide, "/" },
         };
         
-        protected override void OnCardInstantiated(CardController cardController, Card card) {
+        protected override void OnCardInstantiated(GeneralCardVisual cardVisual, Card card) {
             HandleInstantiatedCard(card);
-        }
-
-        protected override void OnFinishStand(UnityAction callback) {
-            callback?.Invoke();
         }
 
         protected override void OnStand() {
@@ -102,7 +98,7 @@ namespace Controllers.Sides {
                 _currentOperationIndex = 0;
                 _operations.Clear();
                 isDecreasingScore = false;
-                OnFinishStand(initialParams.standCallback);
+                initialParams.standCallback?.Invoke();
                 return;
             }
 

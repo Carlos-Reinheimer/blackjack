@@ -1,4 +1,6 @@
+using System.Collections;
 using Deck;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Controllers.Sides {
@@ -6,13 +8,13 @@ namespace Controllers.Sides {
         
         private const int StandValue = 17;
         
-        private CardController _holdCardController;
+        private GeneralCardVisual _cardInHold;
         private Card _holdCard;
         
-        protected override void OnCardInstantiated(CardController cardController, Card card) {
+        protected override void OnCardInstantiated(GeneralCardVisual cardVisual, Card card) {
             var activeCardCount = activeCards.Count;
             if (activeCardCount == 1) {
-                _holdCardController = cardController;
+                _cardInHold = cardVisual;
                 _holdCard = card;
                 return;
             }
@@ -20,21 +22,24 @@ namespace Controllers.Sides {
             HandleInstantiatedCard(card, activeCardCount == 2 ? null : HandleNewSum);
         }
 
-        protected override void OnFinishStand(UnityAction callback) {
-            callback?.Invoke();
-        }
-
         protected override void OnStand() { }
 
-        private void HandleNewSum() {
+        private IEnumerator CalculateSum() {
+            yield return new WaitForSeconds(1);
+            
             if (currentCardSum < StandValue) MainController.Instance.InstantiateNewCard();
-            else OnFinishStand(initialParams.standCallback);
+            else initialParams.standCallback?.Invoke();
+        }
+
+        private void HandleNewSum() {
+            StartCoroutine(CalculateSum());
         }
 
         public void ReleaseCurrentHoldCard() {
             // handling the "hold" card that is the first card of the dealer
+            _cardInHold.FlipCard();
             HandleInstantiatedCard(_holdCard, HandleNewSum);
-            _holdCardController = null;
+            _cardInHold = null;
             _holdCard = null;
         }
     }

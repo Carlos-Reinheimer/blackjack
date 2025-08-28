@@ -58,8 +58,7 @@ namespace Controllers.Sides {
         
         private List<GameObject> _activeCardsGo;
 
-        protected abstract void OnCardInstantiated(CardController cardController, Card card);
-        protected abstract void OnFinishStand(UnityAction callback);
+        protected abstract void OnCardInstantiated(GeneralCardVisual cardController, Card card);
         protected abstract void OnStand();
 
         protected void HandleInstantiatedCard(Card card, UnityAction callback = null) {
@@ -98,7 +97,7 @@ namespace Controllers.Sides {
             currentSumText.UpdateTargetValues(previousCardSum, currentCardSum);
             currentSumText.StartTween();
 
-            if (currentCardSum > targetValue) HandleCrossTargetValue();
+            if (side == SideType.Player && currentCardSum > targetValue) HandleCrossTargetValue();
             else callback?.Invoke();
         }
         
@@ -113,11 +112,14 @@ namespace Controllers.Sides {
             var cardController = newCard.GetComponent<CardController>();
             var cardVisual = (DefaultCardVisual)newCardVisual.GetComponent<GeneralCardVisual>();
             
-            cardController.OnInstantiated(side);
-            cardVisual.StartVisual(cardController, card.value);
             activeCards.Add(card);
+            cardController.OnInstantiated(side);
+            
+            var shouldFlip = side == SideType.Player || side == SideType.Dealer && activeCards.Count > 1;
+            cardVisual.StartVisual(cardController, card.value, shouldFlip);
+            
             _activeCardsGo.Add(newCard);
-            OnCardInstantiated(cardController, card);
+            OnCardInstantiated(cardVisual, card);
         }
         
         public void Stand() {

@@ -30,14 +30,13 @@ namespace Deck {
         protected abstract void OnEndDrag(CardController baseCard);
         protected abstract void OnPointerDown(CardController baseCard);
         
-        protected void InitiateCardVisual(CardController parentCard) {
+        protected void InitiateCardVisual(CardController parentCard, bool autoFlip) {
             var tf = transform;
             card = parentCard;
             baseCardTf = card.transform;
             rt = (RectTransform)tf;
-            
-            // rotate animation
-            LeanTween.rotate(gameObject, new Vector3(0, 180, 0), 0.5f);
+
+            if (autoFlip) FlipCard();
             
             card.onPointerEnterEvent.AddListener(OnPointerEnter);
             card.onPointerExitEvent.AddListener(OnPointerExit);
@@ -71,7 +70,11 @@ namespace Deck {
         }
         
         public void StartVisual(CardController parentCard) {
-            InitiateCardVisual(parentCard);
+            InitiateCardVisual(parentCard, true); // for jokers
+        }
+
+        public void FlipCard() {
+            LeanTween.rotate(gameObject, new Vector3(0, 180, 0), 0.5f);
         }
     }
 }
