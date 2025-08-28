@@ -10,7 +10,7 @@ namespace Controllers.Sides {
         private Card _holdCard;
         
         protected override void OnCardInstantiated(CardController cardController, Card card) {
-            var activeCardCount = ActiveCards.Count;
+            var activeCardCount = activeCards.Count;
             if (activeCardCount == 1) {
                 _holdCardController = cardController;
                 _holdCard = card;
@@ -23,10 +23,12 @@ namespace Controllers.Sides {
         protected override void OnFinishStand(UnityAction callback) {
             callback?.Invoke();
         }
-        
+
+        protected override void OnStand() { }
+
         private void HandleNewSum() {
-            if (CurrentCardSum < StandValue) MainController.Instance.InstantiateNewCard();
-            else Stand();
+            if (currentCardSum < StandValue) MainController.Instance.InstantiateNewCard();
+            else OnFinishStand(initialParams.standCallback);
         }
 
         public void ReleaseCurrentHoldCard() {

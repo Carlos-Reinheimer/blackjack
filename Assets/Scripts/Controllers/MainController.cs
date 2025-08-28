@@ -144,7 +144,6 @@ namespace Controllers {
         public void InstantiateNewCard() {
             var randomCard = Random.Range(0, _availableCards.Count);
             var deckCard = _availableCards[randomCard];
-            // var findAce = _availableCards.FirstOrDefault(card => card.type == CardType.Ace);
                 
             GetCurrentSideController().InstantiateNewCard(deckCard, visualHandlerTransform);
             _availableCards.Remove(deckCard);
