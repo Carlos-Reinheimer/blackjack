@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda3247f2896c6b4caabf2b1667600e8, type: 3}
+  m_Name: Base Game Rules
+  m_EditorClassIdentifier: 
+  targetValue: 21
+  initialPlayersLifeChipValue: 3
+  roundSettings:
+  - dealersLifeChips: 1
+  - dealersLifeChips: 2
+  - dealersLifeChips: 3
+  - dealersLifeChips: 4
+  - dealersLifeChips: 5
+  - dealersLifeChips: 6
+  - dealersLifeChips: 7
+  - dealersLifeChips: 8
+  - dealersLifeChips: 9
+  - dealersLifeChips: 10
+  - dealersLifeChips: 11
+  - dealersLifeChips: 12
+  - dealersLifeChips: 13
+  - dealersLifeChips: 14
+  - dealersLifeChips: 15
+  - dealersLifeChips: 16
+  - dealersLifeChips: 17
+  - dealersLifeChips: 18
+  - dealersLifeChips: 19
+  - dealersLifeChips: 20
+  - dealersLifeChips: 21

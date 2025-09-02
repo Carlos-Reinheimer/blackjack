@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Controllers.Sides;
+using Scriptable_Objects;
 using TMPro;
 using UI_Controllers;
 using UnityEngine;
@@ -11,6 +11,10 @@ using Random = UnityEngine.Random;
 namespace Controllers {
     public class MainController : MonoBehaviour {
 
+        [Header("Rules")]
+        public GameRules gameRules;
+        
+        [Header("Scripts")]
         public SideController dealersSide;
         public SideController playersSide;
         public NextRoundTransitionCanvasUIController nextRoundCanvas;
@@ -29,7 +33,7 @@ namespace Controllers {
         public TMP_Text cardsLeftText;
         public List<Button> actionButtons;
         
-        private int _currentRound;
+        private int _currentRound = -1;
         private List<Card> _availableCards;
         private SideType _currentPlayingSide = SideType.Dealer;
         
@@ -60,9 +64,19 @@ namespace Controllers {
         private void StartGame() {
             _availableCards = new List<Card>(deck.cards);
             
+            HandleNewRound();
+            SetInitialParams();
+            UpdateCardsLeftCount();
+            UpdateActionButtonsState(false);
+            
+            StartCoroutine(DealCards());
+        }
+
+        private void SetInitialParams() {
             // set initial params for Dealer
             GetCurrentSideController().SetInitialParams(new InitialParams {
-                standCallback = RestartRound
+                standCallback = CheckWhoWon,
+                initialLives = gameRules.roundSettings[_currentRound].dealersLifeChips
             });
             
             // update to player
@@ -70,16 +84,13 @@ namespace Controllers {
             
             // set initial params for Player
             GetCurrentSideController().SetInitialParams(new InitialParams {
-                standCallback = HandlePlayersStand
+                standCallback = HandlePlayersStand,
+                initialLives = gameRules.initialPlayersLifeChipValue
             });
-            UpdateCardsLeftCount();
-            UpdateActionButtonsState(false);
-            HandleNewRound();
-            
-            StartCoroutine(DealCards());
         }
 
         private IEnumerator DealCards() {
+            UpdateCurrentPlayersSide(SideType.Dealer);
             for (var i = 0; i < initialCardsCount; i++) {
                 yield return new WaitForSeconds(delayBetweenDealing);
                 InstantiateNewCard();
@@ -96,19 +107,79 @@ namespace Controllers {
             var dealersSideController = (DealersSideController)GetCurrentSideController();
             dealersSideController.ReleaseCurrentHoldCard();
         }
+
+        private void CheckWhoWon() {
+            var dealersTotal = GetCurrentSideController().currentCardSum;
+            UpdateCurrentPlayersSide(SideType.Player);
+            var playersTotal = GetCurrentSideController().currentCardSum;
+         
+            // TODO: if player is busted, Dealer only turns their card and calls OnStand()
+            var targetValue = gameRules.targetValue;
+
+            if (playersTotal == dealersTotal) {
+                Debug.Log("Draw");
+                NextMatch();
+                return;
+            }
+            
+            if (playersTotal > targetValue) {
+                HandleDealersWon();
+                return;
+            }
+
+            if (dealersTotal > targetValue) {
+                HandlePlayersWon();
+                return;
+            }
+
+            if (playersTotal > dealersTotal) {
+                HandlePlayersWon();
+                return;
+            }
+            
+            HandleDealersWon();
+        }
+
+        private void HandlePlayersWon() {
+            Debug.Log("Player has won");
+            playersSide.ReceiveChip(1);
+            dealersSide.TakeChip(1, NextMatch, RestartRound);
+        }
+
+        private void HandleDealersWon() {
+            Debug.Log("Dealer has won");
+            dealersSide.ReceiveChip(1);
+            playersSide.TakeChip(1, NextMatch, RestartRound);
+        }
+
+        private void NextMatch() {
+            ResetHands();
+            DealCardsAgain();
+        }
         
         private void RestartRound() {
+            ResetHands();
+            HandleNewRound();
+            UpdateDealerLivesChips();
+            nextRoundCanvas.UpdateRoundValue(_currentRound, DealCardsAgain);
+        }
+
+        private void UpdateDealerLivesChips() {
+            Debug.Log("_currentRound: " + _currentRound);
+            Debug.Log("gameRules.roundSettings[_currentRound].dealersLifeChips: "+ gameRules.roundSettings[_currentRound].dealersLifeChips);
+            dealersSide.UpdateLivesChipsAmount(gameRules.roundSettings[_currentRound].dealersLifeChips);
+        }
+
+        private void ResetHands() {
+            UpdateCurrentPlayersSide(SideType.Dealer);
             GetCurrentSideController().ResetHand();
             UpdateCurrentPlayersSide(SideType.Player);
             GetCurrentSideController().ResetHand();
-            HandleNewRound();
-
-            nextRoundCanvas.UpdateRoundValue(_currentRound, DealCardsAgain);
         }
 
         private void HandleNewRound() {
             _currentRound += 1;
-            UpdateRoundUI(_currentRound);
+            UpdateRoundUI(_currentRound + 1);
         }
 
         private void UpdateRoundUI(int value) {
@@ -158,5 +229,7 @@ namespace Controllers {
             UpdateActionButtonsState(false);
             GetCurrentSideController().Stand();
         }
+
+        public int GetCurrentTargetValue() => gameRules.targetValue;
     }
 }

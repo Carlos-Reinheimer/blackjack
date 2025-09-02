@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Deck;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using Utils.UI_Animations;
@@ -28,19 +29,24 @@ namespace Controllers.Sides {
     
     public class InitialParams {
         public UnityAction standCallback;
+        public int initialLives;
         
         public InitialParams() { }
 
         public InitialParams(InitialParams initialParams) {
             standCallback = initialParams.standCallback;
+            initialLives = initialParams.initialLives;
         }
     }
     
     public abstract class SideController : MonoBehaviour {
         
         [Header("Settings")]
-        public int targetValue = 21;
         public SideType side;
+        
+        [Header("Helpers")]
+        public int currentCardSum;
+        public int livesChips;
         
         [Header("Prefabs")]
         public GameObject cardPrefab;
@@ -49,9 +55,9 @@ namespace Controllers.Sides {
         [Header("UI")]
         public Transform cardsContentTf;
         public UpdateValueOverTimeTween currentSumText;
+        public TMP_Text livesChipsText;
 
         protected bool isDecreasingScore;
-        protected int currentCardSum;
         protected List<Card> activeCards;
         protected int currentScore;
         protected InitialParams initialParams;
@@ -81,7 +87,7 @@ namespace Controllers.Sides {
             var totalAllAcesSecondValue = activeCards.Where(card => card.type == CardType.Ace).Sum(card => card.secondValue);
             var virtualTotal = totalWithoutAces + totalAllAcesSecondValue;
                 
-            while (virtualTotal > targetValue && acesCount > 0) {
+            while (virtualTotal > MainController.Instance.GetCurrentTargetValue() && acesCount > 0) {
                 acesCount--;
                 virtualTotal -= 10;
             }
@@ -99,7 +105,7 @@ namespace Controllers.Sides {
             currentSumText.UpdateTargetValues(previousCardSum, currentCardSum);
             currentSumText.StartTween();
 
-            if (side == SideType.Player && currentCardSum > targetValue) HandleCrossTargetValue();
+            if (side == SideType.Player && currentCardSum > MainController.Instance.GetCurrentTargetValue()) HandleCrossTargetValue();
             else callback?.Invoke();
         }
         
@@ -140,10 +146,34 @@ namespace Controllers.Sides {
             
             activeCards.Clear();
             _activeCardsGo.Clear();
+            _activeCardsVisuals.Clear();
         }
 
         public void SetInitialParams(InitialParams @params) {
             initialParams = new InitialParams(@params);
+            UpdateLivesChipsAmount(initialParams.initialLives);
+        }
+
+        public void TakeChip(int amount, UnityAction nextMatchCallback = null, UnityAction chipEndCallback = null) {
+            UpdateLivesChipsAmount(livesChips -= amount);
+            if (livesChips > 0) {
+                nextMatchCallback?.Invoke();
+                return;
+            }
+
+            UpdateLivesChipsAmount(0);
+            chipEndCallback?.Invoke();
+        }
+
+        public void ReceiveChip(int amount, UnityAction nextMatchCallback = null) {
+            UpdateLivesChipsAmount(livesChips += amount);
+            
+            nextMatchCallback?.Invoke();
+        }
+        
+        public void UpdateLivesChipsAmount(int amount) {
+            livesChips = amount;
+            livesChipsText.text = livesChips.ToString();
         }
     }
 }
