@@ -4,7 +4,6 @@ using Deck;
 using TMPEffects.Components;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using Utils.UI_Animations;
 
 namespace Controllers.Sides {
@@ -36,11 +35,7 @@ namespace Controllers.Sides {
 
         private void UpdateCurrentScore(int newValue) {
             var previousScore = currentScore;
-            if (isDecreasingScore) {
-                currentScore -= newValue;
-                if (currentScore <= 0) currentScore = 0;
-            }
-            else currentScore += newValue;
+            currentScore += newValue;
 
             var finalScore = currentScore <= 0 ? 0 : currentScore;
             UpdateScoreUI(previousScore, finalScore);
@@ -97,7 +92,6 @@ namespace Controllers.Sides {
             if (_currentOperationIndex == _operations.Count) {
                 _currentOperationIndex = 0;
                 _operations.Clear();
-                isDecreasingScore = false;
                 initialParams.standCallback?.Invoke();
                 return;
             }

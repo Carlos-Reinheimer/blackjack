@@ -35,10 +35,10 @@ namespace Controllers.Sides {
             StartCoroutine(CalculateSum());
         }
 
-        public void ReleaseCurrentHoldCard() {
+        public void ReleaseCurrentHoldCard(UnityAction handleInstantiatedCardCallback = null) {
             // handling the "hold" card that is the first card of the dealer
             _cardInHold.FlipCard();
-            HandleInstantiatedCard(_holdCard, HandleNewSum);
+            HandleInstantiatedCard(_holdCard, handleInstantiatedCardCallback ?? HandleNewSum);
             _cardInHold = null;
             _holdCard = null;
         }

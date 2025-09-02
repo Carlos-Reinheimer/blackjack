@@ -29,12 +29,14 @@ namespace Controllers.Sides {
     
     public class InitialParams {
         public UnityAction standCallback;
+        public UnityAction bustedCallback;
         public int initialLives;
         
         public InitialParams() { }
 
         public InitialParams(InitialParams initialParams) {
             standCallback = initialParams.standCallback;
+            bustedCallback = initialParams.bustedCallback;
             initialLives = initialParams.initialLives;
         }
     }
@@ -47,6 +49,7 @@ namespace Controllers.Sides {
         [Header("Helpers")]
         public int currentCardSum;
         public int livesChips;
+        public bool isBusted;
         
         [Header("Prefabs")]
         public GameObject cardPrefab;
@@ -57,7 +60,6 @@ namespace Controllers.Sides {
         public UpdateValueOverTimeTween currentSumText;
         public TMP_Text livesChipsText;
 
-        protected bool isDecreasingScore;
         protected List<Card> activeCards;
         protected int currentScore;
         protected InitialParams initialParams;
@@ -95,7 +97,7 @@ namespace Controllers.Sides {
             return virtualTotal;
         }
         
-        private void UpdateTotalSum(int value , UnityAction callback = null) {
+        private void UpdateTotalSum(int value, UnityAction callback = null) {
             var previousCardSum = currentCardSum;
             
             // verify Aces here
@@ -105,13 +107,13 @@ namespace Controllers.Sides {
             currentSumText.UpdateTargetValues(previousCardSum, currentCardSum);
             currentSumText.StartTween();
 
-            if (side == SideType.Player && currentCardSum > MainController.Instance.GetCurrentTargetValue()) HandleCrossTargetValue();
+            if (currentCardSum > MainController.Instance.GetCurrentTargetValue()) HandleCrossTargetValue();
             else callback?.Invoke();
         }
         
         private void HandleCrossTargetValue() {
-            isDecreasingScore = true;
-            OnStand();
+            isBusted = true;
+            initialParams.bustedCallback?.Invoke();
         }
         
         public void InstantiateNewCard(Card card, Transform visualHandlerTf) {
@@ -138,7 +140,8 @@ namespace Controllers.Sides {
 
         public void ResetHand() {
             currentCardSum = 0;
-            UpdateTotalSum(currentCardSum);
+            isBusted = false;
+            
             for (var i = 0; i < _activeCardsGo.Count; i++) {
                     Destroy(_activeCardsGo[i]);
                     Destroy(_activeCardsVisuals[i]);
@@ -147,6 +150,7 @@ namespace Controllers.Sides {
             activeCards.Clear();
             _activeCardsGo.Clear();
             _activeCardsVisuals.Clear();
+            UpdateTotalSum(currentCardSum);
         }
 
         public void SetInitialParams(InitialParams @params) {

@@ -76,6 +76,7 @@ namespace Controllers {
             // set initial params for Dealer
             GetCurrentSideController().SetInitialParams(new InitialParams {
                 standCallback = CheckWhoWon,
+                bustedCallback = HandlePlayersWon,
                 initialLives = gameRules.roundSettings[_currentRound].dealersLifeChips
             });
             
@@ -85,6 +86,7 @@ namespace Controllers {
             // set initial params for Player
             GetCurrentSideController().SetInitialParams(new InitialParams {
                 standCallback = HandlePlayersStand,
+                bustedCallback = HandlePlayersStand,
                 initialLives = gameRules.initialPlayersLifeChipValue
             });
         }
@@ -103,9 +105,10 @@ namespace Controllers {
         
         private void HandlePlayersStand() {
             UpdateCurrentPlayersSide(SideType.Dealer);
-            
+
+            var isPlayerBusted = playersSide.isBusted;
             var dealersSideController = (DealersSideController)GetCurrentSideController();
-            dealersSideController.ReleaseCurrentHoldCard();
+            dealersSideController.ReleaseCurrentHoldCard(isPlayerBusted ? HandleDealersWon : null);
         }
 
         private void CheckWhoWon() {
@@ -165,8 +168,6 @@ namespace Controllers {
         }
 
         private void UpdateDealerLivesChips() {
-            Debug.Log("_currentRound: " + _currentRound);
-            Debug.Log("gameRules.roundSettings[_currentRound].dealersLifeChips: "+ gameRules.roundSettings[_currentRound].dealersLifeChips);
             dealersSide.UpdateLivesChipsAmount(gameRules.roundSettings[_currentRound].dealersLifeChips);
         }
 
