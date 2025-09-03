@@ -68,7 +68,6 @@ namespace Controllers.Sides {
         private List<GameObject> _activeCardsVisuals;
 
         protected abstract void OnCardInstantiated(GeneralCardVisual cardController, Card card);
-        protected abstract void OnStand();
 
         protected void HandleInstantiatedCard(Card card, UnityAction callback = null) {
             UpdateTotalSum(card.value, callback);
@@ -135,7 +134,7 @@ namespace Controllers.Sides {
         }
         
         public void Stand() {
-            OnStand();
+            initialParams.standCallback?.Invoke();
         }
 
         public void ResetHand() {
@@ -158,7 +157,7 @@ namespace Controllers.Sides {
             UpdateLivesChipsAmount(initialParams.initialLives);
         }
 
-        public void TakeChip(int amount, UnityAction nextMatchCallback = null, UnityAction chipEndCallback = null) {
+        public void TakeChip(int amount, UnityAction nextMatchCallback = null, UnityAction noChipsLeftCallback = null) {
             UpdateLivesChipsAmount(livesChips -= amount);
             if (livesChips > 0) {
                 nextMatchCallback?.Invoke();
@@ -166,13 +165,13 @@ namespace Controllers.Sides {
             }
 
             UpdateLivesChipsAmount(0);
-            chipEndCallback?.Invoke();
+            noChipsLeftCallback?.Invoke();
         }
 
-        public void ReceiveChip(int amount, UnityAction nextMatchCallback = null) {
+        public void ReceiveChip(int amount, UnityAction callback = null) {
             UpdateLivesChipsAmount(livesChips += amount);
             
-            nextMatchCallback?.Invoke();
+            callback?.Invoke();
         }
         
         public void UpdateLivesChipsAmount(int amount) {

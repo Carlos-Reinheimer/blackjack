@@ -21,9 +21,7 @@ namespace Controllers.Sides {
             
             HandleInstantiatedCard(card, activeCardCount == 2 ? null : HandleNewSum);
         }
-
-        protected override void OnStand() { }
-
+        
         private IEnumerator CalculateSum() {
             yield return new WaitForSeconds(1);
             

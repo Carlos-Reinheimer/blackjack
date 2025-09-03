@@ -9,6 +9,8 @@ using Utils.UI_Animations;
 namespace Controllers.Sides {
     public class PlayersSideController : SideController {
         
+        public event Action LoopCompleted;
+        
         [Header("UI")]
         public UpdateValueOverTimeTween scoreText;
         public TMP_Text comboText;
@@ -27,10 +29,6 @@ namespace Controllers.Sides {
         
         protected override void OnCardInstantiated(GeneralCardVisual cardVisual, Card card) {
             HandleInstantiatedCard(card);
-        }
-
-        protected override void OnStand() {
-            StartOperations();
         }
 
         private void UpdateCurrentScore(int newValue) {
@@ -64,7 +62,7 @@ namespace Controllers.Sides {
             UpdateCurrentScore((int)newScore);
         }
         
-        private void StartOperations() {
+        public void StartOperations() {
             _operations ??= new List<OperationData>();
             
             _operations.Add(new OperationData {
@@ -92,7 +90,7 @@ namespace Controllers.Sides {
             if (_currentOperationIndex == _operations.Count) {
                 _currentOperationIndex = 0;
                 _operations.Clear();
-                initialParams.standCallback?.Invoke();
+                LoopCompleted?.Invoke();
                 return;
             }
 

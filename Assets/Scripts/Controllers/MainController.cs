@@ -15,8 +15,8 @@ namespace Controllers {
         public GameRules gameRules;
         
         [Header("Scripts")]
-        public SideController dealersSide;
-        public SideController playersSide;
+        public DealersSideController dealersSide;
+        public PlayersSideController playersSide;
         public NextRoundTransitionCanvasUIController nextRoundCanvas;
 
         [Header("Data")]
@@ -49,13 +49,15 @@ namespace Controllers {
             private static MainController _instance;
         #endregion
         
-        // private void OnEnable() {
-        //     SceneLoader.OnSceneLoadCompleteCallback += StartGame;
-        // }
-        //
-        // private void OnDisable() {
-        //     SceneLoader.OnSceneLoadCompleteCallback -= StartGame;
-        // }
+        private void OnEnable() {
+            // SceneLoader.OnSceneLoadCompleteCallback += StartGame;
+            playersSide.LoopCompleted += HandlePlayersChips;
+        }
+        
+        private void OnDisable() {
+            // SceneLoader.OnSceneLoadCompleteCallback -= StartGame;
+            playersSide.LoopCompleted -= HandlePlayersChips;
+        }
 
         private void Start() {
             StartGame();
@@ -107,8 +109,7 @@ namespace Controllers {
             UpdateCurrentPlayersSide(SideType.Dealer);
 
             var isPlayerBusted = playersSide.isBusted;
-            var dealersSideController = (DealersSideController)GetCurrentSideController();
-            dealersSideController.ReleaseCurrentHoldCard(isPlayerBusted ? HandleDealersWon : null);
+            dealersSide.ReleaseCurrentHoldCard(isPlayerBusted ? HandleDealersWon : null);
         }
 
         private void CheckWhoWon() {
@@ -145,14 +146,18 @@ namespace Controllers {
 
         private void HandlePlayersWon() {
             Debug.Log("Player has won");
-            playersSide.ReceiveChip(1);
-            dealersSide.TakeChip(1, NextMatch, RestartRound);
+            playersSide.StartOperations();
         }
 
         private void HandleDealersWon() {
             Debug.Log("Dealer has won");
             dealersSide.ReceiveChip(1);
             playersSide.TakeChip(1, NextMatch, RestartRound);
+        }
+
+        private void HandlePlayersChips() {
+            playersSide.ReceiveChip(1);
+            dealersSide.TakeChip(1, NextMatch, RestartRound);
         }
 
         private void NextMatch() {
