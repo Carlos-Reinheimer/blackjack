@@ -106,8 +106,15 @@ namespace Controllers.Sides {
             currentSumText.UpdateTargetValues(previousCardSum, currentCardSum);
             currentSumText.StartTween();
 
-            if (currentCardSum > MainController.Instance.GetCurrentTargetValue()) HandleCrossTargetValue();
+            var targetValue = MainController.Instance.GetCurrentTargetValue();
+            if (currentCardSum > targetValue) HandleCrossTargetValue();
+            else if (currentCardSum == targetValue) HandleBlackjack();
             else callback?.Invoke();
+        }
+
+        private void HandleBlackjack() {
+            // handle visuals and stuff here
+            Stand();
         }
         
         private void HandleCrossTargetValue() {

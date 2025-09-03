@@ -56,6 +56,7 @@ MonoBehaviour:
   shadowYDownValue: 15
   shadowYDownDuration: 0.1
   followSpeed: 30
+  scaleTween: {fileID: 413078329628817012}
   valueText: {fileID: 8688229227955898835}
   scaleMultiplier: 0.2
   scaleDuration: 0.2
@@ -85,7 +86,7 @@ MonoBehaviour:
   delay: 0
   easeType: 14
   loopType: 36
-  startOnEnabled: 1
+  startOnEnabled: 0
   targetVector: {x: 1, y: 1, z: 1}
   startAtZeroScale: 1
 --- !u!1 &4327702634322993587
