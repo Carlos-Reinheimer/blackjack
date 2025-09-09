@@ -17,259 +17,311 @@ MonoBehaviour:
     secondValue: -1
     type: 0
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Two
   - value: 3
     secondValue: -1
     type: 0
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Three
   - value: 4
     secondValue: -1
     type: 0
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Four
   - value: 5
     secondValue: -1
     type: 0
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Five
   - value: 6
     secondValue: -1
     type: 0
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Six
   - value: 7
     secondValue: -1
     type: 0
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Seven
   - value: 8
     secondValue: -1
     type: 0
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Eight
   - value: 9
     secondValue: -1
     type: 0
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Nine
   - value: 10
     secondValue: -1
     type: 0
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Ten
   - value: 10
     secondValue: -1
     type: 1
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Jack
   - value: 10
     secondValue: -1
     type: 1
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Queen
   - value: 10
     secondValue: -1
     type: 1
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: King
   - value: 1
     secondValue: 11
     type: 2
     suit: 0
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Ace
   - value: 2
     secondValue: -1
     type: 0
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Two
   - value: 3
     secondValue: -1
     type: 0
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Three
   - value: 4
     secondValue: -1
     type: 0
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Four
   - value: 5
     secondValue: -1
     type: 0
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Five
   - value: 6
     secondValue: -1
     type: 0
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Six
   - value: 7
     secondValue: -1
     type: 0
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Seven
   - value: 8
     secondValue: -1
     type: 0
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Eight
   - value: 9
     secondValue: -1
     type: 0
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Nine
   - value: 10
     secondValue: -1
     type: 0
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Ten
   - value: 10
     secondValue: -1
     type: 1
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Jack
   - value: 10
     secondValue: -1
     type: 1
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Queen
   - value: 10
     secondValue: -1
     type: 1
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: King
   - value: 1
     secondValue: 11
     type: 2
     suit: 1
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Ace
   - value: 2
     secondValue: -1
     type: 0
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Two
   - value: 3
     secondValue: -1
     type: 0
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Three
   - value: 4
     secondValue: -1
     type: 0
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Four
   - value: 5
     secondValue: -1
     type: 0
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Five
   - value: 6
     secondValue: -1
     type: 0
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Six
   - value: 7
     secondValue: -1
     type: 0
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Seven
   - value: 8
     secondValue: -1
     type: 0
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Eight
   - value: 9
     secondValue: -1
     type: 0
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Nine
   - value: 10
     secondValue: -1
     type: 0
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Ten
   - value: 10
     secondValue: -1
     type: 1
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Jack
   - value: 10
     secondValue: -1
     type: 1
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Queen
   - value: 10
     secondValue: -1
     type: 1
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: King
   - value: 1
     secondValue: 11
     type: 2
     suit: 2
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Ace
   - value: 2
     secondValue: -1
     type: 0
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Two
   - value: 3
     secondValue: -1
     type: 0
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Three
   - value: 4
     secondValue: -1
     type: 0
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Four
   - value: 5
     secondValue: -1
     type: 0
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Five
   - value: 6
     secondValue: -1
     type: 0
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Six
   - value: 7
     secondValue: -1
     type: 0
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Seven
   - value: 8
     secondValue: -1
     type: 0
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Eight
   - value: 9
     secondValue: -1
     type: 0
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Nine
   - value: 10
     secondValue: -1
     type: 0
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Ten
   - value: 10
     secondValue: -1
     type: 1
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Jack
   - value: 10
     secondValue: -1
     type: 1
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Queen
   - value: 10
     secondValue: -1
     type: 1
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: King
   - value: 1
     secondValue: 11
     type: 2
     suit: 3
-    sprite: {fileID: -2839918845090013739, guid: a1f56c08f3ea0224494e66c2a515fff3, type: 3}
+    sprite: {fileID: 0}
+    name: Ace

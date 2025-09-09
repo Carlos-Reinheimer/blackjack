@@ -21,23 +21,28 @@ public enum CardSuit
 [Serializable]
 public class Card {
     public int value;
-    public int secondValue = -1;
+    public int secondValue;
     public CardType type;
     public CardSuit suit;
     public Sprite sprite;
+    public string name;
 
     public Card(Card card) {
         value = card.value;
+        secondValue = card.secondValue;
         type = card.type;
         suit = card.suit;
         sprite = card.sprite;
+        name = card.name;
     }
     
-    public Card(int value, CardType type, CardSuit suit, Sprite sprite) {
+    public Card(int value, int secondValue, CardType type, CardSuit suit, Sprite sprite, string name) {
         this.value = value;
+        this.secondValue = secondValue;
         this.type = type;
         this.suit = suit;
         this.sprite = sprite;
+        this.name = name;
     }
 }
 

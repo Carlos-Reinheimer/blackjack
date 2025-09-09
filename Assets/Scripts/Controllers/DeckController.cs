@@ -11,7 +11,7 @@ namespace Controllers {
         public List<DeckSo> decks;
 
         [Header("Settings")] 
-        public int cardsLeftBeforeAutoShuffle = 47;
+        public int cardsLeftBeforeAutoShuffle = 3;
         
         [Header("UI")]
         public TMP_Text cardsLeftText;
@@ -61,13 +61,12 @@ namespace Controllers {
         }
 
         private void BuildCardsDictionary(int totalAmountOfCards) {
-            // composed key is: _deckCount_CardType_CardSuit_value
+            // composed key is: _deckCount_CardType_CardSuit_name_value
             _cardLookupDict = new Dictionary<string, Card>(totalAmountOfCards);
             
             for (var i = 0; i < decks.Count; i++) {
                 foreach (var card in decks[i].cards) {
-                    Debug.Log("$\"{i}_{card.type}_{card.suit}_{card.value}\": " + $"{i}_{card.type}_{card.suit}_{card.value}");
-                    _cardLookupDict[$"{i}_{card.type}_{card.suit}_{card.value}"] = card;
+                    _cardLookupDict[$"{i}_{card.type}_{card.suit}_{card.name}_{card.value}"] = card;
                 }
             }
         }

@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,23 +17,21 @@ namespace Utils {
                 deck = ScriptableObject.CreateInstance<DeckSo>();
                 AssetDatabase.CreateAsset(deck, deckPath);
             }
-            Debug.Log(deck);
-            deck.cards.Clear();
 
-            foreach (CardSuit suit in System.Enum.GetValues(typeof(CardSuit))) {
+            foreach (CardSuit suit in Enum.GetValues(typeof(CardSuit))) {
                 for (var i = 2; i <= 10; i++) {
-                    AddCard(deck, i, CardType.SingleValue, suit, spriteFolder);
+                    AddCard(deck, i, CardType.SingleValue, suit, spriteFolder, GetCardNameByValue(i));
                 }
 
-                AddCard(deck, 10, CardType.Faced, suit, spriteFolder); // Jack
-                AddCard(deck, 10, CardType.Faced, suit, spriteFolder); // Queen
-                AddCard(deck, 10, CardType.Faced, suit, spriteFolder); // King
-                AddCard(deck, 1, CardType.Ace, suit, spriteFolder);    // Ace
+                AddCard(deck, 10, CardType.Faced, suit, spriteFolder, "Jack"); // Jack
+                AddCard(deck, 10, CardType.Faced, suit, spriteFolder, "Queen"); // Queen
+                AddCard(deck, 10, CardType.Faced, suit, spriteFolder, "King"); // King
+                AddCard(deck, 1, CardType.Ace, suit, spriteFolder, "Ace");    // Ace
             }
 
             // Add Jokers
-            // AddCard(deck, 0, CardType.Joker, CardSuit.Spades, spriteFolder); // Black Joker
-            // AddCard(deck, 0, CardType.Joker, CardSuit.Hearts, spriteFolder); // Red Joker
+            // AddCard(deck, 0, CardType.Joker, CardSuit.Spades, spriteFolder, "BlackJoker"); // Black Joker
+            // AddCard(deck, 0, CardType.Joker, CardSuit.Hearts, spriteFolder, "RedJoker"); // Red Joker
 
             EditorUtility.SetDirty(deck);
             AssetDatabase.SaveAssets();
@@ -40,7 +39,7 @@ namespace Utils {
             Debug.Log("Deck populated successfully.");
         }
 
-        static void AddCard(DeckSo deck, int value, CardType type, CardSuit suit, string spriteFolder) {
+        static void AddCard(DeckSo deck, int value, CardType type, CardSuit suit, string spriteFolder, string cardName) {
             // var spriteName = GetCardSpriteName(value, type, suit);
             const string spriteName = "Default Card";
             var sprite = Resources.Load<Sprite>($"{spriteFolder}/{spriteName}");
@@ -49,14 +48,21 @@ namespace Utils {
                 Debug.LogWarning($"Sprite not found for card: {spriteName}");
             }
 
-            var card = new Card(value: value, type: type, suit: suit, sprite: sprite);
+            var isAce = type == CardType.Ace;
+            var card = new Card(
+                value: value, 
+                secondValue: isAce ? 11 : -1, 
+                type: type, 
+                suit: suit, 
+                sprite: sprite,
+                name: cardName
+                );
 
             deck.cards.Add(card);
         }
 
         static string GetCardSpriteName(int value, CardType type, CardSuit suit) {
-            if (type == CardType.Joker)
-                return suit == CardSuit.Hearts ? "JokerRed" : "JokerBlack";
+            if (type == CardType.Joker) return suit == CardSuit.Hearts ? "JokerRed" : "JokerBlack";
 
             var rank = value switch {
                 1 => "A",
@@ -67,6 +73,22 @@ namespace Utils {
             };
 
             return $"{rank}_of_{suit}";
+        }
+        
+        static string GetCardNameByValue(int value) {
+            var cardName = value switch {
+                2 => "Two",
+                3 => "Three",
+                4 => "Four",
+                5 => "Five",
+                6 => "Six",
+                7 => "Seven",
+                8 => "Eight",
+                9 => "Nine",
+                _ => "Ten"
+            };
+
+            return cardName;
         }
     }
 }
