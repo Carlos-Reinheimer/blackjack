@@ -2415,20 +2415,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameRules: {fileID: 11400000, guid: 2aa7774743b624c45bbe0db24be3773d, type: 2}
+  deckController: {fileID: 1708634446}
   dealersSide: {fileID: 1468829537}
   playersSide: {fileID: 2097728523}
   nextRoundCanvas: {fileID: 1132755824}
-  deck: {fileID: 11400000, guid: 1d0888767df26d8429144acc3e0013dd, type: 2}
-  visualHandlerTransform: {fileID: 2041932178}
   initialCardsCount: 4
-  restartTimer: 2
   delayBetweenDealing: 0.5
   roundText: {fileID: 1893925216}
-  cardsLeftText: {fileID: 471099651}
   actionButtons:
   - {fileID: 1477097360}
   - {fileID: 978508352}
   - {fileID: 940607678}
+  visualHandlerTransform: {fileID: 2041932178}
 --- !u!1 &978508350
 GameObject:
   m_ObjectHideFlags: 0
@@ -4156,6 +4154,7 @@ MonoBehaviour:
   side: 1
   currentCardSum: 0
   livesChips: 0
+  isBusted: 0
   cardPrefab: {fileID: 2760218032604098404, guid: e9f876a3a386ec14cb37a3066635afbd, type: 3}
   cardVisualPrefab: {fileID: 3666049675579439563, guid: 6f7a5afce622bf14abb1a4e8aa7af0c9, type: 3}
   cardsContentTf: {fileID: 1917685442}
@@ -4783,6 +4782,54 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 264.86383}
   m_SizeDelta: {x: 0, y: 529.7277}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1708634445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1708634447}
+  - component: {fileID: 1708634446}
+  m_Layer: 0
+  m_Name: Deck Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1708634446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708634445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07489b42ddca7d4bb4d4215b84419dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decks:
+  - {fileID: 11400000, guid: 1d0888767df26d8429144acc3e0013dd, type: 2}
+  cardsLeftBeforeAutoShuffle: 3
+  cardsLeftText: {fileID: 471099651}
+--- !u!4 &1708634447
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708634445}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1720874838
 GameObject:
   m_ObjectHideFlags: 0
@@ -5781,6 +5828,7 @@ MonoBehaviour:
   side: 0
   currentCardSum: 0
   livesChips: 0
+  isBusted: 0
   cardPrefab: {fileID: 2760218032604098404, guid: e9f876a3a386ec14cb37a3066635afbd, type: 3}
   cardVisualPrefab: {fileID: 3666049675579439563, guid: 6f7a5afce622bf14abb1a4e8aa7af0c9, type: 3}
   cardsContentTf: {fileID: 1004519394}
@@ -6044,6 +6092,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1786766252}
   - {fileID: 969432344}
+  - {fileID: 1708634447}
   - {fileID: 824569434}
   - {fileID: 427891609}
   - {fileID: 525319312}

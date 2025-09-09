@@ -6,35 +6,29 @@ using TMPro;
 using UI_Controllers;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace Controllers {
     public class MainController : MonoBehaviour {
 
-        [Header("Rules")]
+        [Header("Game Definitions")]
         public GameRules gameRules;
-        
-        [Header("Scripts")]
+
+        [Header("Scripts")] 
+        public DeckController deckController;
         public DealersSideController dealersSide;
         public PlayersSideController playersSide;
         public NextRoundTransitionCanvasUIController nextRoundCanvas;
 
-        [Header("Data")]
-        public DeckSo deck;
-        public Transform visualHandlerTransform;
-
         [Header("Settings")]
         public int initialCardsCount = 4;
-        public float restartTimer = 2;
         public float delayBetweenDealing = 1;
 
         [Header("UI")]
         public TMP_Text roundText;
-        public TMP_Text cardsLeftText;
         public List<Button> actionButtons;
+        public Transform visualHandlerTransform;
         
         private int _currentRound = -1;
-        private List<Card> _availableCards;
         private SideType _currentPlayingSide = SideType.Dealer;
         
         #region Singleton
@@ -60,15 +54,12 @@ namespace Controllers {
         }
 
         private void Start() {
-            StartGame();
+            deckController.StartGame(StartFirstRound);
         }
 
-        private void StartGame() {
-            _availableCards = new List<Card>(deck.cards);
-            
+        private void StartFirstRound() {
             HandleNewRound();
             SetInitialParams();
-            UpdateCardsLeftCount();
             UpdateActionButtonsState(false);
             
             StartCoroutine(DealCards());
@@ -116,8 +107,6 @@ namespace Controllers {
             var dealersTotal = GetCurrentSideController().currentCardSum;
             UpdateCurrentPlayersSide(SideType.Player);
             var playersTotal = GetCurrentSideController().currentCardSum;
-         
-            // TODO: if player is busted, Dealer only turns their card and calls OnStand()
             var targetValue = gameRules.targetValue;
 
             if (playersTotal == dealersTotal) {
@@ -192,10 +181,6 @@ namespace Controllers {
             roundText.text = $"Round {value}/21";
         }
 
-        private void UpdateCardsLeftCount() {
-            cardsLeftText.text = _availableCards.Count.ToString();
-        }
-
         private void DealCardsAgain() {
             StartCoroutine(DealCards());
         }
@@ -219,12 +204,9 @@ namespace Controllers {
         }
         
         public void InstantiateNewCard() {
-            var randomCard = Random.Range(0, _availableCards.Count);
-            var deckCard = _availableCards[randomCard];
+            var randomCard = deckController.DrawTopCard();
                 
-            GetCurrentSideController().InstantiateNewCard(deckCard, visualHandlerTransform);
-            _availableCards.Remove(deckCard);
-            UpdateCardsLeftCount();
+            GetCurrentSideController().InstantiateNewCard(randomCard, visualHandlerTransform);
         }
         
         public void HitMe() {
