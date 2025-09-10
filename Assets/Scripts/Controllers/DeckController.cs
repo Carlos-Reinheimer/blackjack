@@ -45,17 +45,18 @@ namespace Controllers {
                 lastItems.AddRange(_drawOrder);
             }
             
+            var totalCardsCount = _cardsCount - lastItems.Count; // lastItems is empty most of the time
             _drawOrder?.Clear();
-            _drawOrder = Enumerable.Range(0, _cardsCount).ToList(); // to avoid messing up the original list
+            _drawOrder = Enumerable.Range(0, totalCardsCount).ToList(); // to avoid messing up the original list
             // Fisher-Yates shuffle algorithm
-            var n = _cardsCount;  
+            var n = totalCardsCount;  
             while (n > 1) {  
                 n--;  
                 var k = _rng.Next(n + 1);  
                 (_drawOrder[k], _drawOrder[n]) = (_drawOrder[n], _drawOrder[k]);
-            } 
-            
-            if (lastItems.Count == 0 ) return;
+            }
+
+            if (lastItems.Count <= 0) return;
             _drawOrder.AddRange(lastItems);
             lastItems.Clear();
         }
@@ -91,9 +92,7 @@ namespace Controllers {
             var index = _drawOrder[^1]; // last one
             _drawOrder.RemoveAt(_drawOrder.Count - 1);
             _cardLookupDict.TryGetValue(_shoe[index], out var card);
-            
             if (_drawOrder.Count <= cardsLeftBeforeAutoShuffle) AddCardsAndShuffle();
-            
             UpdateCardsLeftCount();
             return card;
         }
