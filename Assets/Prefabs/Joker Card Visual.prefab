@@ -131,6 +131,7 @@ MonoBehaviour:
   shadowYDownValue: 15
   shadowYDownDuration: 0.1
   followSpeed: 30
+  scaleTween: {fileID: 8698607860551760482}
   yUpAmount: 15
   yUpAmountDuration: 0.1
 --- !u!114 &8698607860551760482

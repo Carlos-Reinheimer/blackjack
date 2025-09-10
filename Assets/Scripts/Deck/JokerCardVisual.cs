@@ -1,3 +1,4 @@
+using Controllers;
 using UnityEngine;
 
 namespace Deck {
@@ -25,7 +26,8 @@ namespace Deck {
         protected override void OnBeginDrag(CardController baseCard) { }
         protected override void OnEndDrag(CardController baseCard) { }
         protected override void OnPointerDown(CardController baseCard) {
-            Debug.Log("click");
+            Debug.Log("Joker click");
+            DeckController.Instance.CleanDeckShuffle();
         }
     }
 }
