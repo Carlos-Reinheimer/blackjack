@@ -23,8 +23,6 @@ namespace Controllers {
         private int _deckCount;
         private int _cardsCount;
 
-        private List<string> _shoe; // list of card keys (from the lookup dict) | NOT shuffled
-        
         #region Singleton
         public static DeckController Instance {
             get {
@@ -37,29 +35,6 @@ namespace Controllers {
         private static DeckController _instance;
         #endregion
 
-        private void RelateKeysToIndex(int cardsCount) {
-            // to remove specific cards, I need to have a reference between the key and their index in the _drawOrder
-            // this will have to be updated each time a card is removed || the deck is shuffled
-            
-            // TODO: continue from here!
-            
-            _keyToIndexReference = new Dictionary<string, int>(cardsCount);
-            for (var i = 0; i < decks.Count; i++) {
-                foreach (var card in decks[i].cards) {
-                    _keyToIndexReference[$"{i}_{card.type}_{card.suit}_{card.name}_{card.value}"] = 0;
-                }
-            }
-        }
-        
-        private void AssembleShoe(int totalAmountOfCards) {
-            Debug.Log("Assembling shoe...");
-            // building the Shoe for multiple decks
-            _shoe = new List<string>(totalAmountOfCards);
-            foreach (var card in _cardLookupDict) {
-                _shoe.Add(card.Key);
-            }
-        }
-
         private List<int> FisherYatesShuffle(List<int> targetList, int totalCount) {
             var n = totalCount;
             while (n > 1) {  
@@ -71,16 +46,28 @@ namespace Controllers {
             return targetList;
         }
 
-        // private void DebugDrawOrder(string title) {
-        //     Debug.Log($"-------- {title} --------");
-        //     Debug.Log(string.Join(", ", _drawOrder));
-        //     Debug.Log($"-------------------------");
-        // }
+        private void DebugDrawOrder(string title) {
+            Debug.Log($"-------- {title} --------");
+            Debug.Log(string.Join(", ", _drawOrder));
+            Debug.Log($"-------------------------");
+        }
+
+        private void SetKeyToIndexReference() {
+            _keyToIndexReference = new Dictionary<string, int>(_drawOrder.Count);
+            foreach (var index in _drawOrder) {
+                _keyToIndexReference[_cardLookupDict.ElementAt(index).Key] = index;
+            }
+        }
+
+        private void RemoveIndexFromReference(string key) {
+            _keyToIndexReference.Remove(key);
+        }
 
         private void ResetDrawOrder(int cardsCount) {
             _drawOrder?.Clear();
-            _drawOrder = Enumerable.Range(0, cardsCount).ToList(); // to avoid messing up the original list
+            _drawOrder = Enumerable.Range(0, cardsCount).ToList();
             _drawOrder = FisherYatesShuffle(_drawOrder, cardsCount);
+            SetKeyToIndexReference();
         }
 
         private void ShuffleCurrentDeck() {
@@ -88,8 +75,8 @@ namespace Controllers {
 
             var lastItems = new List<int>();
             if (_drawOrder?.Count > 0) {
-                Debug.Log($"Trying to shuffle while there are {_drawOrder.Count} cards left");
                 // here, I need to save {cardsLeftBeforeAutoShuffle} and add it at the end of the new shuffled list
+                Debug.Log($"Trying to shuffle while there are {_drawOrder.Count} cards left");
                 lastItems.AddRange(_drawOrder);
             }
             
@@ -101,18 +88,14 @@ namespace Controllers {
             lastItems.Clear();
         }
 
-        public void CleanDeckShuffle() {
-            Debug.Log("Performing a clean deck shuffle");
-            ResetDrawOrder(_cardsCount);
-        }
-
-        private void BuildCardsDictionary(int totalAmountOfCards) {
+        private void BuildCardsDictionary() {
             // composed key is: _deckCount_CardType_CardSuit_name_value
-            _cardLookupDict = new Dictionary<string, Card>(totalAmountOfCards);
+            _cardLookupDict = new Dictionary<string, Card>(_cardsCount);
             
             for (var i = 0; i < decks.Count; i++) {
                 foreach (var card in decks[i].cards) {
-                    _cardLookupDict[$"{i}_{card.type}_{card.suit}_{card.name}_{card.value}"] = card;
+                    var key = $"{i}_{card.type}_{card.suit}_{card.name}_{card.value}";
+                    _cardLookupDict[key] = card;
                 }
             }
         }
@@ -125,8 +108,7 @@ namespace Controllers {
             _rng = new System.Random(); // set seed here
             _cardsCount = decks.Sum(deck => deck.cards.Count);
 
-            BuildCardsDictionary(_cardsCount);
-            AssembleShoe(_cardsCount);
+            BuildCardsDictionary();
             ShuffleCurrentDeck();
             UpdateCardsLeftCount();
             callback?.Invoke();
@@ -135,11 +117,20 @@ namespace Controllers {
         public Card DrawTopCard() {
             if (_drawOrder == null || _drawOrder.Count == 0) return null;
             var index = _drawOrder[^1]; // last one
+            var key = _cardLookupDict.ElementAt(index).Key;
+            
             _drawOrder.RemoveAt(_drawOrder.Count - 1);
-            _cardLookupDict.TryGetValue(_shoe[index], out var card);
+            _cardLookupDict.TryGetValue(key, out var card);
+            RemoveIndexFromReference(key);
+            
             if (_drawOrder.Count <= cardsLeftBeforeAutoShuffle) ShuffleCurrentDeck();
             UpdateCardsLeftCount();
             return card;
+        }
+        
+        public void CleanDeckShuffle() {
+            Debug.Log("Performing a clean deck shuffle");
+            ResetDrawOrder(_cardsCount);
         }
 
         public int GetCardsLeft() => _drawOrder.Count;
