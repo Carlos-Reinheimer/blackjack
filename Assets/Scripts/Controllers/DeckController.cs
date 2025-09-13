@@ -129,8 +129,16 @@ namespace Controllers {
         }
         
         public void CleanDeckShuffle() {
-            Debug.Log("Performing a clean deck shuffle");
-            ResetDrawOrder(_cardsCount);
+            var removedKeys = CardKeying.RemoveAllMatching(
+                _keyToIndexReference, 
+                new CardKeying.CardFilter(
+                    value: 7
+                ));
+            
+            Debug.Log("count: " + removedKeys.Count);
+            Debug.Log("removedKeys: " + string.Join(", ", removedKeys));
+            // Debug.Log("Performing a clean deck shuffle");
+            // ResetDrawOrder(_cardsCount);
         }
 
         public int GetCardsLeft() => _drawOrder.Count;
