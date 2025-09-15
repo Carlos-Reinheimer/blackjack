@@ -134,9 +134,14 @@ namespace Controllers {
                 new CardKeying.CardFilter(
                     value: 7
                 ));
+
+            foreach (var key in removedKeys) {
+                _keyToIndexReference.TryGetValue(key, out var drawOrderIndex);
+                _drawOrder.Remove(drawOrderIndex);
+                _keyToIndexReference.Remove(key);
+            }
+            UpdateCardsLeftCount();
             
-            Debug.Log("count: " + removedKeys.Count);
-            Debug.Log("removedKeys: " + string.Join(", ", removedKeys));
             // Debug.Log("Performing a clean deck shuffle");
             // ResetDrawOrder(_cardsCount);
         }

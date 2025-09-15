@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Controllers {
     
@@ -24,9 +25,9 @@ namespace Controllers {
         public class CardFilter {
             public int? deckIndex { get; private set; }
             public CardType? type { get; private set; }
-            public CardSuit? suit { get; private set; }          // null = any; set => case-insensitive compare
-            public string name { get; private set; }          // null = any
-            public int? value { get; private set; }           // null = any
+            public CardSuit? suit { get; private set; } // null = any
+            public string name { get; private set; } // null = any
+            public int? value { get; private set; } // null = any
             
             public CardFilter (int? deckIndex = null, CardType? type = null, CardSuit? suit = null, string name = null, int? value = null) {
                 this.deckIndex = deckIndex;
@@ -74,8 +75,20 @@ namespace Controllers {
                 if (kvp.Key is string keyStr && Matches(keyStr, f)) toRemove.Add(kvp.Key);
             }
 
+            // I don't think I want to remove them here, but it's possible
             // foreach (var k in toRemove) dict.Remove(k);
+            if (toRemove.Count == 0) Debug.Log("No cards to remove!");
             return toRemove;
+        }
+        
+        public static List<TKey> FindAnyMatching<TKey, TValue>(IDictionary<TKey, TValue> dict, CardFilter f) where TKey : notnull {
+            var found = new List<TKey>();
+            foreach (var kvp in dict) {
+                if (kvp.Key is string keyStr && Matches(keyStr, f)) found.Add(kvp.Key);
+            }
+
+            if (found.Count == 0) Debug.Log("No cards found :(");
+            return found;
         }
         
         public static string BuildKey(int deckIndex, CardType type, CardSuit suit, string name, int value) {
