@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Interfaces;
 using UnityEngine;
 
 public enum CardType
@@ -18,25 +19,35 @@ public enum CardSuit
     Clubs
 }
 
+public enum JokerType
+{
+    Active,
+    Passive
+}
+
 [Serializable]
-public class Card {
+public class BaseCard {
+    public CardType type;
+    public string name;
+}
+
+[Serializable]
+public class DeckCard : BaseCard {
     public int value;
     public int secondValue;
-    public CardType type;
     public CardSuit suit;
     public Sprite sprite;
-    public string name;
-
-    public Card(Card card) {
-        value = card.value;
-        secondValue = card.secondValue;
-        type = card.type;
-        suit = card.suit;
-        sprite = card.sprite;
-        name = card.name;
+    
+    public DeckCard(DeckCard baseCard) {
+        value = baseCard.value;
+        secondValue = baseCard.secondValue;
+        type = baseCard.type;
+        suit = baseCard.suit;
+        sprite = baseCard.sprite;
+        name = baseCard.name;
     }
     
-    public Card(int value, int secondValue, CardType type, CardSuit suit, Sprite sprite, string name) {
+    public DeckCard(int value, int secondValue, CardType type, CardSuit suit, Sprite sprite, string name) {
         this.value = value;
         this.secondValue = secondValue;
         this.type = type;
@@ -46,9 +57,18 @@ public class Card {
     }
 }
 
+[Serializable]
+public class JokerCard: BaseCard {
+    public JokerType jokerType;
+    public bool isUnlocked = true;
+    public Sprite unlockedSprite;
+    public Sprite lockedSprite;
+    public IJoker iJoker;
+}
+
 [CreateAssetMenu(fileName = "Deck", menuName = "Scriptable Objects/DeckSO")]
 public class DeckSo : ScriptableObject {
     
-    public List<Card> cards;
-    
+    public List<DeckCard> deckCards;
+    public List<JokerCard> availableJokers;
 }

@@ -49,7 +49,7 @@ namespace Utils {
             }
 
             var isAce = type == CardType.Ace;
-            var card = new Card(
+            var card = new DeckCard(
                 value: value, 
                 secondValue: isAce ? 11 : -1, 
                 type: type, 
@@ -58,7 +58,7 @@ namespace Utils {
                 name: cardName
                 );
 
-            deck.cards.Add(card);
+            deck.deckCards.Add(card);
         }
 
         static string GetCardSpriteName(int value, CardType type, CardSuit suit) {

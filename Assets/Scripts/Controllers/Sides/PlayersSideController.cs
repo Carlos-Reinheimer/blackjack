@@ -27,8 +27,8 @@ namespace Controllers.Sides {
             { Operation.Divide, "/" },
         };
         
-        protected override void OnCardInstantiated(GeneralCardVisual cardVisual, Card card) {
-            HandleInstantiatedCard(card);
+        protected override void OnCardInstantiated(GeneralCardVisual cardVisual, DeckCard deckCard) {
+            HandleInstantiatedCard(deckCard);
         }
 
         private void UpdateCurrentScore(int newValue) {

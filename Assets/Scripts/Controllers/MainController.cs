@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Controllers.Sides;
+using Deck;
 using Scriptable_Objects;
 using TMPro;
 using UI_Controllers;
@@ -15,6 +16,7 @@ namespace Controllers {
 
         [Header("Scripts")] 
         public DeckController deckController;
+        public JokerHandManager jokerHandManager;
         public DealersSideController dealersSide;
         public PlayersSideController playersSide;
         public NextRoundTransitionCanvasUIController nextRoundCanvas;
@@ -205,8 +207,8 @@ namespace Controllers {
         
         public void InstantiateNewCard() {
             var randomCard = deckController.DrawTopCard();
-                
-            GetCurrentSideController().InstantiateNewCard(randomCard, visualHandlerTransform);
+            if (randomCard.type != CardType.Joker) GetCurrentSideController().InstantiateNewCard((DeckCard)randomCard, visualHandlerTransform);
+            else jokerHandManager.DrawCard((JokerCard)randomCard);
         }
         
         public void HitMe() {

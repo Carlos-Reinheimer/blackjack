@@ -9,17 +9,17 @@ namespace Controllers.Sides {
         private const int StandValue = 17;
         
         private GeneralCardVisual _cardInHold;
-        private Card _holdCard;
+        private DeckCard _holdDeckCard;
         
-        protected override void OnCardInstantiated(GeneralCardVisual cardVisual, Card card) {
+        protected override void OnCardInstantiated(GeneralCardVisual cardVisual, DeckCard deckCard) {
             var activeCardCount = activeCards.Count;
             if (activeCardCount == 1) {
                 _cardInHold = cardVisual;
-                _holdCard = card;
+                _holdDeckCard = deckCard;
                 return;
             }
             
-            HandleInstantiatedCard(card, activeCardCount == 2 ? null : HandleNewSum);
+            HandleInstantiatedCard(deckCard, activeCardCount == 2 ? null : HandleNewSum);
         }
         
         private IEnumerator CalculateSum() {
@@ -36,9 +36,9 @@ namespace Controllers.Sides {
         public void ReleaseCurrentHoldCard(UnityAction handleInstantiatedCardCallback = null) {
             // handling the "hold" card that is the first card of the dealer
             _cardInHold.FlipCard();
-            HandleInstantiatedCard(_holdCard, handleInstantiatedCardCallback ?? HandleNewSum);
+            HandleInstantiatedCard(_holdDeckCard, handleInstantiatedCardCallback ?? HandleNewSum);
             _cardInHold = null;
-            _holdCard = null;
+            _holdDeckCard = null;
         }
     }
 }

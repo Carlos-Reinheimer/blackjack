@@ -2416,6 +2416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameRules: {fileID: 11400000, guid: 2aa7774743b624c45bbe0db24be3773d, type: 2}
   deckController: {fileID: 1708634446}
+  jokerHandManager: {fileID: 824569433}
   dealersSide: {fileID: 1468829537}
   playersSide: {fileID: 2097728523}
   nextRoundCanvas: {fileID: 1132755824}

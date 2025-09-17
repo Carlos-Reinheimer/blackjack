@@ -14,23 +14,6 @@ namespace Deck {
 
         private readonly List<CardController> _handCards = new();
 
-        private void Update() {
-            if (Input.GetKeyDown(KeyCode.Space)) DrawCard();
-        }
-
-        private void DrawCard() {
-            if (_handCards.Count >= maxHandSize) return;
-            
-            var newCard = Instantiate(cardPrefab, spawnPoint);
-            var newCardVisual = Instantiate(cardVisualPrefab, spawnPoint);
-            var cardController = newCard.GetComponent<CardController>();
-            var cardVisual = newCardVisual.GetComponent<GeneralCardVisual>();
-            cardController.OnInstantiated(SideType.Player, CardType.Joker);
-            cardVisual.StartVisual(cardController);
-            _handCards.Add(cardController);
-            UpdateCardPositions();
-        }
-
         private void UpdateCardPositions() {
             if (_handCards.Count == 0) return;
 
@@ -50,5 +33,18 @@ namespace Deck {
             }
         }
 
+        public void DrawCard(JokerCard jokerCard) {
+            // TODO: continue from here
+            if (_handCards.Count >= maxHandSize) return;
+            
+            var newCard = Instantiate(cardPrefab, spawnPoint);
+            var newCardVisual = Instantiate(cardVisualPrefab, spawnPoint);
+            var cardController = newCard.GetComponent<CardController>();
+            var cardVisual = newCardVisual.GetComponent<GeneralCardVisual>();
+            cardController.OnInstantiated(SideType.Player, CardType.Joker);
+            cardVisual.StartVisual(cardController);
+            _handCards.Add(cardController);
+            UpdateCardPositions();
+        }
     }
 }

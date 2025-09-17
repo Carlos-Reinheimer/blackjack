@@ -60,21 +60,21 @@ namespace Controllers.Sides {
         public UpdateValueOverTimeTween currentSumText;
         public TMP_Text livesChipsText;
 
-        protected List<Card> activeCards;
+        protected List<DeckCard> activeCards;
         protected int currentScore;
         protected InitialParams initialParams;
         
         private List<GameObject> _activeCardsGo;
         private List<GameObject> _activeCardsVisuals;
 
-        protected abstract void OnCardInstantiated(GeneralCardVisual cardController, Card card);
+        protected abstract void OnCardInstantiated(GeneralCardVisual cardController, DeckCard DeckCard);
 
-        protected void HandleInstantiatedCard(Card card, UnityAction callback = null) {
-            UpdateTotalSum(card.value, callback);
+        protected void HandleInstantiatedCard(DeckCard deckCard, UnityAction callback = null) {
+            UpdateTotalSum(deckCard.value, callback);
         }
 
         private void Start() {
-            activeCards = new List<Card>();
+            activeCards = new List<DeckCard>();
             _activeCardsGo = new List<GameObject>();
             _activeCardsVisuals = new List<GameObject>();
         }
@@ -122,22 +122,22 @@ namespace Controllers.Sides {
             initialParams.bustedCallback?.Invoke();
         }
         
-        public void InstantiateNewCard(Card card, Transform visualHandlerTf) {
+        public void InstantiateNewCard(DeckCard deckCard, Transform visualHandlerTf) {
             var newCard = Instantiate(cardPrefab, cardsContentTf);
             var newCardVisual = Instantiate(cardVisualPrefab, visualHandlerTf);
             var cardController = newCard.GetComponent<CardController>();
             var cardVisual = (DefaultCardVisual)newCardVisual.GetComponent<GeneralCardVisual>();
             
-            activeCards.Add(card);
+            activeCards.Add(deckCard);
             _activeCardsGo.Add(newCard);
             _activeCardsVisuals.Add(newCardVisual);
             
             cardController.OnInstantiated(side);
             
             var shouldFlip = side == SideType.Player || side == SideType.Dealer && activeCards.Count > 1;
-            cardVisual.StartVisual(cardController, card.value, shouldFlip);
+            cardVisual.StartVisual(cardController, deckCard.value, shouldFlip);
             
-            OnCardInstantiated(cardVisual, card);
+            OnCardInstantiated(cardVisual, deckCard);
         }
         
         public void Stand() {

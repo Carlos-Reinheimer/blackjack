@@ -16,7 +16,7 @@ namespace Controllers {
         [Header("UI")]
         public TMP_Text cardsLeftText;
         
-        private Dictionary<string, Card> _cardLookupDict;
+        private Dictionary<string, BaseCard> _cardLookupDict;
         private Dictionary<string, int> _keyToIndexReference;
         private List<int> _drawOrder; // list of indexes | shuffled
         private System.Random _rng;
@@ -64,6 +64,7 @@ namespace Controllers {
         }
 
         private void ResetDrawOrder(int cardsCount) {
+            // TODO: I probably have to check this out again, but I'm unsure at the moment, so we ball fn
             _drawOrder?.Clear();
             _drawOrder = Enumerable.Range(0, cardsCount).ToList();
             _drawOrder = FisherYatesShuffle(_drawOrder, cardsCount);
@@ -90,10 +91,10 @@ namespace Controllers {
 
         private void BuildCardsDictionary() {
             // composed key is: _deckCount_CardType_CardSuit_name_value
-            _cardLookupDict = new Dictionary<string, Card>(_cardsCount);
+            _cardLookupDict = new Dictionary<string, BaseCard>(_cardsCount);
             
             for (var i = 0; i < decks.Count; i++) {
-                foreach (var card in decks[i].cards) {
+                foreach (var card in decks[i].deckCards) {
                     var key = $"{i}_{card.type}_{card.suit}_{card.name}_{card.value}";
                     _cardLookupDict[key] = card;
                 }
@@ -106,7 +107,7 @@ namespace Controllers {
         
         public void StartGame(UnityAction callback) {
             _rng = new System.Random(); // set seed here
-            _cardsCount = decks.Sum(deck => deck.cards.Count);
+            _cardsCount = decks.Sum(deck => deck.deckCards.Count);
 
             BuildCardsDictionary();
             ShuffleCurrentDeck();
@@ -114,7 +115,7 @@ namespace Controllers {
             callback?.Invoke();
         }
 
-        public Card DrawTopCard() {
+        public BaseCard DrawTopCard() {
             if (_drawOrder == null || _drawOrder.Count == 0) return null;
             var index = _drawOrder[^1]; // last one
             var key = _cardLookupDict.ElementAt(index).Key;
