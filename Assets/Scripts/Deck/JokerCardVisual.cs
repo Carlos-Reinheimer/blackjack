@@ -1,4 +1,5 @@
 using Controllers;
+using Scriptable_Objects;
 using UnityEngine;
 
 namespace Deck {
@@ -28,6 +29,10 @@ namespace Deck {
         protected override void OnPointerDown(CardController baseCard) {
             Debug.Log("Joker click");
             DeckController.Instance.CleanDeckShuffle();
+        }
+        
+        public void StartVisual(CardController parentCard, JokerCard jokerCard) {
+            InitiateCardVisual(parentCard, true); // for jokers
         }
     }
 }

@@ -1,11 +1,16 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils.UI_Animations;
 
 namespace Deck {
     public abstract class GeneralCardVisual : MonoBehaviour {
         
         [NonSerialized] private CardController card;
+
+        [Header("UI")] 
+        public Image frontSideImage;
+        public Image backSideImage;
 
         [Header("Shadow Parameters")] 
         [SerializeField] private GameObject shadow;
@@ -110,10 +115,6 @@ namespace Deck {
         }
 
         private bool IsAnimating() => _isFlipping || _isScaling;
-        
-        public void StartVisual(CardController parentCard) {
-            InitiateCardVisual(parentCard, true); // for jokers
-        }
 
         public void FlipCard() {
             _isFlipping = true;

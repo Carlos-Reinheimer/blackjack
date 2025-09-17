@@ -4814,6 +4814,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   decks:
   - {fileID: 11400000, guid: 1d0888767df26d8429144acc3e0013dd, type: 2}
+  gameJokers: {fileID: 11400000, guid: 408143436d6f8aa48a1ab09ce9fa7ffb, type: 2}
   cardsLeftBeforeAutoShuffle: 3
   cardsLeftText: {fileID: 471099651}
 --- !u!4 &1708634447

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Scriptable_Objects;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,6 +10,7 @@ namespace Controllers {
 
         [Header("Game Definitions")]
         public List<DeckSo> decks;
+        public GameJokers gameJokers;
 
         [Header("Settings")] 
         public int cardsLeftBeforeAutoShuffle = 3;
@@ -130,18 +132,18 @@ namespace Controllers {
         }
         
         public void CleanDeckShuffle() {
-            var removedKeys = CardKeying.RemoveAllMatching(
-                _keyToIndexReference, 
-                new CardKeying.CardFilter(
-                    value: 7
-                ));
-
-            foreach (var key in removedKeys) {
-                _keyToIndexReference.TryGetValue(key, out var drawOrderIndex);
-                _drawOrder.Remove(drawOrderIndex);
-                _keyToIndexReference.Remove(key);
-            }
-            UpdateCardsLeftCount();
+            // var removedKeys = CardKeying.RemoveAllMatching(
+            //     _keyToIndexReference, 
+            //     new CardKeying.CardFilter(
+            //         value: 7
+            //     ));
+            //
+            // foreach (var key in removedKeys) {
+            //     _keyToIndexReference.TryGetValue(key, out var drawOrderIndex);
+            //     _drawOrder.Remove(drawOrderIndex);
+            //     _keyToIndexReference.Remove(key);
+            // }
+            // UpdateCardsLeftCount();
             
             // Debug.Log("Performing a clean deck shuffle");
             // ResetDrawOrder(_cardsCount);

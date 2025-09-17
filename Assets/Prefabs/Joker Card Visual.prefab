@@ -127,6 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 289eac7fffd2d424da8e8df2724063b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frontSideImage: {fileID: 1061857481454059702}
+  backSideImage: {fileID: 486930911197251918}
   shadow: {fileID: 6563189934042941470}
   shadowYDownValue: 15
   shadowYDownDuration: 0.1

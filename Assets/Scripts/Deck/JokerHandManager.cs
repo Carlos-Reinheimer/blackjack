@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Controllers.Sides;
+using Scriptable_Objects;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -34,15 +35,15 @@ namespace Deck {
         }
 
         public void DrawCard(JokerCard jokerCard) {
-            // TODO: continue from here
             if (_handCards.Count >= maxHandSize) return;
             
             var newCard = Instantiate(cardPrefab, spawnPoint);
             var newCardVisual = Instantiate(cardVisualPrefab, spawnPoint);
             var cardController = newCard.GetComponent<CardController>();
-            var cardVisual = newCardVisual.GetComponent<GeneralCardVisual>();
+            var cardVisual = (JokerCardVisual)newCardVisual.GetComponent<GeneralCardVisual>();
+            
             cardController.OnInstantiated(SideType.Player, CardType.Joker);
-            cardVisual.StartVisual(cardController);
+            cardVisual.StartVisual(cardController, jokerCard);
             _handCards.Add(cardController);
             UpdateCardPositions();
         }

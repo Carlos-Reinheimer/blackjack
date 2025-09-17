@@ -57,18 +57,8 @@ public class DeckCard : BaseCard {
     }
 }
 
-[Serializable]
-public class JokerCard: BaseCard {
-    public JokerType jokerType;
-    public bool isUnlocked = true;
-    public Sprite unlockedSprite;
-    public Sprite lockedSprite;
-    public IJoker iJoker;
-}
-
 [CreateAssetMenu(fileName = "Deck", menuName = "Scriptable Objects/DeckSO")]
 public class DeckSo : ScriptableObject {
     
     public List<DeckCard> deckCards;
-    public List<JokerCard> availableJokers;
 }

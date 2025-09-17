@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d8783cf68dd0846b76e04cd960961a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frontSideImage: {fileID: 6393874753100581219}
+  backSideImage: {fileID: 1308134901662750277}
   shadow: {fileID: 5522942985751172618}
   shadowYDownValue: 15
   shadowYDownDuration: 0.1
