@@ -12,10 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948d31fb22f3b9842beed80470967756, type: 3}
   m_Name: Game Jokers
   m_EditorClassIdentifier: 
-  availableJokers:
-  - type: 0
-    name: 
-    jokerType: 0
-    isUnlocked: 0
-    unlockedSprite: {fileID: 0}
-    lockedSprite: {fileID: 0}
+  availableJokers: []
+  references:
+    version: 2
+    RefIds: []

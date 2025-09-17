@@ -11,12 +11,13 @@ namespace Scriptable_Objects {
         public bool isUnlocked = true;
         public Sprite unlockedSprite;
         public Sprite lockedSprite;
-        public IJoker iJoker;
+        [SerializeReference, SubclassSelector] public IJoker iJoker;
     }
     
     [CreateAssetMenu(fileName = "GameJokers", menuName = "Scriptable Objects/GameJokers")]
     public class GameJokers : ScriptableObject {
         
         public List<JokerCard> availableJokers;
+
     }
 }
