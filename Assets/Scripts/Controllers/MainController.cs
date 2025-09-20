@@ -88,10 +88,21 @@ namespace Controllers {
 
         private IEnumerator DealCards() {
             UpdateCurrentPlayersSide(SideType.Dealer);
-            for (var i = 0; i < initialCardsCount; i++) {
+            // for (var i = 0; i < initialCardsCount; i++) {
+            //     yield return new WaitForSeconds(delayBetweenDealing);
+            //     var shouldUpdateSides = InstantiateNewCard();
+            //     if (shouldUpdateSides) UpdateCurrentPlayersSide();
+            // }
+            var count = 0;
+            while (true){
                 yield return new WaitForSeconds(delayBetweenDealing);
-                InstantiateNewCard();
-                UpdateCurrentPlayersSide();
+                var shouldUpdateSides = InstantiateNewCard();
+                if (shouldUpdateSides) {
+                    count++;
+                    UpdateCurrentPlayersSide();
+                }
+                
+                if (count >= initialCardsCount) break;
             }
 
             UpdateCurrentPlayersSide(SideType.Player);
@@ -205,10 +216,28 @@ namespace Controllers {
             }
         }
         
-        public void InstantiateNewCard() {
-            var randomCard = deckController.DrawTopCard();
-            if (randomCard.type != CardType.Joker) GetCurrentSideController().InstantiateNewCard((DeckCard)randomCard, visualHandlerTransform);
-            else jokerHandManager.DrawCard((JokerCard)randomCard);
+        // public void InstantiateNewCard() {
+        //     while (true) {
+        //         var randomCard = deckController.DrawTopCard(GetCurrentSideController().side);
+        //         if (randomCard.type != CardType.Joker) GetCurrentSideController().InstantiateNewCard((DeckCard)randomCard, visualHandlerTransform);
+        //         else {
+        //             jokerHandManager.DrawCard((JokerCard)randomCard);
+        //             continue;
+        //         }
+        //
+        //         break;
+        //     }
+        // }
+        
+        public bool InstantiateNewCard() {
+            var randomCard = deckController.DrawTopCard(GetCurrentSideController().side);
+            if (randomCard.type != CardType.Joker) {
+                GetCurrentSideController().InstantiateNewCard((DeckCard)randomCard, visualHandlerTransform);
+                return true;
+            }
+
+            jokerHandManager.DrawCard((JokerCard)randomCard);
+            return false;
         }
         
         public void HitMe() {

@@ -5,20 +5,29 @@ using UnityEngine;
 namespace Controllers {
     
     public abstract class CardKeying {
-        
-        private struct ParsedKey {
+        public struct ParsedCardKey {
             public int DeckIndex;
             public CardType Type;
             public CardSuit Suit;
             public string Name;
             public int Value;
 
-            public ParsedKey(int deckIndex, CardType type, CardSuit suit, string name, int value) {
+            public ParsedCardKey(int deckIndex, CardType type, CardSuit suit, string name, int value) {
                 DeckIndex = deckIndex;
                 Type = type;
                 Suit = suit;
                 Name = name;
                 Value = value;
+            }
+        }
+        
+        public struct ParsedJokerKey {
+            public string Name;
+            public CardType Type;
+
+            public ParsedJokerKey(string name, CardType type) {
+                Name = name;
+                Type = type;
             }
         }
         
@@ -38,8 +47,10 @@ namespace Controllers {
             }
         }
         
-        private static bool IsKeyValid(string key, out ParsedKey parsed) {
-            parsed = default;
+        private static bool StringEquals(string a, string b) => string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
+        
+        public static bool IsCardKeyValid(string key, out ParsedCardKey parsedCard) {
+            parsedCard = default;
             if (string.IsNullOrEmpty(key)) return false;
 
             var parts = key.Split('_');
@@ -52,14 +63,27 @@ namespace Controllers {
             if (string.IsNullOrEmpty(name)) return false;
             if (!int.TryParse(parts[4], out var value)) return false;
 
-            parsed = new ParsedKey(deck, type, suit, name, value);
+            parsedCard = new ParsedCardKey(deck, type, suit, name, value);
             return true;
         }
         
-        private static bool StringEquals(string a, string b) => string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
+        public static bool IsJokerKeyValid(string key, out ParsedJokerKey parsedCard) {
+            parsedCard = default;
+            if (string.IsNullOrEmpty(key)) return false;
+
+            var parts = key.Split('_');
+            if (parts.Length != 2) return false;
+
+            var name = parts[0];
+            if (string.IsNullOrEmpty(name)) return false;
+            if (!Enum.TryParse(parts[1], ignoreCase: true, out CardType type)) return false;
+
+            parsedCard = new ParsedJokerKey(name, type);
+            return true;
+        }
         
         public static bool Matches(string key, CardFilter f) {
-            if (!IsKeyValid(key, out var k)) return false;
+            if (!IsCardKeyValid(key, out var k)) return false;
 
             return
                 (!f.deckIndex.HasValue || k.DeckIndex == f.deckIndex.Value) &&

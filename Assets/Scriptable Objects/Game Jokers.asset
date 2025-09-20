@@ -12,7 +12,90 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948d31fb22f3b9842beed80470967756, type: 3}
   m_Name: Game Jokers
   m_EditorClassIdentifier: 
-  availableJokers: []
+  availableJokers:
+  - type: 3
+    name: Joker 1
+    jokerType: 0
+    isUnlocked: 1
+    unlockedSprite: {fileID: 0}
+    lockedSprite: {fileID: 0}
+    iJoker:
+      rid: 928387344147415111
+  - type: 3
+    name: Joker 2
+    jokerType: 0
+    isUnlocked: 1
+    unlockedSprite: {fileID: 0}
+    lockedSprite: {fileID: 0}
+    iJoker:
+      rid: 928387344147415111
+  - type: 3
+    name: Joker 3
+    jokerType: 0
+    isUnlocked: 1
+    unlockedSprite: {fileID: 0}
+    lockedSprite: {fileID: 0}
+    iJoker:
+      rid: 928387344147415111
+  - type: 3
+    name: Joker 4
+    jokerType: 0
+    isUnlocked: 1
+    unlockedSprite: {fileID: 0}
+    lockedSprite: {fileID: 0}
+    iJoker:
+      rid: 928387344147415111
+  - type: 3
+    name: Joker 5
+    jokerType: 0
+    isUnlocked: 1
+    unlockedSprite: {fileID: 0}
+    lockedSprite: {fileID: 0}
+    iJoker:
+      rid: 928387344147415111
+  - type: 3
+    name: Joker 6
+    jokerType: 0
+    isUnlocked: 1
+    unlockedSprite: {fileID: 0}
+    lockedSprite: {fileID: 0}
+    iJoker:
+      rid: 928387344147415111
+  - type: 3
+    name: Joker 7
+    jokerType: 0
+    isUnlocked: 1
+    unlockedSprite: {fileID: 0}
+    lockedSprite: {fileID: 0}
+    iJoker:
+      rid: 928387344147415111
+  - type: 3
+    name: 8
+    jokerType: 0
+    isUnlocked: 1
+    unlockedSprite: {fileID: 0}
+    lockedSprite: {fileID: 0}
+    iJoker:
+      rid: 928387344147415111
+  - type: 3
+    name: Joker 9
+    jokerType: 0
+    isUnlocked: 1
+    unlockedSprite: {fileID: 0}
+    lockedSprite: {fileID: 0}
+    iJoker:
+      rid: 928387344147415111
+  - type: 3
+    name: Joker 10
+    jokerType: 0
+    isUnlocked: 1
+    unlockedSprite: {fileID: 0}
+    lockedSprite: {fileID: 0}
+    iJoker:
+      rid: 928387344147415111
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 928387344147415111
+      type: {class: BrokenHeartJoker, ns: Deck.Jokers, asm: Assembly-CSharp}
+      data: 

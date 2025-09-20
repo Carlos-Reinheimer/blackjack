@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Controllers.Sides;
 using Scriptable_Objects;
 using TMPro;
 using UnityEngine;
@@ -92,7 +93,8 @@ namespace Controllers {
         }
 
         private void BuildCardsDictionary() {
-            // composed key is: _deckCount_CardType_CardSuit_name_value
+            // for playing cards, composed key is: deckCount_CardType_CardSuit_name_value
+            // for joker cards, composed key is:  name_type
             _cardLookupDict = new Dictionary<string, BaseCard>(_cardsCount);
             
             for (var i = 0; i < decks.Count; i++) {
@@ -101,15 +103,34 @@ namespace Controllers {
                     _cardLookupDict[key] = card;
                 }
             }
+
+            foreach (var jokerCard in gameJokers.availableJokers) {
+                if (!jokerCard.isUnlocked) return;
+                var key = $"{jokerCard.name}_{jokerCard.type}";
+                _cardLookupDict[key] = jokerCard;
+            }
         }
         
         private void UpdateCardsLeftCount() {
             cardsLeftText.text = GetCardsLeft().ToString();
         }
+
+        private int GetLastCardFromDrawOrder(SideType currentSide, int lookupIndex, out string key) {
+            var index = _drawOrder[lookupIndex]; // last one
+            key = _cardLookupDict.ElementAt(index).Key;
+            
+            var isJokerKeyValid = CardKeying.IsJokerKeyValid(key, out var isJokerKey);
+            if (!isJokerKeyValid || currentSide != SideType.Dealer) return lookupIndex;
+            
+            Debug.Log("Card was a Joker but for the Dealers Side, so searching for the prior key");
+            GetLastCardFromDrawOrder(currentSide, lookupIndex - 1, out var anotherKey);
+            return lookupIndex;
+        }
         
         public void StartGame(UnityAction callback) {
             _rng = new System.Random(); // set seed here
             _cardsCount = decks.Sum(deck => deck.deckCards.Count);
+            _cardsCount += gameJokers.availableJokers.Count(j => j.isUnlocked);
 
             BuildCardsDictionary();
             ShuffleCurrentDeck();
@@ -117,12 +138,10 @@ namespace Controllers {
             callback?.Invoke();
         }
 
-        public BaseCard DrawTopCard() {
+        public BaseCard DrawTopCard(SideType currentSide) {
             if (_drawOrder == null || _drawOrder.Count == 0) return null;
-            var index = _drawOrder[^1]; // last one
-            var key = _cardLookupDict.ElementAt(index).Key;
-            
-            _drawOrder.RemoveAt(_drawOrder.Count - 1);
+            var cardIndex = GetLastCardFromDrawOrder(currentSide, _drawOrder.Count -1, out var key);
+            _drawOrder.RemoveAt(cardIndex);
             _cardLookupDict.TryGetValue(key, out var card);
             RemoveIndexFromReference(key);
             
