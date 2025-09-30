@@ -20,6 +20,7 @@ namespace Controllers {
         public JokerHandManager jokerHandManager;
         public DealersSideController dealersSide;
         public PlayersSideController playersSide;
+        public GameOverController gameOverController;
         public NextRoundTransitionCanvasUIController nextRoundCanvas;
 
         [Header("Settings")]
@@ -91,11 +92,6 @@ namespace Controllers {
 
         private IEnumerator DealCards() {
             UpdateCurrentPlayersSide(SideType.Dealer);
-            // for (var i = 0; i < initialCardsCount; i++) {
-            //     yield return new WaitForSeconds(delayBetweenDealing);
-            //     var shouldUpdateSides = InstantiateNewCard();
-            //     if (shouldUpdateSides) UpdateCurrentPlayersSide();
-            // }
             var count = 0;
             while (true){
                 yield return new WaitForSeconds(delayBetweenDealing);
@@ -136,16 +132,11 @@ namespace Controllers {
                 return;
             }
 
-            if (dealersTotal > targetValue) {
+            if ((dealersTotal > targetValue) || (playersTotal > dealersTotal)) {
                 HandlePlayersWon();
                 return;
             }
 
-            if (playersTotal > dealersTotal) {
-                HandlePlayersWon();
-                return;
-            }
-            
             HandleDealersWon();
         }
 
@@ -157,7 +148,7 @@ namespace Controllers {
         private void HandleDealersWon() {
             Debug.Log("Dealer has won");
             dealersSide.ReceiveChip(1);
-            playersSide.TakeChip(1, NextMatch, RestartRound);
+            playersSide.TakeChip(1, NextMatch, gameOverController.GameOver);
         }
 
         private void HandlePlayersChips() {
@@ -175,6 +166,8 @@ namespace Controllers {
             HandleNewRound();
             UpdateDealerLivesChips();
             nextRoundCanvas.UpdateRoundValue(_currentRound, DealCardsAgain);
+
+            RunStats.CurrentLevel = _currentRound;
         }
 
         private void UpdateDealerLivesChips() {
@@ -218,19 +211,6 @@ namespace Controllers {
                 actionButton.interactable = newState;
             }
         }
-        
-        // public void InstantiateNewCard() {
-        //     while (true) {
-        //         var randomCard = deckController.DrawTopCard(GetCurrentSideController().side);
-        //         if (randomCard.type != CardType.Joker) GetCurrentSideController().InstantiateNewCard((DeckCard)randomCard, visualHandlerTransform);
-        //         else {
-        //             jokerHandManager.DrawCard((JokerCard)randomCard);
-        //             continue;
-        //         }
-        //
-        //         break;
-        //     }
-        // }
         
         public bool InstantiateNewCard() {
             var randomCard = deckController.DrawTopCard(GetCurrentSideController().side);

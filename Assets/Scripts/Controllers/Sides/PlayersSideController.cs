@@ -4,6 +4,7 @@ using Deck;
 using TMPEffects.Components;
 using TMPro;
 using UnityEngine;
+using Utils;
 using Utils.UI_Animations;
 
 namespace Controllers.Sides {
@@ -88,6 +89,8 @@ namespace Controllers.Sides {
             comboText.text = "";
             
             if (_currentOperationIndex == _operations.Count) {
+                RunStats.CurrentScore += currentScore;
+                
                 _currentOperationIndex = 0;
                 _operations.Clear();
                 LoopCompleted?.Invoke();
