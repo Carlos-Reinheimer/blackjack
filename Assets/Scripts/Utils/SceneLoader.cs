@@ -8,6 +8,18 @@ namespace Utils {
         
         public static event Action OnSceneLoadCompleteCallback;
         
+        #region Singleton
+            public static SceneLoader Instance {
+                get {
+                    if (_instance == null)
+                        _instance = FindFirstObjectByType(typeof(SceneLoader)) as SceneLoader;
+
+                    return _instance;
+                }
+            }
+            private static SceneLoader _instance;
+        #endregion
+        
         public void LoadScene(string sceneName) {
             StartCoroutine(LoadSceneAsyncWithLoadingScreen(sceneName));
         }

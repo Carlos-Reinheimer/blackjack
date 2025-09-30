@@ -7,6 +7,7 @@ using TMPro;
 using UI_Controllers;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 namespace Controllers {
     public class MainController : MonoBehaviour {
@@ -56,6 +57,8 @@ namespace Controllers {
         }
 
         private void Start() {
+            RunStats.ClearRunStats();
+            
             deckController.StartGame(StartFirstRound);
         }
 
