@@ -700,6 +700,55 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &410318746
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 410318747}
+  - component: {fileID: 410318748}
+  m_Layer: 0
+  m_Name: Next Round UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &410318747
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410318746}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2042394216}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &410318748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410318746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c33cc609edc67741b1ad60ec61fa682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  advanceRoundChannel: {fileID: 11400000, guid: a0b6269f9df496d47a611c849388b709, type: 2}
+  duration: 3
+  canvas: {fileID: 1132755818}
+  roundValueText: {fileID: 1008689718}
+  fadeCanvasGroupTween: {fileID: 1132755823}
 --- !u!1 &427891608
 GameObject:
   m_ObjectHideFlags: 0
@@ -2914,7 +2963,7 @@ MonoBehaviour:
   dealersSide: {fileID: 1468829537}
   playersSide: {fileID: 2097728523}
   gameOverController: {fileID: 671579145}
-  nextRoundCanvas: {fileID: 1132755824}
+  advanceRoundChannel: {fileID: 11400000, guid: a0b6269f9df496d47a611c849388b709, type: 2}
   initialCardsCount: 4
   delayBetweenDealing: 0.5
   roundText: {fileID: 1893925216}
@@ -3649,7 +3698,6 @@ GameObject:
   - component: {fileID: 1132755820}
   - component: {fileID: 1132755819}
   - component: {fileID: 1132755825}
-  - component: {fileID: 1132755824}
   - component: {fileID: 1132755823}
   m_Layer: 5
   m_Name: Next Round Canvas
@@ -3657,7 +3705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1132755819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3759,22 +3807,7 @@ MonoBehaviour:
   fadeTime: 0.5
   delay: 0
   startMethod: 0
-  autoStart: 0
---- !u!114 &1132755824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1132755818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c33cc609edc67741b1ad60ec61fa682, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 3
-  roundValueText: {fileID: 1008689718}
-  fadeCanvasGroupTween: {fileID: 1132755823}
+  autoStart: 1
 --- !u!225 &1132755825
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6678,6 +6711,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 707901762}
+  - {fileID: 410318747}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2083569490

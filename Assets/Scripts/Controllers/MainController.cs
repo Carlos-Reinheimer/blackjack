@@ -4,7 +4,8 @@ using Controllers.Sides;
 using Deck;
 using Scriptable_Objects;
 using TMPro;
-using UI_Controllers;
+using UI.Controllers;
+using UI.Events.Next_Round;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
@@ -21,7 +22,9 @@ namespace Controllers {
         public DealersSideController dealersSide;
         public PlayersSideController playersSide;
         public GameOverController gameOverController;
-        public NextRoundTransitionCanvasUIController nextRoundCanvas;
+        
+        [Header("Channels (SO assets)")]
+        [SerializeField] private AdvanceRoundChannelSO advanceRoundChannel;
 
         [Header("Settings")]
         public int initialCardsCount = 4;
@@ -165,7 +168,10 @@ namespace Controllers {
             ResetHands();
             HandleNewRound();
             UpdateDealerLivesChips();
-            nextRoundCanvas.UpdateRoundValue(_currentRound, DealCardsAgain);
+            advanceRoundChannel.Raise(new AdvanceRoundModel {
+                nextRound = _currentRound, 
+                completeCallback = DealCardsAgain
+            });
 
             RunStats.CurrentLevel = _currentRound;
         }

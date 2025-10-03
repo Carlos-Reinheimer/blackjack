@@ -8,7 +8,7 @@ namespace UI.Controllers {
         [SerializeField] private ShowGameOverChannelSO showChannel;
         [SerializeField] private GameOverActionChannelSO actionChannel;
 
-        [Header("Canvas")]
+        [Header("UI")]
         [SerializeField] private GameObject canvas;
 
         private void OnEnable() {
