@@ -4,7 +4,6 @@ using Controllers.Sides;
 using Deck;
 using Scriptable_Objects;
 using TMPro;
-using UI.Controllers;
 using UI.Events.Next_Round;
 using UnityEngine;
 using UnityEngine.UI;
@@ -135,7 +134,7 @@ namespace Controllers {
                 return;
             }
 
-            if ((dealersTotal > targetValue) || (playersTotal > dealersTotal)) {
+            if (dealersTotal > targetValue || playersTotal > dealersTotal) {
                 HandlePlayersWon();
                 return;
             }
@@ -193,7 +192,7 @@ namespace Controllers {
         }
 
         private void UpdateRoundUI(int value) {
-            roundText.text = $"Round {value}/21";
+            roundText.text = $"{value}/21";
         }
 
         private void DealCardsAgain() {
@@ -236,6 +235,11 @@ namespace Controllers {
         public void Stand() {
             UpdateActionButtonsState(false);
             GetCurrentSideController().Stand();
+        }
+
+        public void Bet()
+        {
+            
         }
 
         public int GetCurrentTargetValue() => gameRules.targetValue;

@@ -2,6 +2,7 @@
   "dependencies": {
     "com.luca3317.tmpeffects": "https://github.com/Luca3317/TMPEffects.git?path=/Package",
     "com.mackysoft.serializereference-extensions": "https://github.com/mackysoft/Unity-SerializeReferenceExtensions.git?path=Assets/MackySoft/MackySoft.SerializeReferenceExtensions",
+    "com.nobi.roundedcorners": "https://github.com/kirevdokimov/Unity-UI-Rounded-Corners.git",
     "com.unity.2d.animation": "11.0.0",
     "com.unity.2d.aseprite": "1.2.5",
     "com.unity.2d.psdimporter": "10.1.1",
