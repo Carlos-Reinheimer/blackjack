@@ -20,7 +20,6 @@ namespace UI.Controllers {
         }
         
         private void OnShowRequested(bool showPanel) {
-            Debug.Log("showPanel: " + showPanel);
             if (canvas != null) canvas.SetActive(showPanel);
         }
 

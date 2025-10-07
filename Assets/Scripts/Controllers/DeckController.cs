@@ -59,6 +59,7 @@ namespace Controllers {
             _keyToIndexReference = new Dictionary<string, int>(_drawOrder.Count);
             foreach (var index in _drawOrder) {
                 _keyToIndexReference[_cardLookupDict.ElementAt(index).Key] = index;
+                // Debug.Log($"_keyToIndexReference ({index}): {_cardLookupDict.ElementAt(index).Key}");
             }
         }
 
@@ -115,16 +116,16 @@ namespace Controllers {
             cardsLeftText.text = GetCardsLeft().ToString();
         }
 
-        private int GetLastCardFromDrawOrder(SideType currentSide, int lookupIndex, out string key) {
+        private void GetLastCardFromDrawOrder(SideType currentSide, int lookupIndex, out string key) {
+            Debug.Log("GetLastCardFromDrawOrder");
             var index = _drawOrder[lookupIndex]; // last one
             key = _cardLookupDict.ElementAt(index).Key;
             
             var isJokerKeyValid = CardKeying.IsJokerKeyValid(key, out var isJokerKey);
-            if (!isJokerKeyValid || currentSide != SideType.Dealer) return lookupIndex;
+            if (!isJokerKeyValid || currentSide == SideType.Player) return;
             
             Debug.Log("Card was a Joker but for the Dealers Side, so searching for the prior key");
             GetLastCardFromDrawOrder(currentSide, lookupIndex - 1, out var anotherKey);
-            return lookupIndex;
         }
         
         public void StartGame(UnityAction callback) {
@@ -140,7 +141,9 @@ namespace Controllers {
 
         public BaseCard DrawTopCard(SideType currentSide) {
             if (_drawOrder == null || _drawOrder.Count == 0) return null;
-            var cardIndex = GetLastCardFromDrawOrder(currentSide, _drawOrder.Count -1, out var key);
+
+            var cardIndex = _drawOrder.Count - 1;
+            GetLastCardFromDrawOrder(currentSide, cardIndex, out var key);
             _drawOrder.RemoveAt(cardIndex);
             _cardLookupDict.TryGetValue(key, out var card);
             RemoveIndexFromReference(key);
