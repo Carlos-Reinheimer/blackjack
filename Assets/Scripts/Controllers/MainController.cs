@@ -1,12 +1,11 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using Controllers.Sides;
 using Deck;
 using Scriptable_Objects;
-using TMPro;
+using UI.Events.HUD;
 using UI.Events.Next_Round;
 using UnityEngine;
-using UnityEngine.UI;
 using Utils;
 
 namespace Controllers {
@@ -24,14 +23,15 @@ namespace Controllers {
         
         [Header("Channels (SO assets)")]
         [SerializeField] private AdvanceRoundChannelSO advanceRoundChannel;
+        [SerializeField] private HUDActionsChannelSO hudActionsChannel;
+        [SerializeField] private HUDActionsStateChannelSo hudActionsStateChannel;
+        [SerializeField] private RoundChannelSO roundChannel;
 
         [Header("Settings")]
         public int initialCardsCount = 4;
         public float delayBetweenDealing = 1;
 
         [Header("UI")]
-        public TMP_Text roundText;
-        public List<Button> actionButtons;
         public Transform visualHandlerTransform;
         
         private int _currentRound = -1;
@@ -52,11 +52,15 @@ namespace Controllers {
         private void OnEnable() {
             // SceneLoader.OnSceneLoadCompleteCallback += StartGame;
             playersSide.LoopCompleted += HandlePlayersChips;
+
+            hudActionsChannel.OnEventRaised += HandleHudActionChannel;
         }
         
         private void OnDisable() {
             // SceneLoader.OnSceneLoadCompleteCallback -= StartGame;
             playersSide.LoopCompleted -= HandlePlayersChips;
+            
+            hudActionsChannel.OnEventRaised -= HandleHudActionChannel;
         }
 
         private void Start() {
@@ -68,7 +72,7 @@ namespace Controllers {
         private void StartFirstRound() {
             HandleNewRound();
             SetInitialParams();
-            UpdateActionButtonsState(false);
+            hudActionsStateChannel.Raise(false);
             
             StartCoroutine(DealCards());
         }
@@ -107,7 +111,7 @@ namespace Controllers {
             }
 
             UpdateCurrentPlayersSide(SideType.Player);
-            UpdateActionButtonsState(true);
+            hudActionsStateChannel.Raise(true);
         }
         
         private void HandlePlayersStand() {
@@ -188,11 +192,7 @@ namespace Controllers {
 
         private void HandleNewRound() {
             _currentRound += 1;
-            UpdateRoundUI(_currentRound + 1);
-        }
-
-        private void UpdateRoundUI(int value) {
-            roundText.text = $"{value}/21";
+            roundChannel.Raise(_currentRound + 1);
         }
 
         private void DealCardsAgain() {
@@ -211,10 +211,32 @@ namespace Controllers {
             _currentPlayingSide = newType;
         }
 
-        private void UpdateActionButtonsState(bool newState) {
-            foreach (var actionButton in actionButtons) {
-                actionButton.interactable = newState;
+        private void HandleHudActionChannel(HudAction action) {
+            switch (action) {
+                case HudAction.Hit:
+                    HitMe();
+                    break;
+                case HudAction.Stand:
+                    Stand();
+                    break;
+                case HudAction.Bet:
+                    Bet();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
             }
+        }
+        
+        private void HitMe() {
+            InstantiateNewCard();
+        }
+
+        private void Stand() {
+            GetCurrentSideController().Stand();
+        }
+
+        private void Bet() {
+            Debug.Log("Bet another chip");
         }
         
         public bool InstantiateNewCard() {
@@ -226,20 +248,6 @@ namespace Controllers {
 
             jokerHandManager.DrawCard((JokerCard)randomCard);
             return false;
-        }
-        
-        public void HitMe() {
-            InstantiateNewCard();
-        }
-
-        public void Stand() {
-            UpdateActionButtonsState(false);
-            GetCurrentSideController().Stand();
-        }
-
-        public void Bet()
-        {
-            
         }
 
         public int GetCurrentTargetValue() => gameRules.targetValue;

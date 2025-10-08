@@ -117,7 +117,6 @@ namespace Controllers {
         }
 
         private void GetLastCardFromDrawOrder(SideType currentSide, int lookupIndex, out string key) {
-            Debug.Log("GetLastCardFromDrawOrder");
             var index = _drawOrder[lookupIndex]; // last one
             key = _cardLookupDict.ElementAt(index).Key;
             
