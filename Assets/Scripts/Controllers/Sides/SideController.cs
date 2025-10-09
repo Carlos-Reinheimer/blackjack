@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Deck;
-using TMPro;
+using UI.Events.HUD;
 using UnityEngine;
 using UnityEngine.Events;
-using Utils.UI_Animations;
 
 namespace Controllers.Sides {
     
@@ -54,11 +53,13 @@ namespace Controllers.Sides {
         [Header("Prefabs")]
         public GameObject cardPrefab;
         public GameObject cardVisualPrefab;
-
+        
         [Header("UI")]
         public Transform cardsContentTf;
-        public UpdateValueOverTimeTween currentSumText;
-        public TMP_Text livesChipsText;
+        
+        [Header("Channels (SO assets)")]
+        [SerializeField] private ChipsChannelSO chipsChannel;
+        [SerializeField] private CardsSumChannelSO cardsSumChannel;
 
         protected List<DeckCard> activeCards;
         protected int currentScore;
@@ -67,7 +68,7 @@ namespace Controllers.Sides {
         private List<GameObject> _activeCardsGo;
         private List<GameObject> _activeCardsVisuals;
 
-        protected abstract void OnCardInstantiated(GeneralCardVisual cardController, DeckCard DeckCard);
+        protected abstract void OnCardInstantiated(GeneralCardVisual cardController, DeckCard deckCard);
 
         protected void HandleInstantiatedCard(DeckCard deckCard, UnityAction callback = null) {
             UpdateTotalSum(deckCard.value, callback);
@@ -102,9 +103,11 @@ namespace Controllers.Sides {
             // verify Aces here
             var tempTotal = currentCardSum + value;
             currentCardSum = GetBestPossibleSum(tempTotal);
-
-            currentSumText.UpdateTargetValues(previousCardSum, currentCardSum);
-            currentSumText.StartTween();
+            cardsSumChannel.Raise(new CardsSumContract {
+                sideController = this,
+                previousCardSum = previousCardSum,
+                newCurrentCardSum = currentCardSum
+            });
 
             var targetValue = MainController.Instance.GetCurrentTargetValue();
             if (currentCardSum > targetValue) HandleCrossTargetValue();
@@ -183,7 +186,10 @@ namespace Controllers.Sides {
         
         public void UpdateLivesChipsAmount(int amount) {
             livesChips = amount;
-            livesChipsText.text = livesChips.ToString();
+            chipsChannel.Raise(new ChipsChannelContract {
+                sideController = this,
+                amount = livesChips
+            });
         }
     }
 }

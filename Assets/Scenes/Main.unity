@@ -2543,16 +2543,23 @@ MonoBehaviour:
   cardsLeftChannel: {fileID: 11400000, guid: cebc7b6db9a0af94693061b1140f228c, type: 2}
   chipsChannel: {fileID: 11400000, guid: 1eda7d53ebb94de4e92293e5609d3478, type: 2}
   roundChannel: {fileID: 11400000, guid: f1a8a834f705831499cd23a0eb5d1d2a, type: 2}
+  cardsSumChannel: {fileID: 11400000, guid: 29633de88687bdb44b1807b6f583aeed, type: 2}
   scoreChannel: {fileID: 11400000, guid: 64a1c9fb9806a604e85806611ad046de, type: 2}
+  scoreComboChannel: {fileID: 11400000, guid: 199779198245fa44488d16a22779aeae, type: 2}
   hudActionsChannel: {fileID: 11400000, guid: e8da6428a19326d40ba57e98655a205c, type: 2}
   hudActionsStateChannel: {fileID: 11400000, guid: 16da9d13e043ce54e874962ac3313f61, type: 2}
   playersBetText: {fileID: 1384908291}
   dealersBetText: {fileID: 0}
   cardsLeftText: {fileID: 471099651}
+  playersCurrentSumText: {fileID: 1051718457}
+  dealersCurrentSumText: {fileID: 1136938535}
   playersChipsText: {fileID: 687840833}
   dealersChipsText: {fileID: 2143875239}
   roundText: {fileID: 952970745}
-  playersScoreText: {fileID: 143518769}
+  scoreText: {fileID: 143518771}
+  comboText: {fileID: 1334018767}
+  comboTmpWriter: {fileID: 1334018769}
+  comboTmpAnimator: {fileID: 1334018770}
   dealersScoreText: {fileID: 0}
   actionButtons:
   - {fileID: 978508352}
@@ -5371,8 +5378,8 @@ MonoBehaviour:
   cardPrefab: {fileID: 2760218032604098404, guid: e9f876a3a386ec14cb37a3066635afbd, type: 3}
   cardVisualPrefab: {fileID: 3666049675579439563, guid: 6f7a5afce622bf14abb1a4e8aa7af0c9, type: 3}
   cardsContentTf: {fileID: 1917685442}
-  currentSumText: {fileID: 1136938535}
-  livesChipsText: {fileID: 2143875239}
+  chipsChannel: {fileID: 11400000, guid: 1eda7d53ebb94de4e92293e5609d3478, type: 2}
+  cardsSumChannel: {fileID: 11400000, guid: 29633de88687bdb44b1807b6f583aeed, type: 2}
 --- !u!1 &1477097358
 GameObject:
   m_ObjectHideFlags: 0
@@ -6251,7 +6258,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1d0888767df26d8429144acc3e0013dd, type: 2}
   gameJokers: {fileID: 11400000, guid: 408143436d6f8aa48a1ab09ce9fa7ffb, type: 2}
   cardsLeftBeforeAutoShuffle: 3
-  cardsLeftText: {fileID: 471099651}
+  cardsLeftChannel: {fileID: 11400000, guid: cebc7b6db9a0af94693061b1140f228c, type: 2}
 --- !u!4 &1708634447
 Transform:
   m_ObjectHideFlags: 0
@@ -7674,12 +7681,10 @@ MonoBehaviour:
   cardPrefab: {fileID: 2760218032604098404, guid: e9f876a3a386ec14cb37a3066635afbd, type: 3}
   cardVisualPrefab: {fileID: 3666049675579439563, guid: 6f7a5afce622bf14abb1a4e8aa7af0c9, type: 3}
   cardsContentTf: {fileID: 1004519394}
-  currentSumText: {fileID: 1051718457}
-  livesChipsText: {fileID: 687840833}
-  scoreText: {fileID: 143518771}
-  comboText: {fileID: 1334018767}
-  comboTmpWriter: {fileID: 1334018769}
-  comboTmpAnimator: {fileID: 1334018770}
+  chipsChannel: {fileID: 11400000, guid: 1eda7d53ebb94de4e92293e5609d3478, type: 2}
+  cardsSumChannel: {fileID: 11400000, guid: 29633de88687bdb44b1807b6f583aeed, type: 2}
+  scoreChannel: {fileID: 11400000, guid: 64a1c9fb9806a604e85806611ad046de, type: 2}
+  scoreComboChannel: {fileID: 11400000, guid: 199779198245fa44488d16a22779aeae, type: 2}
 --- !u!1 &2101594933
 GameObject:
   m_ObjectHideFlags: 0

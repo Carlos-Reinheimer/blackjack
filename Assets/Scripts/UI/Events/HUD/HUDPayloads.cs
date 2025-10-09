@@ -1,4 +1,5 @@
 using Controllers.Sides;
+using JetBrains.Annotations;
 
 namespace UI.Events.HUD
 {
@@ -7,6 +8,12 @@ namespace UI.Events.HUD
         Hit,
         Stand,
         Bet
+    }
+
+    public enum ScoreComboAction
+    {
+        StartWriter,
+        StopWriter
     }
     
     public struct BetChannelContract
@@ -20,10 +27,25 @@ namespace UI.Events.HUD
         public SideController sideController;
         public int amount;
     }
+    
+    public struct CardsSumContract
+    {
+        public SideController sideController;
+        public int previousCardSum;
+        public int newCurrentCardSum;
+    }
 
     public struct ScoreChannelContract
     {
         public SideController sideController;
-        public int score;
+        public int previousScore;
+        public int nextScore;
+    }
+    
+    public struct ScoreComboChannelContract
+    {
+        public SideController sideController;
+        public ScoreComboAction action;
+        [CanBeNull] public string comboText;
     }
 }

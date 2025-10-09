@@ -1,22 +1,17 @@
 using System;
 using System.Collections.Generic;
 using Deck;
-using TMPEffects.Components;
-using TMPro;
+using UI.Events.HUD;
 using UnityEngine;
 using Utils;
-using Utils.UI_Animations;
 
 namespace Controllers.Sides {
     public class PlayersSideController : SideController {
         
         public event Action LoopCompleted;
         
-        [Header("UI")]
-        public UpdateValueOverTimeTween scoreText;
-        public TMP_Text comboText;
-        public TMPWriter comboTmpWriter;
-        public TMPAnimator comboTmpAnimator;
+        [SerializeField] private ScoreChannelSO scoreChannel;
+        [SerializeField] private ScoreComboChannelSO scoreComboChannel;
         
         private List<OperationData> _operations;
         private int _currentOperationIndex;
@@ -37,21 +32,23 @@ namespace Controllers.Sides {
             currentScore += newValue;
 
             var finalScore = currentScore <= 0 ? 0 : currentScore;
-            UpdateScoreUI(previousScore, finalScore);
-        }
-        
-        private void UpdateScoreUI(float previousScore, float nextScore) {
-            scoreText.UpdateTargetValues(previousScore, nextScore);
-            scoreText.StartTween();
+            scoreChannel.Raise(new ScoreChannelContract {
+                sideController = this,
+                previousScore = previousScore,
+                nextScore = finalScore
+            });
         }
         
         private void Operate(OperationData operationData) {
             _operationsToString.TryGetValue(operationData.operation, out var operatorString);
             var composedOperation = $"{operatorString}{operationData.operationValue}";
 
-            comboText.text = $"<+grow><grow amplitude=3>{composedOperation}</grow></+grow><!wait=1.2>";
-            comboTmpWriter.StartWriter();
-            comboTmpAnimator.StartAnimating();
+            scoreComboChannel.Raise(new ScoreComboChannelContract {
+                sideController = this,
+                action = ScoreComboAction.StartWriter,
+                comboText = $"<+grow><grow amplitude=3>{composedOperation}</grow></+grow><!wait=1.2>"
+            });
+
             var newScore = operationData.operation switch {
                 Operation.Add => currentScore + operationData.operationValue,
                 Operation.Subtract => currentScore - operationData.operationValue,
@@ -84,9 +81,10 @@ namespace Controllers.Sides {
 
         public void HandleNextOperation() {
             _currentOperationIndex++;
-            comboTmpWriter.StopWriter();
-            comboTmpAnimator.StopAnimating();
-            comboText.text = "";
+            scoreComboChannel.Raise(new ScoreComboChannelContract {
+                sideController = this,
+                action = ScoreComboAction.StopWriter
+            });
             
             if (_currentOperationIndex == _operations.Count) {
                 RunStats.CurrentScore += currentScore;

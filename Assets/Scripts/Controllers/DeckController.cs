@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Controllers.Sides;
 using Scriptable_Objects;
-using TMPro;
+using UI.Events.HUD;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,8 +16,8 @@ namespace Controllers {
         [Header("Settings")] 
         public int cardsLeftBeforeAutoShuffle = 3;
         
-        [Header("UI")]
-        public TMP_Text cardsLeftText;
+        [Header("Channels (SO assets)")]
+        [SerializeField] private CardsLeftChannelSO cardsLeftChannel;
         
         private Dictionary<string, BaseCard> _cardLookupDict;
         private Dictionary<string, int> _keyToIndexReference;
@@ -111,10 +111,6 @@ namespace Controllers {
                 _cardLookupDict[key] = jokerCard;
             }
         }
-        
-        private void UpdateCardsLeftCount() {
-            cardsLeftText.text = GetCardsLeft().ToString();
-        }
 
         private void GetLastCardFromDrawOrder(SideType currentSide, int lookupIndex, out string key) {
             var index = _drawOrder[lookupIndex]; // last one
@@ -134,7 +130,7 @@ namespace Controllers {
 
             BuildCardsDictionary();
             ShuffleCurrentDeck();
-            UpdateCardsLeftCount();
+            cardsLeftChannel.Raise(GetCardsLeft());
             callback?.Invoke();
         }
 
@@ -148,7 +144,7 @@ namespace Controllers {
             RemoveIndexFromReference(key);
             
             if (_drawOrder.Count <= cardsLeftBeforeAutoShuffle) ShuffleCurrentDeck();
-            UpdateCardsLeftCount();
+            cardsLeftChannel.Raise(GetCardsLeft());
             return card;
         }
         
