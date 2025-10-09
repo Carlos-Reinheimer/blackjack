@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Deck;
@@ -44,6 +45,7 @@ namespace Controllers.Sides {
         
         [Header("Settings")]
         public SideType side;
+        public MainController mainController;
         
         [Header("Helpers")]
         [SerializeField] private int livesChips;
@@ -142,20 +144,63 @@ namespace Controllers.Sides {
         }
         
         private void TryBet(HudAction action) {
-            if (action != HudAction.Bet) return;
+            if (action is HudAction.Hit or HudAction.Stand) return;
             if (side == SideType.Dealer) return;
 
-            var newBet = currentBet + 1;
-            if (newBet >= livesChips) {
-                Debug.Log($"New bet is {newBet}, but chips left are {livesChips}. Setting newBet as previous value");
-                newBet = currentBet;
+            var newBet = 0;
+            switch (action) {
+                case HudAction.BetPlusOne:
+                    newBet = BetPlusOne();
+                    break;
+                case HudAction.BetMinusOne:
+                    newBet = BetMinusOne();
+                    break;
+                case HudAction.BetAllWin:
+                    newBet = BetAllWin();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
             }
-            else currentBet = newBet;
             
             betChannel.Raise(new BetChannelContract {
                 sideController = this,
                 betAmount = newBet
             });
+        }
+
+        private int BetMinusOne() {
+            var newBet = currentBet - 1;
+            var minBet = mainController.currentRoundSettings.minBet;
+            if (newBet == minBet) {
+                Debug.Log($"New bet is {newBet}, but chips left are {livesChips}. Setting newBet as previous value");
+                newBet = currentBet;
+            }
+            else currentBet = newBet;
+
+            return newBet;
+        }
+        
+        private int BetPlusOne() {
+            var newBet = currentBet + 1;
+            var max = mainController.currentRoundSettings.maxBet;
+            if (newBet == max || newBet == livesChips) {
+                Debug.Log($"New bet is {newBet}, but chips left are {livesChips}. Setting newBet as previous value");
+                newBet = currentBet;
+            }
+            else currentBet = newBet;
+
+            return newBet;
+        }
+        
+        private int BetAllWin() {
+            var newBet = currentBet + 1;
+            if (newBet == livesChips) {
+                Debug.Log($"New bet is {newBet}, but chips left are {livesChips}. Setting newBet as previous value");
+                newBet = currentBet;
+            }
+            else currentBet = newBet;
+
+            return newBet;
         }
         
         public void InstantiateNewCard(DeckCard deckCard, Transform visualHandlerTf) {

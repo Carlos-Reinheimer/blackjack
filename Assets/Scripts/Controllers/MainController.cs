@@ -30,6 +30,9 @@ namespace Controllers {
         public int initialCardsCount = 4;
         public float delayBetweenDealing = 1;
 
+        [Header("Helpers")] 
+        public RoundSettings currentRoundSettings;
+
         [Header("UI")]
         public Transform visualHandlerTransform;
         
@@ -67,8 +70,13 @@ namespace Controllers {
             
             deckController.StartGame(StartFirstRound);
         }
+        
+        private void UpdateCurrentRoundSettings() {
+            currentRoundSettings = gameRules.roundSettings[_currentRound];
+        }
 
         private void StartFirstRound() {
+            UpdateCurrentRoundSettings();
             HandleNewRound();
             SetInitialParams();
             hudActionsStateChannel.Raise(false);
@@ -81,7 +89,7 @@ namespace Controllers {
             GetCurrentSideController().SetInitialParams(new InitialParams {
                 standCallback = CheckWhoWon,
                 bustedCallback = HandlePlayersWon,
-                initialLives = gameRules.roundSettings[_currentRound].dealersLifeChips
+                initialLives = currentRoundSettings.dealersLifeChips
             });
             
             // update to player
@@ -169,6 +177,7 @@ namespace Controllers {
         private void RestartRound() {
             ResetHands();
             HandleNewRound();
+            UpdateCurrentRoundSettings();
             UpdateDealerLivesChips();
             advanceRoundChannel.Raise(new AdvanceRoundModel {
                 nextRound = _currentRound, 
@@ -179,7 +188,7 @@ namespace Controllers {
         }
 
         private void UpdateDealerLivesChips() {
-            dealersSide.UpdateLivesChipsAmount(gameRules.roundSettings[_currentRound].dealersLifeChips);
+            dealersSide.UpdateLivesChipsAmount(currentRoundSettings.dealersLifeChips);
         }
 
         private void ResetHands() {
@@ -218,7 +227,9 @@ namespace Controllers {
                 case HudAction.Stand:
                     Stand();
                     break;
-                case HudAction.Bet:
+                case HudAction.BetPlusOne:
+                case HudAction.BetMinusOne:
+                case HudAction.BetAllWin:
                 default:
                     break;
             }

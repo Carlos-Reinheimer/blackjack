@@ -8,6 +8,8 @@ namespace Scriptable_Objects {
     public class RoundSettings
     {
         public int dealersLifeChips;
+        public int minBet = 1;
+        public int maxBet = -1; // -1 = player can All Win | Any other value = limit on the bet
     }
     
     [CreateAssetMenu(fileName = "GameRules", menuName = "Scriptable Objects/GameRules")]

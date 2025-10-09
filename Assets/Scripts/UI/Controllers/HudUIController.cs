@@ -48,6 +48,12 @@ namespace UI.Controllers {
         
         [Header("UI - Action Buttons")]
         [SerializeField] private List<Button> actionButtons;
+        [SerializeField] private GameObject betButton;
+        [SerializeField] private FadeCanvasGroupTween betButtonFadeCanvasGroup;
+        [SerializeField] private GameObject betOptionsGameObject;
+        [SerializeField] private FadeCanvasGroupTween betOptionsFadeCanvasGroup;
+
+        private bool _isHoveringBetButton;
 
         private void OnEnable() {
             hudActionsStateChannel.OnEventRaised += UpdateActionButtonsState;
@@ -145,8 +151,26 @@ namespace UI.Controllers {
                 hudActionsChannel.Raise(HudAction.Stand);
             }
 
-            public void Bet() {
-                hudActionsChannel.Raise(HudAction.Bet);
+            public void Bet(int option) {
+                hudActionsChannel.Raise((HudAction)option);
+            }
+
+            public void OnBetPointerEnter() {
+                if (_isHoveringBetButton) return;
+                _isHoveringBetButton = true;
+                LeanTween.rotate(betButton, new Vector3(0, 180, 0), 0.2f);
+                betButtonFadeCanvasGroup.Fade(false, 0);
+                LeanTween.rotate(betOptionsGameObject, new Vector3(0, 0, 0), 0.2f);
+                betOptionsFadeCanvasGroup.Fade(true, 0);
+            }
+            
+            public void OnBetPointerExit() {
+                if (!_isHoveringBetButton) return;
+                _isHoveringBetButton = false;
+                LeanTween.rotate(betButton, new Vector3(0, 0, 0), 0.2f);
+                betButtonFadeCanvasGroup.Fade(true, 0);
+                LeanTween.rotate(betOptionsGameObject, new Vector3(0, 180, 0), 0.2f);
+                betOptionsFadeCanvasGroup.Fade(false, 0);
             }
 
         #endregion

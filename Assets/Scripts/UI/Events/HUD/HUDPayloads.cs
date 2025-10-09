@@ -7,7 +7,9 @@ namespace UI.Events.HUD
     {
         Hit,
         Stand,
-        Bet
+        BetPlusOne,
+        BetMinusOne,
+        BetAllWin
     }
 
     public enum ScoreComboAction
