@@ -46,8 +46,9 @@ namespace Controllers.Sides {
         public SideType side;
         
         [Header("Helpers")]
+        [SerializeField] private int livesChips;
+        [SerializeField] private int currentBet = 1;
         public int currentCardSum;
-        public int livesChips;
         public bool isBusted;
         
         [Header("Prefabs")]
@@ -60,6 +61,8 @@ namespace Controllers.Sides {
         [Header("Channels (SO assets)")]
         [SerializeField] private ChipsChannelSO chipsChannel;
         [SerializeField] private CardsSumChannelSO cardsSumChannel;
+        [SerializeField] private HUDActionsChannelSO hudActionsChannel;
+        [SerializeField] private BetChannelSO betChannel;
 
         protected List<DeckCard> activeCards;
         protected int currentScore;
@@ -67,6 +70,14 @@ namespace Controllers.Sides {
         
         private List<GameObject> _activeCardsGo;
         private List<GameObject> _activeCardsVisuals;
+
+        private void OnEnable() {
+            hudActionsChannel.OnEventRaised += TryBet;
+        }
+
+        private void OnDisable() {
+            hudActionsChannel.OnEventRaised -= TryBet;
+        }
 
         protected abstract void OnCardInstantiated(GeneralCardVisual cardController, DeckCard deckCard);
 
@@ -78,6 +89,11 @@ namespace Controllers.Sides {
             activeCards = new List<DeckCard>();
             _activeCardsGo = new List<GameObject>();
             _activeCardsVisuals = new List<GameObject>();
+            
+            betChannel.Raise(new BetChannelContract {
+                sideController = this,
+                betAmount = currentBet
+            });
         }
 
         private int GetBestPossibleSum(int newTempTotal) {
@@ -123,6 +139,23 @@ namespace Controllers.Sides {
         private void HandleCrossTargetValue() {
             isBusted = true;
             initialParams.bustedCallback?.Invoke();
+        }
+        
+        private void TryBet(HudAction action) {
+            if (action != HudAction.Bet) return;
+            if (side == SideType.Dealer) return;
+
+            var newBet = currentBet + 1;
+            if (newBet >= livesChips) {
+                Debug.Log($"New bet is {newBet}, but chips left are {livesChips}. Setting newBet as previous value");
+                newBet = currentBet;
+            }
+            else currentBet = newBet;
+            
+            betChannel.Raise(new BetChannelContract {
+                sideController = this,
+                betAmount = newBet
+            });
         }
         
         public void InstantiateNewCard(DeckCard deckCard, Transform visualHandlerTf) {

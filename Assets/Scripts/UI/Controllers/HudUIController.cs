@@ -57,6 +57,7 @@ namespace UI.Controllers {
             chipsChannel.OnEventRaised += UpdateChipsLeft;
             scoreChannel.OnEventRaised += UpdateScoreUI;
             scoreComboChannel.OnEventRaised += UpdateScoreComboUI;
+            betChannel.OnEventRaised += UpdateCurrentBet;
         }
 
         private void OnDisable() {
@@ -67,6 +68,7 @@ namespace UI.Controllers {
             chipsChannel.OnEventRaised -= UpdateChipsLeft;
             scoreChannel.OnEventRaised -= UpdateScoreUI;
             scoreComboChannel.OnEventRaised -= UpdateScoreComboUI;
+            betChannel.OnEventRaised -= UpdateCurrentBet;
         }
 
         private void UpdateRoundUI(int value) {
@@ -81,6 +83,12 @@ namespace UI.Controllers {
             var side = channelContract.sideController.side;
             if (side == SideType.Player) playersChipsText.text = channelContract.amount.ToString();
             else dealersChipsText.text = channelContract.amount.ToString();
+        }
+
+        private void UpdateCurrentBet(BetChannelContract betContract) {
+            var side = betContract.sideController.side;
+            if (side == SideType.Player) playersBetText.text = betContract.betAmount.ToString();
+            // else dealersBetText.text = betContract.betAmount.ToString();
         }
 
         private void UpdateCurrentSum(CardsSumContract cardsSumContract) {

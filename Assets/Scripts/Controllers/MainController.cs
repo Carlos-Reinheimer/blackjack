@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Controllers.Sides;
 using Deck;
@@ -220,10 +219,8 @@ namespace Controllers {
                     Stand();
                     break;
                 case HudAction.Bet:
-                    Bet();
-                    break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
+                    break;
             }
         }
         
@@ -233,10 +230,6 @@ namespace Controllers {
 
         private void Stand() {
             GetCurrentSideController().Stand();
-        }
-
-        private void Bet() {
-            Debug.Log("Bet another chip");
         }
         
         public bool InstantiateNewCard() {

@@ -5372,14 +5372,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   side: 1
-  currentCardSum: 0
   livesChips: 0
+  currentCardSum: 0
   isBusted: 0
   cardPrefab: {fileID: 2760218032604098404, guid: e9f876a3a386ec14cb37a3066635afbd, type: 3}
   cardVisualPrefab: {fileID: 3666049675579439563, guid: 6f7a5afce622bf14abb1a4e8aa7af0c9, type: 3}
   cardsContentTf: {fileID: 1917685442}
   chipsChannel: {fileID: 11400000, guid: 1eda7d53ebb94de4e92293e5609d3478, type: 2}
   cardsSumChannel: {fileID: 11400000, guid: 29633de88687bdb44b1807b6f583aeed, type: 2}
+  hudActionsChannel: {fileID: 11400000, guid: e8da6428a19326d40ba57e98655a205c, type: 2}
+  betChannel: {fileID: 11400000, guid: 6f1acf93f66086e459b5f774eba71e37, type: 2}
 --- !u!1 &1477097358
 GameObject:
   m_ObjectHideFlags: 0
@@ -7675,14 +7677,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   side: 0
-  currentCardSum: 0
   livesChips: 0
+  currentCardSum: 0
   isBusted: 0
   cardPrefab: {fileID: 2760218032604098404, guid: e9f876a3a386ec14cb37a3066635afbd, type: 3}
   cardVisualPrefab: {fileID: 3666049675579439563, guid: 6f7a5afce622bf14abb1a4e8aa7af0c9, type: 3}
   cardsContentTf: {fileID: 1004519394}
   chipsChannel: {fileID: 11400000, guid: 1eda7d53ebb94de4e92293e5609d3478, type: 2}
   cardsSumChannel: {fileID: 11400000, guid: 29633de88687bdb44b1807b6f583aeed, type: 2}
+  hudActionsChannel: {fileID: 11400000, guid: e8da6428a19326d40ba57e98655a205c, type: 2}
+  betChannel: {fileID: 11400000, guid: 6f1acf93f66086e459b5f774eba71e37, type: 2}
   scoreChannel: {fileID: 11400000, guid: 64a1c9fb9806a604e85806611ad046de, type: 2}
   scoreComboChannel: {fileID: 11400000, guid: 199779198245fa44488d16a22779aeae, type: 2}
 --- !u!1 &2101594933

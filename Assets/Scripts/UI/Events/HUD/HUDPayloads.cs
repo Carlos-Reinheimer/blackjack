@@ -19,7 +19,7 @@ namespace UI.Events.HUD
     public struct BetChannelContract
     {
         public SideController sideController;
-        public int bet;
+        public int betAmount;
     }
 
     public struct ChipsChannelContract
