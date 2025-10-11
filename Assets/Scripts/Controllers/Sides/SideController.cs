@@ -147,22 +147,15 @@ namespace Controllers.Sides {
             if (action is HudAction.Hit or HudAction.Stand) return;
             if (side == SideType.Dealer) return;
 
-            var newBet = 0;
-            switch (action) {
-                case HudAction.BetPlusOne:
-                    newBet = BetPlusOne();
-                    break;
-                case HudAction.BetMinusOne:
-                    newBet = BetMinusOne();
-                    break;
-                case HudAction.BetAllWin:
-                    newBet = BetAllWin();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
-            }
-            
+            var newBet = action switch {
+                HudAction.BetPlusOne => BetPlusOne(),
+                HudAction.BetMinusOne => BetMinusOne(),
+                HudAction.BetAllWin => BetAllWin(),
+                _ => throw new ArgumentOutOfRangeException(nameof(action), action, null)
+            };
+
             betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdateBetValue,
                 sideController = this,
                 betAmount = newBet
             });
@@ -171,11 +164,26 @@ namespace Controllers.Sides {
         private int BetMinusOne() {
             var newBet = currentBet - 1;
             var minBet = mainController.currentRoundSettings.minBet;
-            if (newBet == minBet) {
-                Debug.Log($"New bet is {newBet}, but chips left are {livesChips}. Setting newBet as previous value");
+            if (newBet < minBet) {
+                Debug.Log($"New bet is {newBet}, but it has reached the min bet value ({minBet})");
                 newBet = currentBet;
             }
-            else currentBet = newBet;
+            else {
+                currentBet = newBet;
+                betChannel.Raise(new BetChannelContract {
+                    betAction = BetAction.UpdateMinusOneState,
+                    newState = true
+                });
+                betChannel.Raise(new BetChannelContract {
+                    betAction = BetAction.UpdatePlusOneState,
+                    newState = true
+                });
+            }
+            
+            if (newBet == minBet) betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdateMinusOneState,
+                newState = false
+            });
 
             return newBet;
         }
@@ -183,24 +191,47 @@ namespace Controllers.Sides {
         private int BetPlusOne() {
             var newBet = currentBet + 1;
             var max = mainController.currentRoundSettings.maxBet;
-            if (newBet == max || newBet == livesChips) {
+            if ((max != -1 && newBet > max) || newBet > livesChips) {
                 Debug.Log($"New bet is {newBet}, but chips left are {livesChips}. Setting newBet as previous value");
                 newBet = currentBet;
             }
-            else currentBet = newBet;
-
+            else {
+                currentBet = newBet;
+                betChannel.Raise(new BetChannelContract {
+                    betAction = BetAction.UpdatePlusOneState,
+                    newState = true
+                });
+                betChannel.Raise(new BetChannelContract {
+                    betAction = BetAction.UpdateMinusOneState,
+                    newState = true
+                });
+            }
+            
+            if (newBet == livesChips) betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdatePlusOneState,
+                newState = false
+            });
+            
             return newBet;
         }
         
         private int BetAllWin() {
-            var newBet = currentBet + 1;
-            if (newBet == livesChips) {
-                Debug.Log($"New bet is {newBet}, but chips left are {livesChips}. Setting newBet as previous value");
-                newBet = currentBet;
-            }
-            else currentBet = newBet;
+            currentBet = livesChips;
+            
+            betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdateMinusOneState,
+                newState = false
+            });
+            betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdatePlusOneState,
+                newState = false
+            });
+            betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdateAllWinState,
+                newState = false
+            });
 
-            return newBet;
+            return currentBet;
         }
         
         public void InstantiateNewCard(DeckCard deckCard, Transform visualHandlerTf) {

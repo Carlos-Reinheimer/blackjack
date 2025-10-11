@@ -17,11 +17,25 @@ namespace UI.Events.HUD
         StartWriter,
         StopWriter
     }
+
+    public enum BetAction
+    {
+        UpdateBetValue,
+        UpdateMinBet,
+        UpdateMaxBet,
+        UpdateAllWinState,
+        UpdateMinusOneState,
+        UpdatePlusOneState,
+    }
     
     public struct BetChannelContract
     {
-        public SideController sideController;
-        public int betAmount;
+        public BetAction betAction;
+        [CanBeNull] public SideController sideController;
+        public int? betAmount;
+        public int? minBet;
+        public int? maxBet;
+        public bool? newState;
     }
 
     public struct ChipsChannelContract

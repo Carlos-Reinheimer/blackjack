@@ -25,6 +25,7 @@ namespace Controllers {
         [SerializeField] private HUDActionsChannelSO hudActionsChannel;
         [SerializeField] private HUDActionsStateChannelSo hudActionsStateChannel;
         [SerializeField] private RoundChannelSO roundChannel;
+        [SerializeField] private BetChannelSO betChannel;
 
         [Header("Settings")]
         public int initialCardsCount = 4;
@@ -71,17 +72,44 @@ namespace Controllers {
             deckController.StartGame(StartFirstRound);
         }
         
-        private void UpdateCurrentRoundSettings() {
-            currentRoundSettings = gameRules.roundSettings[_currentRound];
-        }
-
         private void StartFirstRound() {
-            UpdateCurrentRoundSettings();
             HandleNewRound();
+            UpdateCurrentRoundSettings();
             SetInitialParams();
             hudActionsStateChannel.Raise(false);
             
+            // TODO: this is considering the minBet = 1 (always)
+            // if we're really gonna update that, we need to think how this is going to impact players if they don't have that min value available
+            betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdateMinusOneState,
+                newState = false
+            });
+            
             StartCoroutine(DealCards());
+        }
+        
+        private void UpdateCurrentRoundSettings() {
+            currentRoundSettings = gameRules.roundSettings[_currentRound];
+            UpdateBetOptions();
+        }
+
+        private void UpdateBetOptions() {
+            // handle min and max bet
+            betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdateMinBet,
+                minBet = currentRoundSettings.minBet
+            });
+            betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdateMaxBet,
+                minBet = currentRoundSettings.maxBet
+            });
+
+            // handle all win
+            var allowAllWin = currentRoundSettings.maxBet == -1;
+            betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdateAllWinState,
+                newState = allowAllWin
+            });
         }
 
         private void SetInitialParams() {

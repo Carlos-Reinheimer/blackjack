@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Controllers.Sides;
 using TMPEffects.Components;
@@ -23,6 +24,8 @@ namespace UI.Controllers {
         
         [Header("UI - Bet")]
         [SerializeField] private TMP_Text playersBetText;
+        [SerializeField] private TMP_Text minBetText;
+        [SerializeField] private TMP_Text maxBetText;
         [SerializeField, HideInInspector] private TMP_Text dealersBetText; // maybe in the future
         
         [Header("UI - Cards Left")]
@@ -48,6 +51,9 @@ namespace UI.Controllers {
         
         [Header("UI - Action Buttons")]
         [SerializeField] private List<Button> actionButtons;
+        [SerializeField] private Button betMinusOneButton;
+        [SerializeField] private Button betPlusOneButton;
+        [SerializeField] private Button betAllWinButton;
         [SerializeField] private GameObject betButton;
         [SerializeField] private FadeCanvasGroupTween betButtonFadeCanvasGroup;
         [SerializeField] private GameObject betOptionsGameObject;
@@ -92,9 +98,35 @@ namespace UI.Controllers {
         }
 
         private void UpdateCurrentBet(BetChannelContract betContract) {
-            var side = betContract.sideController.side;
-            if (side == SideType.Player) playersBetText.text = betContract.betAmount.ToString();
-            // else dealersBetText.text = betContract.betAmount.ToString();
+            switch (betContract.betAction) {
+                case BetAction.UpdateBetValue:
+                    if (betContract.sideController == null) return;
+                    var side = betContract.sideController.side;
+                    if (side == SideType.Player) playersBetText.text = betContract.betAmount.ToString();
+                    // else dealersBetText.text = betContract.betAmount.ToString();
+                    break;
+                case BetAction.UpdateMinBet:
+                    var newMinBetText = minBetText.text.Replace("{0}", betContract.minBet.ToString());
+                    minBetText.text = newMinBetText;
+                    break;
+                case BetAction.UpdateMaxBet:
+                    var maxBet = betContract.maxBet;
+                    var betStringValue = maxBet == -1 ? "infinite" : maxBet.ToString();
+                    var newMaxBetText = maxBetText.text.Replace("{0}", betStringValue);
+                    maxBetText.text = newMaxBetText;
+                    break;
+                case BetAction.UpdateAllWinState:
+                    if (betContract.newState != null) betAllWinButton.interactable = (bool)betContract.newState;
+                    break;
+                case BetAction.UpdateMinusOneState:
+                    if (betContract.newState != null) betMinusOneButton.interactable = (bool)betContract.newState;
+                    break;
+                case BetAction.UpdatePlusOneState:
+                    if (betContract.newState != null) betPlusOneButton.interactable = (bool)betContract.newState;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void UpdateCurrentSum(CardsSumContract cardsSumContract) {
