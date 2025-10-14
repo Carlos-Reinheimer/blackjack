@@ -32,6 +32,11 @@ namespace Controllers.Sides {
                 betAction = BetAction.UpdateMinusOneState,
                 newState = false
             });
+            
+            betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdateAllWinState,
+                newState = true
+            });
 
             return newBet;
         }
@@ -54,12 +59,18 @@ namespace Controllers.Sides {
                     newState = true
                 });
             }
-            
-            if (newBet == livesChips) betChannel.Raise(new BetChannelContract {
+
+            if (newBet != livesChips) return newBet;
+            betChannel.Raise(new BetChannelContract {
                 betAction = BetAction.UpdatePlusOneState,
                 newState = false
             });
-            
+                
+            betChannel.Raise(new BetChannelContract {
+                betAction = BetAction.UpdateAllWinState,
+                newState = false
+            });
+
             return newBet;
         }
         
@@ -80,6 +91,10 @@ namespace Controllers.Sides {
             });
 
             return currentBet;
+        }
+
+        public void ClearBet(int initialBet) {
+            currentBet = initialBet;
         }
     }
 }

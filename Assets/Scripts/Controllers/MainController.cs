@@ -25,7 +25,6 @@ namespace Controllers {
         [SerializeField] private HUDActionsChannelSO hudActionsChannel;
         [SerializeField] private HUDActionsStateChannelSo hudActionsStateChannel;
         [SerializeField] private RoundChannelSO roundChannel;
-        [SerializeField] private BetChannelSO betChannel;
 
         [Header("Settings")]
         public int initialCardsCount = 4;
@@ -76,40 +75,19 @@ namespace Controllers {
             HandleNewRound();
             UpdateCurrentRoundSettings();
             SetInitialParams();
-            hudActionsStateChannel.Raise(false);
-            
-            // TODO: this is considering the minBet = 1 (always)
-            // if we're really gonna update that, we need to think how this is going to impact players if they don't have that min value available
-            betChannel.Raise(new BetChannelContract {
-                betAction = BetAction.UpdateMinusOneState,
-                newState = false
-            });
-            
+            ClearCurrentBets();
             StartCoroutine(DealCards());
         }
         
         private void UpdateCurrentRoundSettings() {
             currentRoundSettings = gameRules.roundSettings[_currentRound];
-            UpdateBetOptions();
+            playersSide.UpdateBetOptions();
         }
 
-        private void UpdateBetOptions() {
-            // handle min and max bet
-            betChannel.Raise(new BetChannelContract {
-                betAction = BetAction.UpdateMinBet,
-                minBet = currentRoundSettings.minBet
-            });
-            betChannel.Raise(new BetChannelContract {
-                betAction = BetAction.UpdateMaxBet,
-                minBet = currentRoundSettings.maxBet
-            });
-
-            // handle all win
-            var allowAllWin = currentRoundSettings.maxBet == -1;
-            betChannel.Raise(new BetChannelContract {
-                betAction = BetAction.UpdateAllWinState,
-                newState = allowAllWin
-            });
+        private void ClearCurrentBets() {
+            playersSide.ClearSideBet();
+            dealersSide.ClearSideBet();
+            playersSide.SetBetStates();
         }
 
         private void SetInitialParams() {
@@ -132,6 +110,7 @@ namespace Controllers {
         }
 
         private IEnumerator DealCards() {
+            hudActionsStateChannel.Raise(false);
             UpdateCurrentPlayersSide(SideType.Dealer);
             var count = 0;
             while (true){
@@ -182,12 +161,12 @@ namespace Controllers {
         }
 
         private void HandlePlayersWon() {
-            Debug.Log("Player has won");
+            Debug.Log("Player has won the match");
             playersSide.StartOperations();
         }
 
         private void HandleDealersWon() {
-            Debug.Log("Dealer has won");
+            Debug.Log("Dealer has won the match");
             var currentBet = playersSide.GetCurrentBet();
             dealersSide.ReceiveChip(currentBet);
             playersSide.TakeChip(currentBet, NextMatch, gameOverController.GameOver);
@@ -196,18 +175,20 @@ namespace Controllers {
         private void HandlePlayersChips() {
             var currentBet = playersSide.GetCurrentBet();
             playersSide.ReceiveChip(currentBet);
-            dealersSide.TakeChip(currentBet, NextMatch, RestartRound);
+            dealersSide.TakeChip(currentBet, NextMatch, AdvanceRound);
         }
 
         private void NextMatch() {
             ResetHands();
+            ClearCurrentBets();
             DealCardsAgain();
         }
         
-        private void RestartRound() {
+        private void AdvanceRound() {
             ResetHands();
             HandleNewRound();
             UpdateCurrentRoundSettings();
+            ClearCurrentBets();
             UpdateDealerLivesChips();
             advanceRoundChannel.Raise(new AdvanceRoundModel {
                 nextRound = _currentRound, 
@@ -283,7 +264,7 @@ namespace Controllers {
             jokerHandManager.DrawCard((JokerCard)randomCard);
             return false;
         }
-
+        
         public int GetCurrentTargetValue() => gameRules.targetValue;
     }
 }

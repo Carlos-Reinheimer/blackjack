@@ -23,6 +23,7 @@ namespace Controllers {
         }
 
         public void GameOver() {
+            // TODO: the buttons on the UI are not working
             Debug.Log("Game is over");
             showChannel.Raise(true);
         }

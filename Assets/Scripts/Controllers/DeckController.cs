@@ -119,6 +119,7 @@ namespace Controllers {
             var isJokerKeyValid = CardKeying.IsJokerKeyValid(key, out var isJokerKey);
             if (!isJokerKeyValid || currentSide == SideType.Player) return;
             
+            // TODO: THIS IS REALLY NOT WORKING, PLEASE FIX IT
             Debug.Log("Card was a Joker but for the Dealers Side, so searching for the prior key");
             GetLastCardFromDrawOrder(currentSide, lookupIndex - 1, out var anotherKey);
         }

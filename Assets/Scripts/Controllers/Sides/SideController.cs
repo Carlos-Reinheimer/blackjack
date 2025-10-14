@@ -50,7 +50,7 @@ namespace Controllers.Sides {
         public BetController betController;
         
         [Header("Helpers")]
-        [SerializeField] private int livesChips;
+        [SerializeField] protected int livesChips;
         public int currentCardSum;
         public bool isBusted;
         
@@ -65,7 +65,7 @@ namespace Controllers.Sides {
         [SerializeField] private ChipsChannelSO chipsChannel;
         [SerializeField] private CardsSumChannelSO cardsSumChannel;
         [SerializeField] private HUDActionsChannelSO hudActionsChannel;
-        [SerializeField] private BetChannelSO betChannel;
+        [SerializeField] protected BetChannelSO betChannel; // TODO: I'm not happy with this here!
 
         protected List<DeckCard> activeCards;
         protected int currentScore;
@@ -228,7 +228,16 @@ namespace Controllers.Sides {
                 amount = livesChips
             });
         }
+        
+        public void ClearSideBet() {
+            betController.ClearBet(DEFAULT_BET_VALUE);
+            betChannel.Raise(new BetChannelContract {
+                sideController = this,
+                betAmount = DEFAULT_BET_VALUE
+            });
+        }
 
         public int GetCurrentBet() => betController.currentBet;
+        
     }
 }

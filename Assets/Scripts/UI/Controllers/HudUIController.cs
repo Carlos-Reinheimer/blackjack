@@ -54,7 +54,7 @@ namespace UI.Controllers {
         [SerializeField] private Button betMinusOneButton;
         [SerializeField] private Button betPlusOneButton;
         [SerializeField] private Button betAllWinButton;
-        [SerializeField] private GameObject betButton;
+        [SerializeField] private Button betButton;
         [SerializeField] private FadeCanvasGroupTween betButtonFadeCanvasGroup;
         [SerializeField] private GameObject betOptionsGameObject;
         [SerializeField] private FadeCanvasGroupTween betOptionsFadeCanvasGroup;
@@ -188,18 +188,18 @@ namespace UI.Controllers {
             }
 
             public void OnBetPointerEnter() {
-                if (_isHoveringBetButton) return;
+                if (_isHoveringBetButton || !betButton.interactable) return;
                 _isHoveringBetButton = true;
-                LeanTween.rotate(betButton, new Vector3(0, 180, 0), 0.2f);
+                LeanTween.rotate(betButton.gameObject, new Vector3(0, 180, 0), 0.2f);
                 betButtonFadeCanvasGroup.Fade(false, 0);
                 LeanTween.rotate(betOptionsGameObject, new Vector3(0, 0, 0), 0.2f);
                 betOptionsFadeCanvasGroup.Fade(true, 0);
             }
             
             public void OnBetPointerExit() {
-                if (!_isHoveringBetButton) return;
+                if (!_isHoveringBetButton || !betButton.interactable) return;
                 _isHoveringBetButton = false;
-                LeanTween.rotate(betButton, new Vector3(0, 0, 0), 0.2f);
+                LeanTween.rotate(betButton.gameObject, new Vector3(0, 0, 0), 0.2f);
                 betButtonFadeCanvasGroup.Fade(true, 0);
                 LeanTween.rotate(betOptionsGameObject, new Vector3(0, 180, 0), 0.2f);
                 betOptionsFadeCanvasGroup.Fade(false, 0);
