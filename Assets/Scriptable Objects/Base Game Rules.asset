@@ -15,24 +15,66 @@ MonoBehaviour:
   targetValue: 21
   initialPlayersLifeChipValue: 3
   roundSettings:
-  - dealersLifeChips: 1
+  - dealersLifeChips: 999
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 2
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 3
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 4
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 5
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 6
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 7
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 8
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 9
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 10
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 11
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 12
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 13
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 14
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 15
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 16
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 17
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 18
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 19
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 20
+    minBet: 1
+    maxBet: -1
   - dealersLifeChips: 21
+    minBet: 1
+    maxBet: -1

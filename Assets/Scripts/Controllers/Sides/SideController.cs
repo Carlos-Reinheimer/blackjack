@@ -49,7 +49,7 @@ namespace Controllers.Sides {
         
         [Header("Helpers")]
         [SerializeField] private int livesChips;
-        [SerializeField] private int currentBet = 1;
+        public int currentBet = 1;
         public int currentCardSum;
         public bool isBusted;
         
