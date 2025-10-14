@@ -188,13 +188,15 @@ namespace Controllers {
 
         private void HandleDealersWon() {
             Debug.Log("Dealer has won");
-            dealersSide.ReceiveChip(playersSide.currentBet);
-            playersSide.TakeChip(playersSide.currentBet, NextMatch, gameOverController.GameOver);
+            var currentBet = playersSide.GetCurrentBet();
+            dealersSide.ReceiveChip(currentBet);
+            playersSide.TakeChip(currentBet, NextMatch, gameOverController.GameOver);
         }
 
         private void HandlePlayersChips() {
-            playersSide.ReceiveChip(playersSide.currentBet);
-            dealersSide.TakeChip(playersSide.currentBet, NextMatch, RestartRound);
+            var currentBet = playersSide.GetCurrentBet();
+            playersSide.ReceiveChip(currentBet);
+            dealersSide.TakeChip(currentBet, NextMatch, RestartRound);
         }
 
         private void NextMatch() {
