@@ -1,5 +1,6 @@
 using UI.Events.Game_Over;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utils;
 
 namespace Controllers {
@@ -18,12 +19,14 @@ namespace Controllers {
         }
 
         private void HandleGameOverActionChannel(GameOverAction action) {
-            if (action == GameOverAction.PlayAgain) SceneLoader.Instance.LoadScene("Main");
+            if (action == GameOverAction.PlayAgain) {
+                // SceneLoader.Instance.LoadScene("Main");
+                SceneManager.LoadScene("Main");
+            }
             else SceneLoader.Instance.LoadScene("Main");
         }
 
         public void GameOver() {
-            // TODO: the buttons on the UI are not working
             Debug.Log("Game is over");
             showChannel.Raise(true);
         }

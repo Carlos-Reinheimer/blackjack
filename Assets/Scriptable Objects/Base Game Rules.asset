@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Base Game Rules
   m_EditorClassIdentifier: 
   targetValue: 21
-  initialPlayersLifeChipValue: 3
+  initialPlayersLifeChipValue: 1
   roundSettings:
   - dealersLifeChips: 999
     minBet: 1
