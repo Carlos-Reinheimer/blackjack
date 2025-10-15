@@ -35,16 +35,6 @@ namespace Deck {
         }
 
         public void DrawCard(JokerCard jokerCard) {
-            // TODO: this is something we need to look up to:
-            // If the player is already on the limit of jokers and Hit another one, it will be ignored.
-            // This can be an issue, because the index of the deck will continue to go down and that joker card will never be Hit until the next Random shuffle
-            // There are two options for this: 1) when this happens, we can reorder the joker until the player Hit it | OR | 2) we leave this at it is, the player will not Hit that joker and better luck next time 
-
-            if (_handCards.Count >= maxHandSize) {
-                Debug.Log("Trying to draw a new joker, but already on the limit");
-                return;
-            }
-            
             var newCard = Instantiate(cardPrefab, spawnPoint);
             var newCardVisual = Instantiate(cardVisualPrefab, spawnPoint);
             var cardController = newCard.GetComponent<CardController>();
@@ -54,6 +44,12 @@ namespace Deck {
             cardVisual.StartVisual(cardController, jokerCard);
             _handCards.Add(cardController);
             UpdateCardPositions();
+        }
+
+        public bool HandsFullOfJokers() {
+            var maxJokerHandSize = _handCards.Count >= maxHandSize;
+            if (maxJokerHandSize) Debug.Log("Card was a joker, but player is already on the limit of jokers");
+            return maxJokerHandSize;
         }
     }
 }

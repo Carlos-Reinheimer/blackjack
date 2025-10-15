@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Controllers.Sides;
+using Deck;
 using Scriptable_Objects;
 using UI.Events.HUD;
 using UnityEngine;
@@ -12,6 +13,9 @@ namespace Controllers {
         [Header("Game Definitions")]
         public List<DeckSo> decks;
         public GameJokers gameJokers;
+
+        [Header("Scripts")] 
+        public JokerHandManager jokerHandManager;
 
         [Header("Settings")] 
         public int cardsLeftBeforeAutoShuffle = 3;
@@ -112,16 +116,23 @@ namespace Controllers {
             }
         }
 
-        private void GetLastCardFromDrawOrder(SideType currentSide, int lookupIndex, out string key) {
+        private void GetLastCardFromDrawOrder(SideType currentSide, int lookupIndex, out string key, out int keyIndex) {
             var index = _drawOrder[lookupIndex]; // last one
             key = _cardLookupDict.ElementAt(index).Key;
+            keyIndex = lookupIndex;
             
-            var isJokerKeyValid = CardKeying.IsJokerKeyValid(key, out var isJokerKey);
-            if (!isJokerKeyValid || currentSide == SideType.Player) return;
+            var isJokerKeyValid = CardKeying.IsJokerKeyValid(key, out var jokerCard);
+            if (!isJokerKeyValid || currentSide != SideType.Dealer) return;
             
-            // TODO: THIS IS REALLY NOT WORKING, PLEASE FIX IT
+            // TODO: this is something we need to look up to:
+            // If the player is already on the limit of jokers and Hit another one, it will be ignored.
+            // This can be an issue, because the index of the deck will continue to go down and that joker card will never be Hit until the next Random shuffle
+            // There are two options for this: 1) when this happens, we can reorder the joker until the player Hit it | OR | 2) we leave this at it is, the player will not Hit that joker and better luck next time 
+            if (jokerHandManager.HandsFullOfJokers()) return;
+            
+                
             Debug.Log("Card was a Joker but for the Dealers Side, so searching for the prior key");
-            GetLastCardFromDrawOrder(currentSide, lookupIndex - 1, out var anotherKey);
+            GetLastCardFromDrawOrder(currentSide, lookupIndex - 1, out key, out keyIndex);
         }
         
         public void StartGame(UnityAction callback) {
@@ -138,9 +149,9 @@ namespace Controllers {
         public BaseCard DrawTopCard(SideType currentSide) {
             if (_drawOrder == null || _drawOrder.Count == 0) return null;
 
-            var cardIndex = _drawOrder.Count - 1;
-            GetLastCardFromDrawOrder(currentSide, cardIndex, out var key);
-            _drawOrder.RemoveAt(cardIndex);
+            var initialSearchIndex = _drawOrder.Count - 1;
+            GetLastCardFromDrawOrder(currentSide, initialSearchIndex, out var key, out var removedIndex);
+            _drawOrder.RemoveAt(removedIndex);
             _cardLookupDict.TryGetValue(key, out var card);
             RemoveIndexFromReference(key);
             
