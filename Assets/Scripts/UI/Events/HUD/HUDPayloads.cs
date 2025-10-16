@@ -54,8 +54,9 @@ namespace UI.Events.HUD
     public struct ScoreChannelContract
     {
         public SideController sideController;
-        public int previousScore;
-        public int nextScore;
+        public OperationValueType valueType;
+        public int previousValue;
+        public int nextValue;
     }
     
     public struct ScoreComboChannelContract

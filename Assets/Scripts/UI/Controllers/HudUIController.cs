@@ -44,6 +44,8 @@ namespace UI.Controllers {
         
         [Header("UI - Score")]
         [SerializeField] private UpdateValueOverTimeTween scoreText;
+        [SerializeField] private UpdateValueOverTimeTween matchScoreText;
+        [SerializeField] private UpdateValueOverTimeTween multiplierText;
         [SerializeField] private TMP_Text comboText;
         [SerializeField] private TMPWriter comboTmpWriter;
         [SerializeField] private TMPAnimator comboTmpAnimator;
@@ -160,8 +162,21 @@ namespace UI.Controllers {
             }
             
             private void UpdateScoreUI(ScoreChannelContract scoreChannelContract) {
-                scoreText.UpdateTargetValues(scoreChannelContract.previousScore, scoreChannelContract.nextScore);
-                scoreText.StartTween();
+                switch (scoreChannelContract.valueType) {
+                    case OperationValueType.Score:
+                        scoreText.UpdateTargetValues(scoreChannelContract.previousValue, scoreChannelContract.nextValue);
+                        scoreText.StartTween();
+                        break;
+                    case OperationValueType.Multiplier:
+                        multiplierText.UpdateTargetValues(scoreChannelContract.previousValue, scoreChannelContract.nextValue);
+                        multiplierText.StartTween();
+                        break;
+                    case OperationValueType.MatchScore:
+                    default:
+                        matchScoreText.UpdateTargetValues(scoreChannelContract.previousValue, scoreChannelContract.nextValue);
+                        matchScoreText.StartTween();
+                        break;
+                }
             }
 
         #endregion

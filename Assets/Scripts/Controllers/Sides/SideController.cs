@@ -22,9 +22,17 @@ namespace Controllers.Sides {
         Divide
     }
 
+    public enum OperationValueType
+    {
+        Score,
+        MatchScore,
+        Multiplier
+    }
+
     public class OperationData {
         public float operationValue;
         public Operation operation;
+        public OperationValueType valueType;
     }
     
     public class InitialParams {
@@ -68,7 +76,8 @@ namespace Controllers.Sides {
         [SerializeField] protected BetChannelSO betChannel; // TODO: I'm not happy with this here!
 
         protected List<DeckCard> activeCards;
-        protected int currentScore;
+        protected int currentMatchScore; // this is valid throughout the Match
+        protected int currentRoundMultiplier; // this is valid throughout the Round
         protected InitialParams initialParams;
         
         private List<GameObject> _activeCardsGo;

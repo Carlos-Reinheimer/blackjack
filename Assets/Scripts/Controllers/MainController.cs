@@ -195,7 +195,7 @@ namespace Controllers {
                 completeCallback = DealCardsAgain
             });
 
-            RunStats.CurrentLevel = _currentRound;
+            RunStats.CurrentRound = _currentRound;
         }
 
         private void UpdateDealerLivesChips() {

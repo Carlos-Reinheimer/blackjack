@@ -62,5 +62,9 @@ namespace Utils.UI_Animations {
         public void UpdateTargetValue(float newTargetValue) {
             targetValue = newTargetValue;
         }
+
+        public void UpdateTextColor(Color color) {
+            valueText.color = color;
+        }
     }
 }

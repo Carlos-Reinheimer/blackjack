@@ -42,10 +42,10 @@ namespace Utils {
             // TODO: If I want to manipulate other files later, I need to change this.
             var newCoreData = new CoreData(coreData);
             newCoreData.globalScore += RunStats.CurrentScore;
-            if (RunStats.CurrentLevel > newCoreData.prLevelIndex) newCoreData.prLevelIndex = RunStats.CurrentLevel;
+            if (RunStats.CurrentRound > newCoreData.prLevelIndex) newCoreData.prLevelIndex = RunStats.CurrentRound;
             if (RunStats.CurrentScore > newCoreData.prScore) {
                 newCoreData.prScore = RunStats.CurrentScore;
-                newCoreData.prScoreLevelIndex = RunStats.CurrentLevel;
+                newCoreData.prScoreLevelIndex = RunStats.CurrentRound;
             }
             
             binaryFormatter.Serialize(fileStream, newCoreData);

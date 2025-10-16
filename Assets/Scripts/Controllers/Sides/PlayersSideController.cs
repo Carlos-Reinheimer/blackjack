@@ -15,6 +15,8 @@ namespace Controllers.Sides {
         
         private List<OperationData> _operations;
         private int _currentOperationIndex;
+        private int _currentMatchScore;
+        private int _currentMatchMultiplier;
         
         private readonly Dictionary<Operation, string> _operationsToString = new() {
             { Operation.Add, "+" },
@@ -28,14 +30,42 @@ namespace Controllers.Sides {
         }
 
         private void UpdateCurrentScore(int newValue) {
-            var previousScore = currentScore;
-            currentScore += newValue;
+            // NOTE: this is not something I would usually want to do, but it's possible to alter the base score
+            var previousScore = RunStats.CurrentScore;
+            RunStats.CurrentScore += newValue;
 
-            var finalScore = currentScore <= 0 ? 0 : currentScore;
+            var finalScore = RunStats.CurrentScore <= 0 ? 0 : RunStats.CurrentScore;
             scoreChannel.Raise(new ScoreChannelContract {
                 sideController = this,
-                previousScore = previousScore,
-                nextScore = finalScore
+                previousValue = previousScore,
+                nextValue = finalScore,
+                valueType = OperationValueType.Score
+            });
+        }
+        
+        private void UpdateCurrentMultiplier(int newValue) {
+            var previousMultiplier = currentRoundMultiplier;
+            currentRoundMultiplier += newValue;
+
+            var finalMultiplier = currentRoundMultiplier <= 0 ? 0 : currentRoundMultiplier;
+            scoreChannel.Raise(new ScoreChannelContract {
+                sideController = this,
+                previousValue = previousMultiplier,
+                nextValue = finalMultiplier,
+                valueType = OperationValueType.Multiplier
+            });
+        }
+        
+        private void UpdateCurrentMatchScore(int newValue) {
+            var previousMatchScore = currentMatchScore;
+            currentMatchScore = newValue;
+
+            var finalMultiplier = currentMatchScore <= 0 ? 0 : currentMatchScore;
+            scoreChannel.Raise(new ScoreChannelContract {
+                sideController = this,
+                previousValue = previousMatchScore,
+                nextValue = finalMultiplier,
+                valueType = OperationValueType.MatchScore
             });
         }
         
@@ -49,31 +79,69 @@ namespace Controllers.Sides {
                 comboText = $"<+grow><grow amplitude=3>{composedOperation}</grow></+grow><!wait=1.2>"
             });
 
-            var newScore = operationData.operation switch {
-                Operation.Add => currentScore + operationData.operationValue,
-                Operation.Subtract => currentScore - operationData.operationValue,
-                Operation.Multiply => currentScore * operationData.operationValue,
-                Operation.Divide => currentScore / operationData.operationValue,
+            var valueType = operationData.valueType;
+            var operationValue = valueType switch {
+                OperationValueType.Score => RunStats.CurrentScore,
+                OperationValueType.MatchScore => currentMatchScore,
+                _ => currentRoundMultiplier
+            };
+            var updatedValue = operationData.operation switch {
+                Operation.Add => operationValue + operationData.operationValue,
+                Operation.Subtract => operationValue - operationData.operationValue,
+                Operation.Multiply => operationValue * operationData.operationValue,
+                Operation.Divide => operationValue / operationData.operationValue,
                 _ => throw new ArgumentOutOfRangeException(nameof(operationData.operation), operationData.operation, null)
             };
             
-            UpdateCurrentScore((int)newScore);
+            switch (valueType) {
+                case OperationValueType.Score:
+                    UpdateCurrentScore((int)updatedValue);
+                    break;
+                case OperationValueType.Multiplier:
+                    UpdateCurrentMultiplier((int)updatedValue);
+                    break;
+                case OperationValueType.MatchScore:
+                default:
+                    UpdateCurrentMatchScore((int)updatedValue);
+                    break;
+            }
+        }
+
+        private int GetOptimalMultiplier() {
+            var targetValue = MainController.Instance.GetCurrentTargetValue();
+            var difference = Math.Abs(targetValue - currentCardSum); // guarantee I'm working with Natural numbers
+
+            return difference switch
+            {
+                0 => 10,
+                1 => 8,
+                2 => 7,
+                3 => 6,
+                4 => 5,
+                5 => 4,
+                6 => 3,
+                7 => 2,
+                _ => 1
+            };
         }
         
         public void StartOperations() {
             _operations ??= new List<OperationData>();
             
             _operations.Add(new OperationData {
-                operationValue = activeCards.Count,
-                operation = Operation.Add
+                operationValue = currentCardSum,
+                operation = Operation.Add,
+                valueType = OperationValueType.MatchScore
             });
             _operations.Add(new OperationData {
-                operationValue = currentCardSum,
-                operation = Operation.Multiply
+                operationValue = GetOptimalMultiplier(),
+                operation = Operation.Add,
+                valueType = OperationValueType.Multiplier
             });
             _operations.Add(new OperationData {
-                operationValue = currentCardSum,
-                operation = Operation.Add
+                operationValue = GetOptimalMultiplier(), // TODO: this is not right. This current system of defining the values of the operations beforehand is not working
+                operation = Operation.Multiply,
+                valueType = OperationValueType.MatchScore
             });
 
             Operate(_operations[_currentOperationIndex]);
@@ -87,11 +155,28 @@ namespace Controllers.Sides {
             });
             
             if (_currentOperationIndex == _operations.Count) {
-                RunStats.CurrentScore += currentScore;
+                // sum current match score with the RunScore;
+                var previousScore = RunStats.CurrentScore;
+                RunStats.CurrentScore += currentMatchScore;
                 
+                scoreChannel.Raise(new ScoreChannelContract {
+                    sideController = this,
+                    previousValue = previousScore,
+                    nextValue = RunStats.CurrentScore,
+                    valueType = OperationValueType.Score
+                });
+                scoreChannel.Raise(new ScoreChannelContract {
+                    sideController = this,
+                    previousValue = currentMatchScore,
+                    nextValue = 0,
+                    valueType = OperationValueType.MatchScore
+                });
+                
+                currentMatchScore = 0;
                 _currentOperationIndex = 0;
                 _operations.Clear();
                 LoopCompleted?.Invoke();
+                
                 return;
             }
 
@@ -109,6 +194,9 @@ namespace Controllers.Sides {
                 betAction = BetAction.UpdateMaxBet,
                 minBet = currentRoundSettings.maxBet
             });
+            
+            // reset current multipliers
+            currentRoundMultiplier = 0;
         }
         
         public void SetBetStates() {
