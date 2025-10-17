@@ -630,47 +630,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 219112393}
   m_CullTransparentMesh: 1
---- !u!21 &257807717
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _OuterUV: {r: 0, g: 0, b: 1, a: 1}
-    - _WidthHeightRadius: {r: 1520, g: 1383.5706, b: 1500, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &261996875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1213,6 +1172,47 @@ MonoBehaviour:
   canvas: {fileID: 1132755818}
   roundValueText: {fileID: 1008689718}
   fadeCanvasGroupTween: {fileID: 1132755823}
+--- !u!21 &421595219
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _OuterUV: {r: 0, g: 0, b: 1, a: 1}
+    - _WidthHeightRadius: {r: 1520, g: 1383.5706, b: 1500, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &427891608
 GameObject:
   m_ObjectHideFlags: 0
@@ -5956,8 +5956,8 @@ MonoBehaviour:
   OnFinishWriter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2097728523}
-        m_TargetAssemblyTypeName: Controllers.Sides.SideController, Assembly-CSharp
+      - m_Target: {fileID: 2097728525}
+        m_TargetAssemblyTypeName: Controllers.Sides.PlayersScoreHandler, Assembly-CSharp
         m_MethodName: HandleNextOperation
         m_Mode: 1
         m_Arguments:
@@ -6302,6 +6302,7 @@ GameObject:
   - component: {fileID: 1468829536}
   - component: {fileID: 1468829537}
   - component: {fileID: 1468829538}
+  - component: {fileID: 1468829539}
   m_Layer: 0
   m_Name: Dealers Side
   m_TagString: Untagged
@@ -6336,8 +6337,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a849f5fd9a39fb449c03c4dc0c1fcc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  side: 1
   betController: {fileID: 1468829538}
+  scoreHandler: {fileID: 1468829539}
+  side: 1
   livesChips: 0
   currentCardSum: 0
   isBusted: 0
@@ -6361,6 +6363,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   betChannel: {fileID: 11400000, guid: 6f1acf93f66086e459b5f774eba71e37, type: 2}
+--- !u!114 &1468829539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468829535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734549442b66f9e40b7547e6160270fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sideController: {fileID: 1468829537}
+  scoreChannel: {fileID: 11400000, guid: 64a1c9fb9806a604e85806611ad046de, type: 2}
+  scoreComboChannel: {fileID: 11400000, guid: 199779198245fa44488d16a22779aeae, type: 2}
 --- !u!1 &1474283893
 GameObject:
   m_ObjectHideFlags: 0
@@ -7336,7 +7353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 257807717}
+  m_Material: {fileID: 421595219}
   m_Color: {r: 0.89411765, g: 0.8392157, b: 0.654902, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -9664,6 +9681,7 @@ GameObject:
   - component: {fileID: 2097728522}
   - component: {fileID: 2097728523}
   - component: {fileID: 2097728524}
+  - component: {fileID: 2097728525}
   m_Layer: 0
   m_Name: Players Side
   m_TagString: Untagged
@@ -9698,8 +9716,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b89bcf598ccb6f4dbe0da09ea2f0e32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  side: 0
   betController: {fileID: 2097728524}
+  scoreHandler: {fileID: 2097728525}
+  side: 0
   livesChips: 0
   currentCardSum: 0
   isBusted: 0
@@ -9710,8 +9729,6 @@ MonoBehaviour:
   cardsSumChannel: {fileID: 11400000, guid: 29633de88687bdb44b1807b6f583aeed, type: 2}
   hudActionsChannel: {fileID: 11400000, guid: e8da6428a19326d40ba57e98655a205c, type: 2}
   betChannel: {fileID: 11400000, guid: 6f1acf93f66086e459b5f774eba71e37, type: 2}
-  scoreChannel: {fileID: 11400000, guid: 64a1c9fb9806a604e85806611ad046de, type: 2}
-  scoreComboChannel: {fileID: 11400000, guid: 199779198245fa44488d16a22779aeae, type: 2}
 --- !u!114 &2097728524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9725,6 +9742,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   betChannel: {fileID: 11400000, guid: 6f1acf93f66086e459b5f774eba71e37, type: 2}
+--- !u!114 &2097728525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097728521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734549442b66f9e40b7547e6160270fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sideController: {fileID: 2097728523}
+  scoreChannel: {fileID: 11400000, guid: 64a1c9fb9806a604e85806611ad046de, type: 2}
+  scoreComboChannel: {fileID: 11400000, guid: 199779198245fa44488d16a22779aeae, type: 2}
 --- !u!1 &2101594933
 GameObject:
   m_ObjectHideFlags: 0

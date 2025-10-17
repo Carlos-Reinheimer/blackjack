@@ -53,9 +53,12 @@ namespace Controllers.Sides {
         
         private const int DEFAULT_BET_VALUE = 1;
         
+        [Header("Scripts")]
+        public BetController betController;
+        public ScoreHandler scoreHandler;
+        
         [Header("Settings")]
         public SideType side;
-        public BetController betController;
         
         [Header("Helpers")]
         [SerializeField] protected int livesChips;
@@ -76,8 +79,6 @@ namespace Controllers.Sides {
         [SerializeField] protected BetChannelSO betChannel; // TODO: I'm not happy with this here!
 
         protected List<DeckCard> activeCards;
-        protected int currentMatchScore; // this is valid throughout the Match
-        protected int currentRoundMultiplier; // this is valid throughout the Round
         protected InitialParams initialParams;
         
         private List<GameObject> _activeCardsGo;
@@ -101,7 +102,7 @@ namespace Controllers.Sides {
             activeCards = new List<DeckCard>();
             _activeCardsGo = new List<GameObject>();
             _activeCardsVisuals = new List<GameObject>();
-            
+
             betChannel.Raise(new BetChannelContract {
                 sideController = this,
                 betAmount = DEFAULT_BET_VALUE
