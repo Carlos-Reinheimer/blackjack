@@ -84,7 +84,13 @@ namespace Controllers.Sides {
             scoreComboChannel.Raise(new ScoreComboChannelContract {
                 sideController = sideController,
                 action = ScoreComboAction.StartWriter,
-                comboText = $"<+grow><grow amplitude=3>{composedOperation}</grow></+grow><!wait=1.2>"
+                comboText = $"<color={ScoreSettings.GetColorByOperationValueType(operationData.valueType)}>" +
+                            $"<+grow>" +
+                            $"<grow amplitude=3>" +
+                            $"{composedOperation}" +
+                            $"</grow>" +
+                            $"</+grow><!wait=1.2>" +
+                            $"</color>"
             });
 
             var valueType = operationData.valueType;

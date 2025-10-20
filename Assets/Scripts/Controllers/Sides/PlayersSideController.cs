@@ -28,7 +28,7 @@ namespace Controllers.Sides {
             });
             betChannel.Raise(new BetChannelContract {
                 betAction = BetAction.UpdateMaxBet,
-                minBet = currentRoundSettings.maxBet
+                maxBet = currentRoundSettings.maxBet
             });
             
             // reset current multipliers
