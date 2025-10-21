@@ -21,7 +21,8 @@ namespace Utils {
         public CoreData(){ }
 
         public CoreData(CoreData coreData) {
-            unlockedJokers = new List<JokerCard>(coreData.unlockedJokers);
+            if (coreData?.unlockedJokers != null) unlockedJokers = new List<JokerCard>(coreData?.unlockedJokers);
+            if (coreData == null) return;
             globalScore = coreData.globalScore;
 
             prLevelIndex = coreData.prLevelIndex;
@@ -33,10 +34,13 @@ namespace Utils {
     
     public static class SaveGameData {
 
+        public const string MAIN_SAVE_FILENAME = "saveDataFile";
+        
         public static CoreData coreData;
 
-        public static void Save(string filename, UnityAction callback = null) {
+        public static void Save(string filename, UnityAction completeCallback = null) {
             var binaryFormatter = new BinaryFormatter();
+            Debug.Log("Application.persistentDataPath + $\"/{filename}.dat\": " + Application.persistentDataPath + $"/{filename}.dat");
             var fileStream = File.Create(Application.persistentDataPath + $"/{filename}.dat");
             
             // TODO: If I want to manipulate other files later, I need to change this.
@@ -51,10 +55,10 @@ namespace Utils {
             binaryFormatter.Serialize(fileStream, newCoreData);
             fileStream.Close();
             
-            callback?.Invoke();
+            completeCallback?.Invoke();
         }
 
-        public static void Load(string filename, UnityAction callback = null) {
+        public static void Load(string filename, UnityAction completeCallback = null) {
             if (!File.Exists(Application.persistentDataPath + $"/{filename}.dat")) return;
 
             var binaryFormatter = new BinaryFormatter();
@@ -64,7 +68,7 @@ namespace Utils {
             fileStream.Close();
             
             coreData = new CoreData(loadedCoreData);
-            callback?.Invoke();
+            completeCallback?.Invoke();
         }
     }
 }

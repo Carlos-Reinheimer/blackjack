@@ -1,4 +1,5 @@
 using UI.Events.Game_Over;
+using UI.Events.Save_Game_Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
@@ -9,6 +10,7 @@ namespace Controllers {
         [Header("Channels (SO assets)")]
         [SerializeField] private ShowGameOverChannelSO showChannel;
         [SerializeField] private GameOverActionChannelSO actionChannel;
+        [SerializeField] private SaveGameDataEventChannel saveGameDataEventChannel;
 
         private void OnEnable() {
             actionChannel.OnEventRaised += HandleGameOverActionChannel;
@@ -17,7 +19,7 @@ namespace Controllers {
         private void OnDisable() {
             actionChannel.OnEventRaised -= HandleGameOverActionChannel;
         }
-
+        
         private void HandleGameOverActionChannel(GameOverAction action) {
             if (action == GameOverAction.PlayAgain) {
                 // SceneLoader.Instance.LoadScene("Main");
@@ -27,7 +29,9 @@ namespace Controllers {
         }
 
         public void GameOver() {
-            Debug.Log("Game is over");
+            saveGameDataEventChannel.Raise(true);
+            SaveGameData.Save(SaveGameData.MAIN_SAVE_FILENAME, () => saveGameDataEventChannel.Raise(false));
+            
             showChannel.Raise(true);
         }
     }
