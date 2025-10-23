@@ -60,6 +60,7 @@ namespace Utils {
 
         public static void Load(string filename, UnityAction completeCallback = null) {
             if (!File.Exists(Application.persistentDataPath + $"/{filename}.dat")) return;
+            Debug.Log("Application.persistentDataPath + $\"/{filename}.dat\": " + Application.persistentDataPath + $"/{filename}.dat");
 
             var binaryFormatter = new BinaryFormatter();
             var fileStream = File.Open(Application.persistentDataPath + $"/{filename}.dat", FileMode.Open);

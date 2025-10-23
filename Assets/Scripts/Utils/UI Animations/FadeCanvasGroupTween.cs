@@ -33,7 +33,7 @@ namespace Utils.UI_Animations {
             }
         }
 
-        public void Fade(bool fadeIn, float alphaDelay, Action callback = null) {
+        public void Fade(bool fadeIn, float alphaDelay = 0, Action callback = null) {
             canvasGroup.alpha = fadeIn ? 0 : 1;
             LeanTween.alphaCanvas(canvasGroup, fadeIn ? 1f : 0f, fadeTime)
                 .setDelay(alphaDelay)

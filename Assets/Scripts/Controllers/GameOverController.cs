@@ -21,11 +21,7 @@ namespace Controllers {
         }
         
         private void HandleGameOverActionChannel(GameOverAction action) {
-            if (action == GameOverAction.PlayAgain) {
-                // SceneLoader.Instance.LoadScene("Main");
-                SceneManager.LoadScene("Main");
-            }
-            else SceneLoader.Instance.LoadScene("Main");
+            SceneLoader.Instance.LoadScene(action == GameOverAction.PlayAgain ? "Main" : "Menu");
         }
 
         public void GameOver() {

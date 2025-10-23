@@ -21,6 +21,10 @@ namespace General {
             }
             private static UIAudioManager _instance;
         #endregion
+        
+        private void Awake() {
+            DontDestroyOnLoad(this);
+        }
 
         public void PlayHover() {
             PlayClip(pointerEnterClip);
