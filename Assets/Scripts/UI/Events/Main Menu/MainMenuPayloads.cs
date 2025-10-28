@@ -1,6 +1,7 @@
 
-namespace UI.Events.Main_Menu
-{
+using Scriptable_Objects;
+
+namespace UI.Events.Main_Menu {
     public enum MainMenuAction
     {
         StartRun,
@@ -12,5 +13,10 @@ namespace UI.Events.Main_Menu
     public struct GameInfoSchema {
         public string gameVersion;
         public int globalScore;
+    }
+    
+    public struct CreateJokerShopCardSchema {
+        public JokerCard jokerCard;
+        public int index;
     }
 }

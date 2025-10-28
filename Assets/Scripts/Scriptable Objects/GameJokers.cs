@@ -11,6 +11,7 @@ namespace Scriptable_Objects {
         public bool isUnlocked = true;
         public Sprite unlockedSprite;
         public Sprite lockedSprite;
+        public int unlockPrice;
         [SerializeReference, SubclassSelector] public IJoker iJoker;
     }
     

@@ -3,7 +3,7 @@ using UI.Events.Main_Menu;
 using UnityEngine;
 using Utils;
 
-namespace UI {
+namespace Controllers.Main_Menu {
     public class MainMenuController : MonoBehaviour {
 
         [Header("Channels (SO assets)")]
