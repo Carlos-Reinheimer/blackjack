@@ -15,82 +15,102 @@ MonoBehaviour:
   availableJokers:
   - type: 3
     name: Joker 1
+    id: joker_1
     jokerType: 0
-    isUnlocked: 1
+    isUnlocked: 0
     unlockedSprite: {fileID: 0}
     lockedSprite: {fileID: 0}
+    unlockPrice: 10
     iJoker:
       rid: 928387344147415111
   - type: 3
     name: Joker 2
+    id: joker_2
     jokerType: 0
-    isUnlocked: 1
+    isUnlocked: 0
     unlockedSprite: {fileID: 0}
     lockedSprite: {fileID: 0}
+    unlockPrice: 20
     iJoker:
       rid: 928387344147415111
   - type: 3
     name: Joker 3
+    id: joker_3
     jokerType: 0
-    isUnlocked: 1
+    isUnlocked: 0
     unlockedSprite: {fileID: 0}
     lockedSprite: {fileID: 0}
+    unlockPrice: 30
     iJoker:
       rid: 928387344147415111
   - type: 3
     name: Joker 4
+    id: joker_4
     jokerType: 0
-    isUnlocked: 1
+    isUnlocked: 0
     unlockedSprite: {fileID: 0}
     lockedSprite: {fileID: 0}
+    unlockPrice: 40
     iJoker:
       rid: 928387344147415111
   - type: 3
     name: Joker 5
+    id: joker_5
     jokerType: 0
-    isUnlocked: 1
+    isUnlocked: 0
     unlockedSprite: {fileID: 0}
     lockedSprite: {fileID: 0}
+    unlockPrice: 50
     iJoker:
       rid: 928387344147415111
   - type: 3
     name: Joker 6
+    id: joker_6
     jokerType: 0
-    isUnlocked: 1
+    isUnlocked: 0
     unlockedSprite: {fileID: 0}
     lockedSprite: {fileID: 0}
+    unlockPrice: 60
     iJoker:
       rid: 928387344147415111
   - type: 3
     name: Joker 7
+    id: joker_7
     jokerType: 0
-    isUnlocked: 1
+    isUnlocked: 0
     unlockedSprite: {fileID: 0}
     lockedSprite: {fileID: 0}
+    unlockPrice: 70
     iJoker:
       rid: 928387344147415111
   - type: 3
     name: 8
+    id: joker_8
     jokerType: 0
-    isUnlocked: 1
+    isUnlocked: 0
     unlockedSprite: {fileID: 0}
     lockedSprite: {fileID: 0}
+    unlockPrice: 80
     iJoker:
       rid: 928387344147415111
   - type: 3
     name: Joker 9
+    id: joker_9
     jokerType: 0
-    isUnlocked: 1
+    isUnlocked: 0
     unlockedSprite: {fileID: 0}
     lockedSprite: {fileID: 0}
+    unlockPrice: 90
     iJoker:
       rid: 928387344147415111
   - type: 3
     name: Joker 10
+    id: joker_10
     jokerType: 0
-    isUnlocked: 1
+    isUnlocked: 0
     unlockedSprite: {fileID: 0}
     lockedSprite: {fileID: 0}
+    unlockPrice: 100
     iJoker:
       rid: 928387344147415111
   references:

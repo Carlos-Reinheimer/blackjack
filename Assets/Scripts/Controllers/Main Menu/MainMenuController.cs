@@ -1,14 +1,18 @@
 using System;
 using UI.Events.Main_Menu;
 using UnityEngine;
+using UnityEngine.Events;
 using Utils;
 
 namespace Controllers.Main_Menu {
     public class MainMenuController : MonoBehaviour {
 
+        [Header("Callbacks")] public UnityEvent onLoadSavedFileCallback;
+        
         [Header("Channels (SO assets)")]
         [SerializeField] private MainMenuActionChannelSO actionChannel;
         [SerializeField] private MainMenuGameInfoChannelSO gameInfoChannel;
+        
 
         private void OnEnable() {
             actionChannel.OnEventRaised += HandleAction;
@@ -25,7 +29,8 @@ namespace Controllers.Main_Menu {
                     globalScore = SaveGameData.coreData.globalScore
                 };
                 
-                gameInfoChannel.Raise(initialGameDataInfo);
+                gameInfoChannel.Raise(initialGameDataInfo); 
+                onLoadSavedFileCallback?.Invoke();
             });
         }
 

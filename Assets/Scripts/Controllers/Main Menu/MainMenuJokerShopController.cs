@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using Scriptable_Objects;
 using UI.Events.Main_Menu;
 using UnityEngine;
+using UnityEngine.Events;
+using Utils;
 
 namespace Controllers.Main_Menu {
     public class MainMenuJokerShopController : MonoBehaviour {
@@ -27,6 +30,27 @@ namespace Controllers.Main_Menu {
             TryLoadJokers();
         }
 
+        private void PurchaseJoker(JokerCard jokerCard, UnityAction unlockCallback) {
+            if (jokerCard.isUnlocked) {
+                Debug.Log("Card is already unlocked yet");
+                return;
+            }
+
+            if (jokerCard.unlockPrice > SaveGameData.coreData?.globalScore) {
+                Debug.Log("Player do not have enough currency to buy the Joker");
+                return;
+            }
+
+            SaveGameData.coreData ??= new CoreData();
+            SaveGameData.coreData.unlockedJokers ??= new List<string>();
+            SaveGameData.coreData.unlockedJokers.Add(jokerCard.id);
+            SaveGameData.coreData.globalScore -= jokerCard.unlockPrice;
+            SaveGameData.Save(SaveGameData.MAIN_SAVE_FILENAME, () => {
+                SyncJokersWithPlayersUnlockedCards();
+                unlockCallback?.Invoke();
+            }); // the callback here is to filter the shop to highlight which jokers are available to buy with the current score
+        }
+
         private void TryLoadJokers() {
             if (_areJokersLoaded) return;
             _areJokersLoaded = true;
@@ -35,15 +59,18 @@ namespace Controllers.Main_Menu {
                 var joker = gameJokers.availableJokers[i];
                 createJokerShopCard.Raise(new CreateJokerShopCardSchema {
                     jokerCard = joker,
-                    index = i
+                    index = i,
+                    purchaseJokerCallback = PurchaseJoker
                 });
             }
-
         }
 
-        public void SyncJokersWithPlayersUnlockedCards()
-        {
-            // TODO: call this from the MainMenuController.cs after loading the file
+        public void SyncJokersWithPlayersUnlockedCards() {
+            SaveGameData.coreData?.unlockedJokers?.ForEach(jokerId => {
+                Debug.Log("unlockedJoker: " + jokerId);
+                var indexOf = gameJokers.availableJokers.FindIndex(x => x.id == jokerId);
+                if (indexOf != -1) gameJokers.availableJokers[indexOf].isUnlocked = true;
+            });
         }
     }
 }

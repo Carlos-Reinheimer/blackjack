@@ -3121,6 +3121,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf6e7c9f0b7138c46a8265e66f7c9670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onLoadSavedFileCallback:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 220748279}
+        m_TargetAssemblyTypeName: Controllers.Main_Menu.MainMenuJokerShopController,
+          Assembly-CSharp
+        m_MethodName: SyncJokersWithPlayersUnlockedCards
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   actionChannel: {fileID: 11400000, guid: 90162f12abe1b0848b73f9b487861a0d, type: 2}
   gameInfoChannel: {fileID: 11400000, guid: 4024cd98b772ec94db9326850014dcad, type: 2}
 --- !u!1 &1466887473

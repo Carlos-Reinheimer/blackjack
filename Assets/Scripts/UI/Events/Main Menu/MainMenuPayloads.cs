@@ -1,5 +1,5 @@
-
 using Scriptable_Objects;
+using UnityEngine.Events;
 
 namespace UI.Events.Main_Menu {
     public enum MainMenuAction
@@ -18,5 +18,6 @@ namespace UI.Events.Main_Menu {
     public struct CreateJokerShopCardSchema {
         public JokerCard jokerCard;
         public int index;
+        public UnityAction<JokerCard, UnityAction> purchaseJokerCallback;
     }
 }

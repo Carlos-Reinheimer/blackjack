@@ -7,8 +7,9 @@ namespace Scriptable_Objects {
     
     [Serializable]
     public class JokerCard: BaseCard {
+        public string id;
         public JokerType jokerType;
-        public bool isUnlocked = true;
+        public bool isUnlocked;
         public Sprite unlockedSprite;
         public Sprite lockedSprite;
         public int unlockPrice;

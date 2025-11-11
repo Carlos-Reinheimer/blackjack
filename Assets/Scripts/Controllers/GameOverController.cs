@@ -26,7 +26,7 @@ namespace Controllers {
 
         public void GameOver() {
             saveGameDataEventChannel.Raise(true);
-            SaveGameData.Save(SaveGameData.MAIN_SAVE_FILENAME, () => saveGameDataEventChannel.Raise(false));
+            SaveGameData.SaveRunStats(SaveGameData.MAIN_SAVE_FILENAME, () => saveGameDataEventChannel.Raise(false));
             
             showChannel.Raise(true);
         }

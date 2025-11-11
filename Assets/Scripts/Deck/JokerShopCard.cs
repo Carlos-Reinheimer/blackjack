@@ -1,6 +1,8 @@
 using Scriptable_Objects;
+using TMPro;
 using UI.Events.Main_Menu;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace Deck {
@@ -18,24 +20,18 @@ namespace Deck {
         
         [Header("Curve")]
         [SerializeField] private CurveParameters curve;
+        
+        [Header("Curve")]
+        [SerializeField] private TMP_Text priceText; 
 
         private JokerCard _thisCard;
         private bool _isHovering;
         private int _cardIndex;
+        private UnityAction<JokerCard, UnityAction> _purchaseJokerCallback;
         
         private float _curveYOffset;
         private float _curveRotationOffset;
         private Coroutine _pressCoroutine;
-
-        private void OnEnable()
-        {
-            
-        }
-
-        private void OnDisable()
-        {
-            
-        }
 
         private void Update() {
             HandPositioning();
@@ -73,23 +69,38 @@ namespace Deck {
             LeanTween.moveLocal(shadow, finalPos, shadowYDownDuration).setOnComplete(() => shadow.transform.localPosition = finalPos);
         }
 
+        private void UnlockCard() {
+            RotateUnlockedCard();
+        }
+        
+        private void RotateUnlockedCard() {
+            LeanTween.rotate(gameObject, new Vector3(0, 180, 0), Random.Range(0.5f, 1.5f)).setDelay(Random.Range(0.1f, 0.3f));
+        }
+
         public void OnPointerEnter(PointerEventData eventData) {
             _isHovering = true;
+            LeanTween.scale(gameObject, new Vector3(1.1f, 1.1f, 1.1f), 0.1f).setEase(LeanTweenType.easeInBounce).setOnComplete(() => transform.localScale = new Vector3(1.1f, 1.1f, 1.1f));
             EffectShadow(true);
         }
 
         public void OnPointerExit(PointerEventData eventData) {
             _isHovering = false;
+            LeanTween.scale(gameObject, new Vector3(1f, 1f, 1f), 0.1f).setEase(LeanTweenType.easeInBounce).setOnComplete(() => transform.localScale = new Vector3(1, 1, 1));;
             EffectShadow(false);
         }
 
         public void OnPointerDown(PointerEventData eventData) {
-            
+            _purchaseJokerCallback?.Invoke(_thisCard, UnlockCard);
         }
 
         public void Initialize(CreateJokerShopCardSchema jokerShopCardSchema) {
             _thisCard = jokerShopCardSchema.jokerCard;
             _cardIndex = jokerShopCardSchema.index;
+            _purchaseJokerCallback = jokerShopCardSchema.purchaseJokerCallback;
+            
+            priceText.text = _thisCard.unlockPrice.ToString();
+            if (!_thisCard.isUnlocked) return;
+            RotateUnlockedCard();
         }
     }
 }
