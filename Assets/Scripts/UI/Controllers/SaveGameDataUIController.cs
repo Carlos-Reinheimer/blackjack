@@ -20,7 +20,7 @@ namespace UI.Controllers {
         }
         
         private void SetLoadingState(bool state) {
-            fadeCanvas.Fade(state, 0);
+            fadeCanvas.Fade(state);
         }
     }
 }

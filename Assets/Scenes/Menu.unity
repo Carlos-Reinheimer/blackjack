@@ -483,6 +483,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionChannel: {fileID: 11400000, guid: 90162f12abe1b0848b73f9b487861a0d, type: 2}
   createJokerShopCard: {fileID: 11400000, guid: b44dd8308ec065a4297f98f38d990b75, type: 2}
+  saveGameDataEventChannel: {fileID: 11400000, guid: 21c8c79ff79ab8846a12ae72eeecbce4, type: 2}
+  gameInfoChannel: {fileID: 11400000, guid: 4024cd98b772ec94db9326850014dcad, type: 2}
   gameJokers: {fileID: 11400000, guid: 408143436d6f8aa48a1ab09ce9fa7ffb, type: 2}
 --- !u!1 &262857446
 GameObject:
@@ -3389,6 +3391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionChannel: {fileID: 11400000, guid: 90162f12abe1b0848b73f9b487861a0d, type: 2}
   createJokerShopCardChannel: {fileID: 11400000, guid: b44dd8308ec065a4297f98f38d990b75, type: 2}
+  saveGameDataEventChannel: {fileID: 11400000, guid: 21c8c79ff79ab8846a12ae72eeecbce4, type: 2}
   jokerShopCanvas: {fileID: 1466887479}
   contentTf: {fileID: 1900106231}
   jokerShopCardPrefab: {fileID: 9111279176321654441, guid: ae92b1ebbf4acc245a877a8de98db216, type: 3}

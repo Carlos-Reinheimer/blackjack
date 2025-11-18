@@ -25,7 +25,6 @@ namespace Controllers.Main_Menu {
         private void Start() {
             SaveGameData.Load(SaveGameData.MAIN_SAVE_FILENAME, () => {
                 var initialGameDataInfo = new GameInfoSchema {
-                    gameVersion = Application.version,
                     globalScore = SaveGameData.coreData.globalScore
                 };
                 

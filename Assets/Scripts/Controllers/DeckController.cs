@@ -110,7 +110,7 @@ namespace Controllers {
             }
 
             foreach (var jokerCard in gameJokers.availableJokers) {
-                if (!jokerCard.isUnlocked) return;
+                if (!jokerCard.isUnlocked) continue;
                 var key = $"{jokerCard.name}_{jokerCard.type}";
                 _cardLookupDict[key] = jokerCard;
             }

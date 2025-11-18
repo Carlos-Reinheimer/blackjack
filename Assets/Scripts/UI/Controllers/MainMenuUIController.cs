@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UI.Events.Main_Menu;
 using UnityEngine;
@@ -22,9 +23,12 @@ namespace UI.Controllers {
             gameInfoChannel.OnEventRaised -= HandleGameInfo;
         }
 
+        private void Start() {
+            SetGameVersion(Application.version);
+        }
+
         private void HandleGameInfo(GameInfoSchema gameInfoSchema) {
             HandleGlobalScore(gameInfoSchema.globalScore);
-            SetGameVersion(gameInfoSchema.gameVersion);
         }
 
         private void HandleGlobalScore(int globalScore) {

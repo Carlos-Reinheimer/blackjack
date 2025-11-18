@@ -21,12 +21,14 @@ namespace Deck {
         [Header("Curve")]
         [SerializeField] private CurveParameters curve;
         
-        [Header("Curve")]
-        [SerializeField] private TMP_Text priceText; 
-
+        [Header("UI")]
+        [SerializeField] private TMP_Text priceText;
+        [SerializeField] private GameObject notAvailablePanel;
+        
         private JokerCard _thisCard;
         private bool _isHovering;
         private int _cardIndex;
+        private bool _isAvailableForPurchase;
         private UnityAction<JokerCard, UnityAction> _purchaseJokerCallback;
         
         private float _curveYOffset;
@@ -43,6 +45,7 @@ namespace Deck {
         }
 
         private void Tilt() {
+            if (_thisCard.isUnlocked) return;
             var sine = Mathf.Sin(Time.time + _cardIndex) * (_isHovering ? .2f : 1);
             var cosine = Mathf.Cos(Time.time + _cardIndex) * (_isHovering ? .2f : 1);
 
@@ -90,6 +93,7 @@ namespace Deck {
         }
 
         public void OnPointerDown(PointerEventData eventData) {
+            if (!_isAvailableForPurchase) return;
             _purchaseJokerCallback?.Invoke(_thisCard, UnlockCard);
         }
 
@@ -98,9 +102,18 @@ namespace Deck {
             _cardIndex = jokerShopCardSchema.index;
             _purchaseJokerCallback = jokerShopCardSchema.purchaseJokerCallback;
             
-            priceText.text = _thisCard.unlockPrice.ToString();
-            if (!_thisCard.isUnlocked) return;
+            CheckPurchaseAvailability(jokerShopCardSchema.availableScore);
+            if (!_thisCard.isUnlocked) {
+                priceText.text = _thisCard.unlockPrice.ToString();
+                return;
+            }
             RotateUnlockedCard();
+        }
+
+        public void CheckPurchaseAvailability(int availableScore) {
+            if (_thisCard.isUnlocked) return;
+            _isAvailableForPurchase = availableScore >= _thisCard.unlockPrice;
+            notAvailablePanel.SetActive(!_isAvailableForPurchase);
         }
     }
 }

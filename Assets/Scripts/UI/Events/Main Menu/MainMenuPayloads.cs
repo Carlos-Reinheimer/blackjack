@@ -11,7 +11,6 @@ namespace UI.Events.Main_Menu {
     }
 
     public struct GameInfoSchema {
-        public string gameVersion;
         public int globalScore;
     }
     
@@ -19,5 +18,6 @@ namespace UI.Events.Main_Menu {
         public JokerCard jokerCard;
         public int index;
         public UnityAction<JokerCard, UnityAction> purchaseJokerCallback;
+        public int availableScore;
     }
 }

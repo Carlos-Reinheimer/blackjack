@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Scriptable_Objects;
 using UI.Events.Main_Menu;
+using UI.Events.Save_Game_Data;
 using UnityEngine;
 using UnityEngine.Events;
 using Utils;
@@ -11,7 +12,9 @@ namespace Controllers.Main_Menu {
         [Header("Channels (SO assets)")]
         [SerializeField] private MainMenuActionChannelSO actionChannel;
         [SerializeField] private CreateJokerShopCardChannelSO createJokerShopCard;
-        
+        [SerializeField] private SaveGameDataEventChannel saveGameDataEventChannel;
+        [SerializeField] private MainMenuGameInfoChannelSO gameInfoChannel;
+
         [Header("Scriptable Objects")]
         [SerializeField] private GameJokers gameJokers;
 
@@ -48,6 +51,10 @@ namespace Controllers.Main_Menu {
             SaveGameData.Save(SaveGameData.MAIN_SAVE_FILENAME, () => {
                 SyncJokersWithPlayersUnlockedCards();
                 unlockCallback?.Invoke();
+                saveGameDataEventChannel.Raise(false);
+                gameInfoChannel.Raise(new GameInfoSchema {
+                    globalScore = SaveGameData.coreData.globalScore
+                });
             }); // the callback here is to filter the shop to highlight which jokers are available to buy with the current score
         }
 
@@ -55,19 +62,20 @@ namespace Controllers.Main_Menu {
             if (_areJokersLoaded) return;
             _areJokersLoaded = true;
 
+            var availableScore = SaveGameData.coreData.globalScore;
             for (var i = 0; i < gameJokers.availableJokers.Count; i++) {
                 var joker = gameJokers.availableJokers[i];
                 createJokerShopCard.Raise(new CreateJokerShopCardSchema {
                     jokerCard = joker,
                     index = i,
-                    purchaseJokerCallback = PurchaseJoker
+                    purchaseJokerCallback = PurchaseJoker,
+                    availableScore = availableScore
                 });
             }
         }
 
         public void SyncJokersWithPlayersUnlockedCards() {
             SaveGameData.coreData?.unlockedJokers?.ForEach(jokerId => {
-                Debug.Log("unlockedJoker: " + jokerId);
                 var indexOf = gameJokers.availableJokers.FindIndex(x => x.id == jokerId);
                 if (indexOf != -1) gameJokers.availableJokers[indexOf].isUnlocked = true;
             });
