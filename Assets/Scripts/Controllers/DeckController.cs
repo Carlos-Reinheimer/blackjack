@@ -109,11 +109,12 @@ namespace Controllers {
                 }
             }
 
-            foreach (var jokerCard in gameJokers.availableJokers) {
-                if (!jokerCard.isUnlocked) continue;
-                var key = $"{jokerCard.name}_{jokerCard.type}";
-                _cardLookupDict[key] = jokerCard;
-            }
+            // the code below automatically adds all unlocked jokers to the deck, but we don't want that atm
+            // foreach (var jokerCard in gameJokers.availableJokers) {
+            //     if (!jokerCard.isUnlocked) continue;
+            //     var key = $"{jokerCard.name}_{jokerCard.type}";
+            //     _cardLookupDict[key] = jokerCard;
+            // }
         }
 
         private void GetLastCardFromDrawOrder(SideType currentSide, int lookupIndex, out string key, out int keyIndex) {
